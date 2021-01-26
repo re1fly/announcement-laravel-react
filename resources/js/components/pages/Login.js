@@ -32,7 +32,7 @@ function Login(){
                             </Button>
                         </Form>
                         </div>
-                        <Nav.Link className="text-center mt-5" style={{color : "#F9C900"}} href="#" >Register</Nav.Link>
+                        <Nav.Link className="text-center mt-5" style={{color : "#F9C900"}} href="/admin/dashboard" >Register</Nav.Link>
                     </div>
                 </div>
         );
