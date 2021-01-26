@@ -12,27 +12,5 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .react()
     .sass('resources/sass/app.scss', 'public/css');
-
-mix.options({
-    postCss: [
-        require('autoprefixer'),
-    ],
-});
-mix.setPublicPath('public');
-
-mix.webpackConfig({
-    resolve: {
-        extensions: ['.js', '.vue'],
-        alias: {
-            '@': __dirname + 'resources'
-        }
-    },
-    output: {
-        chunkFilename: 'js/chunks/[name].js',
-    },
-});
-
-// used to run app using reactjs
-mix.js('resources/coreui/src/index.js', 'public/js/app.js').version();
-mix.copy('resources/coreui/public/assets', 'public/assets');
