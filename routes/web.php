@@ -20,6 +20,6 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
-Route::get('/admin/dashboard', function () {
+Route::get('/admin-dashboard', function () {
     return view('dashboard');
 });

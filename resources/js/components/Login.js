@@ -1,5 +1,4 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,11 +8,11 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import {LoginImg} from "../assets";
-import { spacing } from '@material-ui/system';
+import axios from 'axios';
+import {Redirect} from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +44,38 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
     const classes = useStyles();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [successLogin, setSuccessLogin] = useState(false);
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        const data = {
+            'email': email,
+            'password': password,
+        };
+
+        axios.post('http://localhost:8000/api/auth/login',data).then((response) => {
+            console.log(response.status);
+            if(response.status === 200){
+                console.log('login success');
+                localStorage.setItem('access_token', response.data.access_token);
+                setSuccessLogin(true);
+            }else{
+                console.log('login failed');
+            }
+
+        }).catch(() => {
+            console.log('login failed');
+            }
+        )
+
+    }
+
+    if(successLogin === true){
+        return <Redirect to='/admin-dashboard'  />
+    }
+
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -55,7 +86,7 @@ export default function Login() {
                     <Typography component="h1" variant="h3">
                         NOTICEBOARD
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className={classes.form} onSubmit={handleSubmit} noValidate>
                         <Typography component="h1" variant="h5" style={{marginTop: "90px"}}>
                             Welcome Back,
                         </Typography>
@@ -72,6 +103,8 @@ export default function Login() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            value={email}
+                            onInput={ e=>setEmail(e.target.value)}
                         />
                         <TextField
                             variant="outlined"
@@ -83,6 +116,8 @@ export default function Login() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            value={password}
+                            onInput={ e=>setPassword(e.target.value)}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}

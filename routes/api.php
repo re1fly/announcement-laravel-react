@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,11 +25,20 @@ Route::group([
 ], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/signup', [AuthController::class, 'signup']);
-  
+
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/user', [AuthController::class, 'user']);
     });
+});
+
+Route::group(["prefix" => "announcement"], function () {
+    Route::get('/', [AnnouncementController::class, 'index']);
+    Route::post('/create', [AnnouncementController::class,'store']);
+    Route::post('/edit/{id}', [AnnouncementController::class,'getAnnouncement']);
+    Route::post('/{id}', [AnnouncementController::class,'getAnnouncement']);
+    Route::put('/{id}', [AnnouncementController::class,'update']);
+    Route::delete('/delete/{id}', [AnnouncementController::class,'delete']);
 });
