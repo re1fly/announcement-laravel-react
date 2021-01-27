@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
+import Login from "../components/Login";
+import Dashboard from "../components/Dashboard";
+
+
+
 
 class App extends Component {
     render() {
