@@ -24,16 +24,21 @@ export default function Announcement() {
             'title' : title,
             'content' : content,
         };
-        console.log('')
     }
         return (
             <Card style={{border: "none"}}>
+                <form className={classes.form} onSubmit={handleSubmit} noValidate>
                 <h3 className="mb-5 mt-4 text-center">Preview Announcement</h3>
                 <Card className="mb-4" style={{borderColor: "black", borderWidth:"3px", height:"400px" }}>
-                    <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
+                    <div className="wysiwyg" value={content} onInput={ e=>setContent(e.target.value) }>{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                     </Card>
                 <Card className="text-center" style={{ marginBottom: "10%", width: "50%", marginLeft:"25%", border: "none" }}>
-                    <TextField id="outlined-basic" label="Name Announcement" variant="outlined" />
+                    <TextField id="outlined-basic"
+                               label="Announcement Name"
+                               variant="outlined"
+                               value={title}
+                               onInput={ e=>setTitle(e.target.value)}
+                    />
                     <Box mb={4} />
             <Editor
                 apiKey="ot65hmw48i01kedcx33fd4nmbqssc98qb9tzj7gnmwszjo2a"
@@ -54,8 +59,10 @@ export default function Announcement() {
                 }}
                 onEditorChange={handleEditorChange}
             />
+                    <Box mt={4} />
                     <Button variant="contained">Save Announcement</Button>
                 </Card>
+                </form>
             </Card>
         );
 }

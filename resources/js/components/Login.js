@@ -47,6 +47,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [successLogin, setSuccessLogin] = useState(false);
+    const [roleAdmin, setRoleAdmin] = useState();
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -56,11 +57,13 @@ export default function Login() {
         };
 
         axios.post('http://localhost:8000/api/auth/login',data).then((response) => {
+            console.log(response);
             console.log(response.status);
             if(response.status === 200){
                 console.log('login success');
                 localStorage.setItem('access_token', response.data.access_token);
                 setSuccessLogin(true);
+                setRoleAdmin(response.data.is_admin);
             }else{
                 console.log('login failed');
             }
@@ -72,9 +75,12 @@ export default function Login() {
 
     }
 
-    if(successLogin === true){
-        return <Redirect to='/admin-dashboard'  />
+    if(successLogin === true && roleAdmin === 1  ){
+        return <Redirect to='/admin-dashboard' />
+    }else if(successLogin === true && roleAdmin === 0 ){
+        return <Redirect to='/display-announcement' />
     }
+
 
 
     return (

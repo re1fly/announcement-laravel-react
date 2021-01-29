@@ -21,6 +21,7 @@ import SpeakerNotesSharpIcon from '@material-ui/icons/SpeakerNotesSharp';
 import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
 import Announcement from "../../components/Announcement";
+import DisplayList from "../../components/DisplayList";
 
 
 const drawerWidth = 240;
@@ -166,6 +167,7 @@ export default function Dashboardtemplate() {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Announcement />
+                {/*<DisplayList />*/}
             </main>
         </div>
     );

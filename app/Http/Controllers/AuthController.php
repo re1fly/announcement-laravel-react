@@ -22,12 +22,14 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
+
         ]);
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'is_admin' => $request->is_admin
         ]);
         $user->save();
         return response()->json([
@@ -68,10 +70,11 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
-            )->toDateTimeString()
+            )->toDateTimeString(),
+            'is_admin' => $user->is_admin
         ]);
     }
-  
+
     /**
      * Logout user (Revoke the token)
      *
@@ -84,7 +87,7 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
-  
+
     /**
      * Get the authenticated User
      *
@@ -93,5 +96,15 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    public function getAllUser() {
+
+        $user = User::where('is_admin', 0)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
     }
 }

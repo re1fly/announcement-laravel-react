@@ -23,3 +23,15 @@ Route::get('/login', function () {
 Route::get('/admin-dashboard', function () {
     return view('dashboard');
 });
+
+Route::get('message', function () {
+    $message['user'] = "ADMIN";
+    $message['message'] =  "test announcement ";
+    $success = event(new App\Events\NewAnnouncement($message));
+    return $success;
+});
+
+//user display react
+Route::get('display-announcement', function(){
+    return view('user_display');
+});
