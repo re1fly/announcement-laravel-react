@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DisplayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::group([
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/user', [AuthController::class, 'user']);
         Route::get('/user-all', [AuthController::class, 'getAllUser']);
+
         Route::group(["prefix" => "announcement"], function () {
             Route::get('/', [AnnouncementController::class, 'index']);
             Route::post('/create', [AnnouncementController::class,'store']);
@@ -39,6 +41,15 @@ Route::group([
             Route::post('/{id}', [AnnouncementController::class,'getAnnouncement']);
             Route::put('/{id}', [AnnouncementController::class,'update']);
             Route::delete('/delete/{id}', [AnnouncementController::class,'delete']);
+            Route::get('/get-by-user/{id}', [AnnouncementController::class,'getAnnouncementByUserId']);
+
+        });
+        Route::group(["prefix" => "display"], function () {
+//            Route::post('/create', [DisplayController::class,'store']);
+//            Route::get('/{id}', [DisplayController::class,'getDisplay']);
+            Route::post('/edit/{id}', [DisplayController::class,'updateDisplay']);
+            Route::delete('/delete/{id}', [DisplayController::class,'destroy']);
+
         });
     });
 });

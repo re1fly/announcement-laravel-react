@@ -71,7 +71,8 @@ class AuthController extends Controller
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
-            'is_admin' => $user->is_admin
+            'is_admin' => $user->is_admin,
+            'user_id' => $user->id
         ]);
     }
 

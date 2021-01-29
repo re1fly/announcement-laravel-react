@@ -23,6 +23,9 @@ Route::get('/login', function () {
 Route::get('/admin-dashboard', function () {
     return view('dashboard');
 });
+Route::get('/display-list', function () {
+    return view('display_list');
+});
 
 Route::get('message', function () {
     $message['user'] = "ADMIN";

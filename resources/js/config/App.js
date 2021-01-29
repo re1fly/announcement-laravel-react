@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Login from "../components/Login";
-import Dashboard from "../components/Dashboard";
 import UserDisplay from "../components/UserDisplay";
+import Announcement from "../components/Announcement";
+import DisplayList from "../components/DisplayList";
 
 
 
@@ -14,7 +15,8 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route exact path='/login' component={Login} />
-                    <Route path='/admin-dashboard' component={Dashboard} />
+                    <Route path='/admin-dashboard' component={Announcement} />
+                    <Route path='/display-list' component={DisplayList} />
                     <Route path='/display-announcement' component={UserDisplay} />
 
                 </Switch>

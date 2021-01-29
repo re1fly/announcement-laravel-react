@@ -22,6 +22,7 @@ import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
 import Announcement from "../../components/Announcement";
 import DisplayList from "../../components/DisplayList";
+import {NavLink} from "react-router-dom";
 
 
 const drawerWidth = 240;
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Dashboardtemplate() {
+export default function DashboardTemplate(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -147,12 +148,22 @@ export default function Dashboardtemplate() {
                 </div>
                 <Divider />
                 <List>
-                    {['Display List', 'Announcement', 'Template', 'Media'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <AirplayIcon /> : <SpeakerNotesSharpIcon /> }</ListItemIcon>
-                            <ListItemText primary={text} />
+                        <ListItem button key='displayList' component={NavLink} to ="/display-list">
+                            <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                            <ListItemText primary='Display List' />
                         </ListItem>
-                    ))}
+                    <ListItem button key='announcement' component={NavLink} to ="/admin-dashboard">
+                        <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                        <ListItemText primary='Announcement' />
+                    </ListItem>
+                    <ListItem button key='templateAnnouncement'>
+                        <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                        <ListItemText primary='Template' />
+                    </ListItem>
+                    <ListItem button key='Media'>
+                        <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                        <ListItemText primary='Media' />
+                    </ListItem>
                 </List>
                 <Divider />
                 <List>
@@ -166,8 +177,9 @@ export default function Dashboardtemplate() {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
+                {props.children}
                 {/*<Announcement />*/}
-                <DisplayList />
+                {/*<DisplayList />*/}
             </main>
         </div>
     );

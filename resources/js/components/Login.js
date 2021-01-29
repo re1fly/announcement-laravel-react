@@ -62,6 +62,7 @@ export default function Login() {
             if(response.status === 200){
                 console.log('login success');
                 localStorage.setItem('access_token', response.data.access_token);
+                localStorage.setItem('user_id', response.data.user_id)
                 setSuccessLogin(true);
                 setRoleAdmin(response.data.is_admin);
             }else{

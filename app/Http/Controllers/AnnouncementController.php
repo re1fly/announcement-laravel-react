@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NewAnnouncement;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AnnouncementController extends Controller
 {
@@ -16,7 +17,21 @@ class AnnouncementController extends Controller
     public function index()
     {
         $announcement = Announcement::all();
-        return $announcement->toJSON;
+
+        return response()->json([
+            'success' => true,
+            'data' => $announcement
+        ]);
+    }
+
+    public function getAnnouncementByUserId($userId){
+        $getUserId = DB::table('announcements')->join('displays','announcements.id', '=', 'displays.announcement_id')
+                        ->where('displays.user_id', '=',$userId)->first();
+
+        return response()->json([
+            'success' => true,
+            'data' => $getUserId
+        ]);
     }
 
     /**
@@ -43,12 +58,12 @@ class AnnouncementController extends Controller
             'content' => $validatedData['content']
         ]);
 
-       $success = event(new NewAnnouncement($createAnnounce));
+//       $success = event(new NewAnnouncement($createAnnounce));
 
         $message = [
             'success' => true,
             'message' => 'Create Announcement Success',
-            'data' => $success
+            'data' => $createAnnounce
         ];
 
         return response()->json($message);

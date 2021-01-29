@@ -5,12 +5,13 @@ import ReactHtmlParser from "react-html-parser";
 import {TextField} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
+import DashboardTemplate from "../containers/templates/Dashboard";
 
 export default function Announcement() {
     const [wysiwyg, setWysiwyg] = useState("");
     const [parsed, setParsed] = useState("");
 
-    const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
 
     const handleEditorChange = content => {
@@ -22,15 +23,31 @@ export default function Announcement() {
         event.preventDefault();
         const data = {
             'title' : title,
-            'content' : content,
+            'content' : parsed,
         };
+        const token = localStorage.getItem('access_token');
+        axios.post('http://localhost:8000/api/auth/announcement/create', data,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+
+        }).then(response => {
+            if (response.status === 200){
+                console.log('success input data');
+            }else{
+                console.log('failed');
+            }
+        }).catch(() => {
+            console.log('failed input data');
+        });
     }
         return (
+            <DashboardTemplate>
             <Card style={{border: "none"}}>
-                <form className={classes.form} onSubmit={handleSubmit} noValidate>
+                <form onSubmit={handleSubmit} noValidate>
                 <h3 className="mb-5 mt-4 text-center">Preview Announcement</h3>
                 <Card className="mb-4" style={{borderColor: "black", borderWidth:"3px", height:"400px" }}>
-                    <div className="wysiwyg" value={content} onInput={ e=>setContent(e.target.value) }>{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
+                    <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                     </Card>
                 <Card className="text-center" style={{ marginBottom: "10%", width: "50%", marginLeft:"25%", border: "none" }}>
                     <TextField id="outlined-basic"
@@ -42,7 +59,6 @@ export default function Announcement() {
                     <Box mb={4} />
             <Editor
                 apiKey="ot65hmw48i01kedcx33fd4nmbqssc98qb9tzj7gnmwszjo2a"
-                initialValue="<p>Initial content</p>"
                 init={{
                     height: 200,
                     selector: 'textarea',
@@ -60,9 +76,10 @@ export default function Announcement() {
                 onEditorChange={handleEditorChange}
             />
                     <Box mt={4} />
-                    <Button variant="contained">Save Announcement</Button>
+                    <Button type="submit" variant="contained">Save Announcement</Button>
                 </Card>
                 </form>
             </Card>
+            </DashboardTemplate>
         );
 }
