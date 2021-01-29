@@ -30,11 +30,11 @@ export default class UserDisplay extends Component {
     render() {
         return (
             <div className="container">
-                <h3>TEST WEBSOCKET PUSHER</h3>
+                <h3>ANNOUNCEMENT</h3>
                 {
                     this.state.message.map((msg)=>{
                         return(
-                            <p> <b>{msg.user} </b> : {msg.message}</p>
+                            <p> <b>{msg.user} </b> {msg.message}</p>
                         )
                     })
                 }

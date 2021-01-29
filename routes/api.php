@@ -32,14 +32,15 @@ Route::group([
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/user', [AuthController::class, 'user']);
         Route::get('/user-all', [AuthController::class, 'getAllUser']);
+        Route::group(["prefix" => "announcement"], function () {
+            Route::get('/', [AnnouncementController::class, 'index']);
+            Route::post('/create', [AnnouncementController::class,'store']);
+            Route::post('/edit/{id}', [AnnouncementController::class,'getAnnouncement']);
+            Route::post('/{id}', [AnnouncementController::class,'getAnnouncement']);
+            Route::put('/{id}', [AnnouncementController::class,'update']);
+            Route::delete('/delete/{id}', [AnnouncementController::class,'delete']);
+        });
     });
 });
 
-Route::group(["prefix" => "announcement"], function () {
-    Route::get('/', [AnnouncementController::class, 'index']);
-    Route::post('/create', [AnnouncementController::class,'store']);
-    Route::post('/edit/{id}', [AnnouncementController::class,'getAnnouncement']);
-    Route::post('/{id}', [AnnouncementController::class,'getAnnouncement']);
-    Route::put('/{id}', [AnnouncementController::class,'update']);
-    Route::delete('/delete/{id}', [AnnouncementController::class,'delete']);
-});
+

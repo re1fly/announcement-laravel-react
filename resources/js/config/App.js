@@ -14,8 +14,9 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route exact path='/login' component={Login} />
-                    <Route exact path='/admin-dashboard' component={Dashboard} />
-                    <Route exact path='/display-announcement' component={UserDisplay} />
+                    <Route path='/admin-dashboard' component={Dashboard} />
+                    <Route path='/display-announcement' component={UserDisplay} />
+
                 </Switch>
             </BrowserRouter>
         )

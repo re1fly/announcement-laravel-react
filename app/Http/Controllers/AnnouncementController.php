@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewAnnouncement;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 
@@ -42,9 +43,12 @@ class AnnouncementController extends Controller
             'content' => $validatedData['content']
         ]);
 
+       $success = event(new NewAnnouncement($createAnnounce));
+
         $message = [
             'success' => true,
-            'message' => 'Create Announcement Success'
+            'message' => 'Create Announcement Success',
+            'data' => $success
         ];
 
         return response()->json($message);

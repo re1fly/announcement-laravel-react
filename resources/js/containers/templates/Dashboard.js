@@ -166,8 +166,8 @@ export default function Dashboardtemplate() {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Announcement />
-                {/*<DisplayList />*/}
+                {/*<Announcement />*/}
+                <DisplayList />
             </main>
         </div>
     );
