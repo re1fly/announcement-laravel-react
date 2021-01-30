@@ -77,7 +77,7 @@ export default function Login() {
     }
 
     if(successLogin === true && roleAdmin === 1  ){
-        return <Redirect to='/admin-dashboard' />
+        return <Redirect to='/create-announcement' />
     }else if(successLogin === true && roleAdmin === 0 ){
         return <Redirect to='/display-announcement' />
     }

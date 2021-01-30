@@ -152,7 +152,7 @@ export default function DashboardTemplate(props) {
                             <ListItemIcon> <AirplayIcon /></ListItemIcon>
                             <ListItemText primary='Display List' />
                         </ListItem>
-                    <ListItem button key='announcement' component={NavLink} to ="/admin-dashboard">
+                    <ListItem button key='announcement' component={NavLink} to ="/create-announcement">
                         <ListItemIcon> <SpeakerNotesSharpIcon /></ListItemIcon>
                         <ListItemText primary='Announcement' />
                     </ListItem>

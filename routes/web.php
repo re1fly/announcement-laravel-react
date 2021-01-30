@@ -20,8 +20,8 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
-Route::get('/admin-dashboard', function () {
-    return view('dashboard');
+Route::get('/create-announcement', function () {
+    return view('announcement');
 });
 Route::get('/display-list', function () {
     return view('display_list');
