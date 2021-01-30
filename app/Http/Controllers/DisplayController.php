@@ -32,7 +32,7 @@ class DisplayController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
 //    public function store(Request $request)
@@ -60,7 +60,7 @@ class DisplayController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
 //    public function getDisplay($id)
@@ -73,7 +73,7 @@ class DisplayController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -84,8 +84,8 @@ class DisplayController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function updateDisplay(Request $request, $userId)
@@ -95,10 +95,10 @@ class DisplayController extends Controller
         ]);
 
         $display = Display::where('user_id', $userId)->first();
-        if($display != null){
+        if ($display != null) {
             $display->announcement_id = $validatedData['announcement_id'];
             $display->save();
-        }else{
+        } else {
             $display = Display::create([
                 'user_id' => $userId,
                 'announcement_id' => $validatedData['announcement_id']
@@ -121,7 +121,7 @@ class DisplayController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

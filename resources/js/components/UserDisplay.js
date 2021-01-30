@@ -15,7 +15,7 @@ export default class UserDisplay extends Component {
     {
         const userId = localStorage.getItem('user_id');
         const token = localStorage.getItem('access_token');
-        axios.get(`http://localhost:8000/api/auth/announcement/get-by-user/${userId}`, {
+        axios.get(`http://localhost:8000/api/announcement/get-by-user/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewAnnouncement;
 use App\Models\Announcement;
+use App\Models\Display;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,13 +25,19 @@ class AnnouncementController extends Controller
         ]);
     }
 
-    public function getAnnouncementByUserId($userId){
-        $getUserId = DB::table('announcements')->join('displays','announcements.id', '=', 'displays.announcement_id')
-                        ->where('displays.user_id', '=',$userId)->first();
+    public function getAnnouncementByUserId($userId)
+    {
+
+//        $getUserId = DB::table('announcements')
+//            ->join('displays','announcements.id', '=', 'displays.announcement_id')
+//            ->where('displays.user_id', '=',$userId)
+//            ->first();
+
+        $announcement = Display::where('user_id', $userId)->first()->announcement;
 
         return response()->json([
             'success' => true,
-            'data' => $getUserId
+            'data' => $announcement
         ]);
     }
 

@@ -26,6 +26,9 @@ Route::get('/create-announcement', function () {
 Route::get('/display-list', function () {
     return view('display_list');
 });
+Route::get('/announcement-list', function () {
+    return view('announcement_list');
+});
 
 Route::get('message', function () {
     $message['user'] = "ADMIN";

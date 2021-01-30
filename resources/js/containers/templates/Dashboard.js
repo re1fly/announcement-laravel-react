@@ -156,9 +156,9 @@ export default function DashboardTemplate(props) {
                         <ListItemIcon> <SpeakerNotesSharpIcon /></ListItemIcon>
                         <ListItemText primary='Announcement' />
                     </ListItem>
-                    <ListItem button key='templateAnnouncement'>
+                    <ListItem button key='AnnouncementList' component={NavLink} to ="/announcement-list">
                         <ListItemIcon> <LibraryBooksIcon /></ListItemIcon>
-                        <ListItemText primary='Template' />
+                        <ListItemText primary='Announcement List' />
                     </ListItem>
                     <ListItem button key='Media'>
                         <ListItemIcon> <PermMediaIcon /></ListItemIcon>

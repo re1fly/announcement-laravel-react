@@ -45,7 +45,7 @@ export default function Announcement() {
             'content' : parsed,
         };
         const token = localStorage.getItem('access_token');
-        axios.post('http://localhost:8000/api/auth/announcement/create', data,{
+        axios.post('http://localhost:8000/api/announcement/create', data,{
             headers: {
                 'Authorization': `Bearer ${token}`
             },

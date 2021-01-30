@@ -12,4 +12,10 @@ class Announcement extends Model
 
     protected $table = "announcements";
     protected $fillable = ['title', 'content'];
+
+    public function displays()
+    {
+        return $this->hasMany(Display::class, 'announcement_id');
+    }
+
 }

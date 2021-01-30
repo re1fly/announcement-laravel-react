@@ -11,4 +11,15 @@ class Display extends Model
 
     protected $table = "displays";
     protected $fillable = ['user_id', 'announcement_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function announcement()
+    {
+        return $this->belongsTo(Announcement::class, 'announcement_id');
+    }
+
 }
