@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import ReactHtmlParser from "react-html-parser";
+import {Container} from "@material-ui/core";
 
 export default class UserDisplay extends Component {
     constructor() {
@@ -10,7 +12,8 @@ export default class UserDisplay extends Component {
     }
 
     componentDidMount()
-    {   const userId = localStorage.getItem('user_id');
+    {
+        const userId = localStorage.getItem('user_id');
         const token = localStorage.getItem('access_token');
         axios.get(`http://localhost:8000/api/auth/announcement/get-by-user/${userId}`, {
             headers: {
@@ -41,12 +44,11 @@ export default class UserDisplay extends Component {
     render() {
         console.log(this.state.message);
         return (
-            <div className="container">
-                <h3>ANNOUNCEMENT</h3>
+            <Container fixed>
                 {
-                   this.state.message &&  <p>{this.state.message.announcement.content}</p>
+                    this.state.message &&  <div>{ReactHtmlParser(this.state.message.announcement.content)}</div>
                 }
-            </div>
+            </Container>
         );
     }
 }

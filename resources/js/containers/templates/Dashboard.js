@@ -19,9 +19,9 @@ import PersonIcon from '@material-ui/icons/Person';
 import AirplayIcon from '@material-ui/icons/Airplay';
 import SpeakerNotesSharpIcon from '@material-ui/icons/SpeakerNotesSharp';
 import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
+import PermMediaIcon from '@material-ui/icons/PermMedia';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
-import Announcement from "../../components/Announcement";
-import DisplayList from "../../components/DisplayList";
 import {NavLink} from "react-router-dom";
 
 
@@ -153,21 +153,21 @@ export default function DashboardTemplate(props) {
                             <ListItemText primary='Display List' />
                         </ListItem>
                     <ListItem button key='announcement' component={NavLink} to ="/admin-dashboard">
-                        <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                        <ListItemIcon> <SpeakerNotesSharpIcon /></ListItemIcon>
                         <ListItemText primary='Announcement' />
                     </ListItem>
                     <ListItem button key='templateAnnouncement'>
-                        <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                        <ListItemIcon> <LibraryBooksIcon /></ListItemIcon>
                         <ListItemText primary='Template' />
                     </ListItem>
                     <ListItem button key='Media'>
-                        <ListItemIcon> <AirplayIcon /></ListItemIcon>
+                        <ListItemIcon> <PermMediaIcon /></ListItemIcon>
                         <ListItemText primary='Media' />
                     </ListItem>
                 </List>
                 <Divider />
                 <List>
-                    {['Setting', 'User'].map((text, index) => (
+                    {['Setting', 'Admin'].map((text, index) => (
                         <ListItem button key={text}>
                             <ListItemIcon>{index % 2 === 0 ? <SettingsSharpIcon /> : <PersonIcon /> }</ListItemIcon>
                             <ListItemText primary={text} />
@@ -178,8 +178,6 @@ export default function DashboardTemplate(props) {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {props.children}
-                {/*<Announcement />*/}
-                {/*<DisplayList />*/}
             </main>
         </div>
     );

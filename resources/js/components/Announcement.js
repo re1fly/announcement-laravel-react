@@ -43,13 +43,12 @@ export default function Announcement() {
     }
         return (
             <DashboardTemplate>
-            <Card style={{border: "none"}}>
                 <form onSubmit={handleSubmit} noValidate>
                 <h3 className="mb-5 mt-4 text-center">Preview Announcement</h3>
                 <Card className="mb-4" style={{borderColor: "black", borderWidth:"3px", height:"400px" }}>
                     <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                     </Card>
-                <Card className="text-center" style={{ marginBottom: "10%", width: "50%", marginLeft:"25%", border: "none" }}>
+                <Card className="text-center" style={{ marginBottom: "10%", width: "70%", marginLeft:"15%", border: "none" }}>
                     <TextField id="outlined-basic"
                                label="Announcement Name"
                                variant="outlined"
@@ -79,7 +78,6 @@ export default function Announcement() {
                     <Button type="submit" variant="contained">Save Announcement</Button>
                 </Card>
                 </form>
-            </Card>
             </DashboardTemplate>
         );
 }
