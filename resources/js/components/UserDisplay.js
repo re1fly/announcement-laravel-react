@@ -29,7 +29,6 @@ export default class UserDisplay extends Component {
                 message: {announcement: {content: response.data.data.content}}
             })
         })
-        console.log("Mounted component message");
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
