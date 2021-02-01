@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
 import {Container} from "@material-ui/core";
+import {getUserId} from "../utils/UserId";
+import {getAccessToken} from "../utils/Token";
 
 export default class UserDisplay extends Component {
     constructor() {
@@ -11,18 +13,21 @@ export default class UserDisplay extends Component {
         };
     }
 
-    componentDidMount()
-    {
-        const userId = localStorage.getItem('user_id');
-        const token = localStorage.getItem('access_token');
-        axios.get(`http://localhost:8000/api/announcement/get-by-user/${userId}`, {
+    componentDidMount() {
+        {
+            getUserId
+        }
+        {
+            getAccessToken
+        }
+        axios.get(`http://localhost:8000/api/announcement/get-by-user/${getUserId}`, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${getAccessToken}`
             }
         }).then(response => {
-             this.setState({
-                 message: {announcement : {content : response.data.data.content}}
-             })
+            this.setState({
+                message: {announcement: {content: response.data.data.content}}
+            })
         })
         console.log("Mounted component message");
         // Enable pusher logging - don't include this in production
@@ -34,19 +39,19 @@ export default class UserDisplay extends Component {
         });
         const this2 = this
         var channel = pusher.subscribe('channel-announcement');
-        channel.bind('event-pusher', function(data) {
-            if(localStorage.getItem('user_id') === data.data.user){
+        channel.bind('event-pusher', function (data) {
+            if (localStorage.getItem('user_id') === data.data.user) {
                 this2.setState({message: data.data})
             }
         });
     }
 
     render() {
-        console.log(this.state.message);
+        const {message} = this.state
         return (
             <Container fixed>
                 {
-                    this.state.message &&  <div>{ReactHtmlParser(this.state.message.announcement.content)}</div>
+                    message && <div>{ReactHtmlParser(message.announcement.content)}</div>
                 }
             </Container>
         );

@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import DashboardTemplate from "../containers/templates/Dashboard";
+import {getAllAnnouncement, getAllUser} from "../utils/Api";
+import {getAccessToken} from "../utils/Token";
 
 function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,10 +24,12 @@ function DisplayItems(props) {
         const data = {
             'announcement_id': announcementId,
         };
-        const token = localStorage.getItem('access_token');
+        {
+            getAccessToken
+        }
         axios.post(`http://localhost:8000/api/display/edit/${props.id}`, data, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${getAccessToken}`
             },
 
         }).then(response => {
@@ -84,22 +88,16 @@ class DisplayList extends Component {
     }
 
     componentDidMount() {
-        const token = localStorage.getItem('access_token');
-        axios.get('http://localhost:8000/api/auth/user-all', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(response => {
+        {
+            getAccessToken
+        }
+        getAllUser().then(response => {
             this.setState({
                 display: response.data.data
             })
         })
 
-        axios.get('http://localhost:8000/api/announcement', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(response => {
+        getAllAnnouncement().then(response => {
             this.setState({
                 announcement: response.data.data
             })
@@ -108,14 +106,16 @@ class DisplayList extends Component {
     }
 
     render() {
+        const {display} = this.state
+        const {announcement} = this.state
         return (
             <DashboardTemplate>
                 <div>
                     <Typography variant="h4" style={{textAlign: 'center'}}> Display List</Typography>
                     <Box mb={5}/>
-                    {this.state.display.map(item => (
+                    {display.map(item => (
                         <DisplayItems key={item.id} name={item.name} id={item.id}
-                                      announcement={this.state.announcement}/>
+                                      announcement={announcement}/>
                     ))}
                 </div>
             </DashboardTemplate>
