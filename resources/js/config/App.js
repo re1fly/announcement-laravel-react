@@ -6,6 +6,7 @@ import UserDisplay from "../components/UserDisplay";
 import Announcement from "../components/Announcement";
 import DisplayList from "../components/DisplayList";
 import AnnouncementList from "../components/AnnouncementList";
+import Register from "../components/Register";
 
 
 
@@ -16,6 +17,7 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route exact path='/login' component={Login} />
+                    <Route exact path='/register' component={Register} />
                     <Route path='/create-announcement' component={Announcement} />
                     <Route path='/display-list' component={DisplayList} />
                     <Route path='/display-announcement' component={UserDisplay} />

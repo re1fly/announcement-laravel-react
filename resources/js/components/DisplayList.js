@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import DashboardTemplate from "../containers/templates/Dashboard";
 import {getAllAnnouncement, getAllUser} from "../utils/Api";
 import {getAccessToken} from "../utils/Token";
+import swal from "sweetalert";
 
 function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -34,12 +35,20 @@ function DisplayItems(props) {
 
         }).then(response => {
             if (response.status === 200) {
-                console.log('success update Announcement');
-            } else {
-                console.log('failed');
+                swal({
+                    title: "Done!",
+                    text: "Announcement was Displayed Successfully",
+                    icon: "success",
+                })
             }
         }).catch(() => {
-            console.log('failed update');
+            swal({
+                title: "Error!",
+                text: "Error, Please check the Display or Announcement",
+                icon: "error",
+                dangerMode: true,
+                buttons: true,
+            })
         });
     };
 

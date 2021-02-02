@@ -7,9 +7,9 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import DashboardTemplate from "../containers/templates/Dashboard";
-import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import {getAccessToken} from "../utils/Token";
+import swal from "sweetalert";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -55,21 +55,21 @@ export default function Announcement() {
 
         }).then(response => {
             if (response.status === 200) {
-                console.log('success input data');
-                return (
-                    <Snackbar
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={transition}
-                        message="I love snacks"
-                        key={transition ? transition.name : ''}
-                    />
-                )
-            } else {
-                console.log('failed');
+                swal({
+                    title: "Done!",
+                    text: "Announcement Created Successfully",
+                    icon: "success",
+                })
+
             }
         }).catch(() => {
-            console.log('failed input data');
+            swal({
+                title: "Error!",
+                text: "Announcement was not created, please try again",
+                icon: "error",
+                dangerMode: true,
+                buttons: true,
+            })
         });
     }
 
@@ -94,6 +94,7 @@ export default function Announcement() {
                                onInput={e => setTitle(e.target.value)
                                }
                                style={{width: "40%"}}
+                               required
                     />
                     <Box mb={4}/>
                     <Editor

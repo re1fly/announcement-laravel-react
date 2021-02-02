@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {LoginImg} from "../assets";
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
+import swal from "sweetalert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,11 +67,16 @@ export default function Login() {
                 setSuccessLogin(true);
                 setRoleAdmin(response.data.is_admin);
             }else{
-                console.log('login failed');
+                swal({
+                    title: "Failed!",
+                    text: "Login failed, please try again",
+                    icon: "error",
+                    dangerMode: true,
+                })
             }
 
         }).catch(() => {
-            console.log('login failed');
+           console.log(error);
             }
         )
 
@@ -90,7 +96,7 @@ export default function Login() {
             <Grid item xs={false} sm={4} md={7} className={classes.image} />
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
-                    <Typography component="h1" variant="h3">
+                    <Typography component="h2" variant="h3">
                         NOTICEBOARD
                     </Typography>
                     <form className={classes.form} onSubmit={handleSubmit} noValidate>
@@ -134,7 +140,7 @@ export default function Login() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            color="primary"
+                            color="Primary"
                             className={classes.submit}
                         >
                            Login
@@ -146,7 +152,7 @@ export default function Login() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/register" variant="body2">
                                     {"Register"}
                                 </Link>
                             </Grid>

@@ -160,19 +160,21 @@ export default function DashboardTemplate(props) {
                         <ListItemIcon> <LibraryBooksIcon /></ListItemIcon>
                         <ListItemText primary='Announcement List' />
                     </ListItem>
-                    <ListItem button key='Media'>
-                        <ListItemIcon> <PermMediaIcon /></ListItemIcon>
-                        <ListItemText primary='Media' />
-                    </ListItem>
+                    {/*<ListItem button key='Media'>*/}
+                    {/*    <ListItemIcon> <PermMediaIcon /></ListItemIcon>*/}
+                    {/*    <ListItemText primary='Media' />*/}
+                    {/*</ListItem>*/}
                 </List>
                 <Divider />
                 <List>
-                    {['Setting', 'Admin'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <SettingsSharpIcon /> : <PersonIcon /> }</ListItemIcon>
-                            <ListItemText primary={text} />
+                        <ListItem button key='Setting'>
+                            <ListItemIcon><SettingsSharpIcon /></ListItemIcon>
+                            <ListItemText primary='Setting' />
                         </ListItem>
-                    ))}
+                    <ListItem button key='Admin'>
+                        <ListItemIcon><PersonIcon /></ListItemIcon>
+                        <ListItemText primary='Admin' />
+                    </ListItem>
                 </List>
             </Drawer>
             <main className={classes.content}>
