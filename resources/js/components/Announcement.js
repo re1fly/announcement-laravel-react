@@ -62,15 +62,18 @@ export default function Announcement() {
                 })
 
             }
-        }).catch(() => {
-            swal({
-                title: "Error!",
-                text: "Announcement was not created, please try again",
-                icon: "error",
-                dangerMode: true,
-                buttons: true,
-            })
-        });
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+
+            }
+        )
     }
 
     return (
@@ -107,14 +110,14 @@ export default function Announcement() {
                             ],
                             menubar: 'file edit view insert format tools table tc help',
                             toolbar:
-                                ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table | link image | undo redo | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+                                ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table | link image | undo redo | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
                             toolbar_mode: 'floating',
                             image_title: true,
                             automatic_uploads: true,
                             file_picker_types: 'image',
                             media_live_embeds: true,
                             paste_data_images: true,
-                            audio_template_callback: function(data) {
+                            audio_template_callback: function (data) {
                                 return '<audio controls>' + '\n<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' + '</audio>';
                             },
                             /* and here's our custom image picker*/

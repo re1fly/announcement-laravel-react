@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {LoginImg} from "../assets";
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
@@ -57,16 +57,16 @@ export default function Login() {
             'password': password,
         };
 
-        axios.post('http://localhost:8000/api/auth/login',data).then((response) => {
+        axios.post('http://localhost:8000/api/auth/login', data).then((response) => {
             console.log(response);
             console.log(response.status);
-            if(response.status === 200){
+            if (response.status === 200) {
                 console.log('login success');
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('user_id', response.data.user_id)
                 setSuccessLogin(true);
                 setRoleAdmin(response.data.is_admin);
-            }else{
+            } else {
                 swal({
                     title: "Failed!",
                     text: "Login failed, please try again",
@@ -76,24 +76,23 @@ export default function Login() {
             }
 
         }).catch(() => {
-           console.log(error);
+                console.log(error);
             }
         )
 
     }
 
-    if(successLogin === true && roleAdmin === 1  ){
-        return <Redirect to='/create-announcement' />
-    }else if(successLogin === true && roleAdmin === 0 ){
-        return <Redirect to='/display-announcement' />
+    if (successLogin === true && roleAdmin === 1) {
+        return <Redirect to='/create-announcement'/>
+    } else if (successLogin === true && roleAdmin === 0) {
+        return <Redirect to='/display-announcement'/>
     }
-
 
 
     return (
         <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            <CssBaseline/>
+            <Grid item xs={false} sm={4} md={7} className={classes.image}/>
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <Typography component="h2" variant="h3">
@@ -117,7 +116,7 @@ export default function Login() {
                             autoComplete="email"
                             autoFocus
                             value={email}
-                            onInput={ e=>setEmail(e.target.value)}
+                            onInput={e => setEmail(e.target.value)}
                         />
                         <TextField
                             variant="outlined"
@@ -130,10 +129,10 @@ export default function Login() {
                             id="password"
                             autoComplete="current-password"
                             value={password}
-                            onInput={ e=>setPassword(e.target.value)}
+                            onInput={e => setPassword(e.target.value)}
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
                         <Button
@@ -143,7 +142,7 @@ export default function Login() {
                             color="Primary"
                             className={classes.submit}
                         >
-                           Login
+                            Login
                         </Button>
                         <Grid container>
                             <Grid item xs>

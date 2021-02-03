@@ -23612,14 +23612,15 @@ function Announcement() {
           icon: "success"
         });
       }
-    })["catch"](function () {
-      sweetalert__WEBPACK_IMPORTED_MODULE_7___default()({
-        title: "Error!",
-        text: "Announcement was not created, please try again",
-        icon: "error",
-        dangerMode: true,
-        buttons: true
-      });
+    })["catch"](function (error) {
+      if (error.response) {
+        sweetalert__WEBPACK_IMPORTED_MODULE_7___default()({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          dangerMode: true
+        });
+      }
     });
   }
 
@@ -23671,7 +23672,7 @@ function Announcement() {
             selector: 'textarea#full-featured-non-premium',
             plugins: ['print preview paste importcss searchreplace autolink autosave directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking textcolor colorpicker anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap emoticons image code'],
             menubar: 'file edit view insert format tools table tc help',
-            toolbar: ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table | link image | undo redo | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+            toolbar: ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table | link image | undo redo | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
             toolbar_mode: 'floating',
             image_title: true,
             automatic_uploads: true,
@@ -23752,15 +23753,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/Card/Card.js");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/Accordion/Accordion.js");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/AccordionSummary/AccordionSummary.js");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/AccordionDetails/AccordionDetails.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/AccordionDetails/AccordionDetails.js");
 /* harmony import */ var _utils_Api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/Api */ "./resources/js/utils/Api.js");
 /* harmony import */ var _utils_Token__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Token */ "./resources/js/utils/Token.js");
 /* harmony import */ var react_html_parser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-html-parser */ "./node_modules/react-html-parser/lib/index.js");
 /* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! dateformat */ "./node_modules/dateformat/lib/dateformat.js");
 /* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(dateformat__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js");
-/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/IconButton.js");
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/IconButton.js");
 /* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_7__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -23799,7 +23802,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-function deleteAnnouncement(props) {
+
+function DeleteAnnouncement(props) {
   var handleDelete = function handleDelete(announcementId) {
     var data = {
       'announcement_id': announcementId
@@ -23812,23 +23816,30 @@ function deleteAnnouncement(props) {
         'Authorization': "Bearer ".concat(_utils_Token__WEBPACK_IMPORTED_MODULE_4__.getAccessToken)
       }
     }).then(function (response) {
-      console.log(response);
-    })["catch"](function () {
-      console.log('failed delete');
+      if (response.status === 200) {
+        sweetalert__WEBPACK_IMPORTED_MODULE_7___default()({
+          title: "Done!",
+          text: "Delete Announcement Successfully",
+          icon: "success"
+        });
+      }
+    })["catch"](function (error) {
+      if (error.response) {
+        sweetalert__WEBPACK_IMPORTED_MODULE_7___default()({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          dangerMode: true
+        });
+      }
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__.default, {
-    style: {
-      color: 'red'
-    },
-    id: props.id,
-    onclick: function onclick() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_8__.default, {
+    fontSize: "medium",
+    onClick: function onClick() {
       handleDelete(props.id);
-    },
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_8__.default, {
-      fontSize: "large"
-    })
+    }
   });
 }
 
@@ -23892,10 +23903,7 @@ var AnnouncementList = /*#__PURE__*/function (_Component) {
                   style: {
                     backgroundColor: '#C9CDE8'
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("deleteAnnouncement", {
-                    id: item.id,
-                    announcement: announcementList
-                  }, item.id), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__.default, {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__.default, {
                     variant: "h5",
                     style: {
                       textTransform: 'Capitalize'
@@ -23910,8 +23918,19 @@ var AnnouncementList = /*#__PURE__*/function (_Component) {
                     },
                     gutterBottom: true,
                     children: ["( ", dateformat__WEBPACK_IMPORTED_MODULE_6___default()(item.created_at, "dddd, mmmm dS, yyyy, hh::mm:ss"), " )"]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_15__.default, {
+                    style: {
+                      color: 'red',
+                      position: 'absolute',
+                      right: '5%',
+                      bottom: '15%'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(DeleteAnnouncement, {
+                      id: item.id,
+                      announcement: announcementList
+                    }, item.id)
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_15__.default, {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_16__.default, {
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_11__.default, {
                     style: {
                       width: '100%'
@@ -24044,14 +24063,15 @@ function DisplayItems(props) {
           icon: "success"
         });
       }
-    })["catch"](function () {
-      sweetalert__WEBPACK_IMPORTED_MODULE_6___default()({
-        title: "Error!",
-        text: "Error, Please check the Display or Announcement",
-        icon: "error",
-        dangerMode: true,
-        buttons: true
-      });
+    })["catch"](function (error) {
+      if (error.response) {
+        sweetalert__WEBPACK_IMPORTED_MODULE_6___default()({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          dangerMode: true
+        });
+      }
     });
   };
 
@@ -24061,7 +24081,8 @@ function DisplayItems(props) {
     style: {
       width: '80%',
       marginBottom: '15px',
-      marginLeft: '10%'
+      marginLeft: '10%',
+      textTransform: 'Capitalize'
     },
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_8__.default, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_9__.default, {
@@ -24579,13 +24600,15 @@ function Register() {
           icon: "success"
         });
       }
-    })["catch"](function () {
-      sweetalert__WEBPACK_IMPORTED_MODULE_3___default()({
-        title: "Error!",
-        text: "Registration Error, please try again",
-        icon: "error",
-        dangerMode: true
-      });
+    })["catch"](function (error) {
+      if (error.response) {
+        sweetalert__WEBPACK_IMPORTED_MODULE_3___default()({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          dangerMode: true
+        });
+      }
     });
   }
 
@@ -25244,11 +25267,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "BASE_URL": () => /* binding */ BASE_URL,
 /* harmony export */   "GET_ALL_ANNOUNCEMENT": () => /* binding */ GET_ALL_ANNOUNCEMENT,
-/* harmony export */   "GET_ALL_USER": () => /* binding */ GET_ALL_USER
+/* harmony export */   "GET_ALL_USER": () => /* binding */ GET_ALL_USER,
+/* harmony export */   "DELETE_ANNOUNCEMENT": () => /* binding */ DELETE_ANNOUNCEMENT
 /* harmony export */ });
 var BASE_URL = 'http://localhost:8000/api';
 var GET_ALL_ANNOUNCEMENT = BASE_URL + "/announcement";
 var GET_ALL_USER = BASE_URL + "/auth/user-all";
+var DELETE_ANNOUNCEMENT = BASE_URL + "/announcement/delete/";
 
 /***/ }),
 

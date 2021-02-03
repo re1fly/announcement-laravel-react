@@ -41,19 +41,23 @@ function DisplayItems(props) {
                     icon: "success",
                 })
             }
-        }).catch(() => {
-            swal({
-                title: "Error!",
-                text: "Error, Please check the Display or Announcement",
-                icon: "error",
-                dangerMode: true,
-                buttons: true,
-            })
-        });
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+
+            }
+        )
     };
 
     return (
-        <Card variant="outlined" alignItems="center" style={{width: '80%', marginBottom: '15px', marginLeft: '10%'}}>
+        <Card variant="outlined" alignItems="center"
+              style={{width: '80%', marginBottom: '15px', marginLeft: '10%', textTransform: 'Capitalize'}}>
             <CardContent>
                 <Typography variant="h5" component="h2">
                     {props.name}

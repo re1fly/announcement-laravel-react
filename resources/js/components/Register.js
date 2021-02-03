@@ -75,13 +75,16 @@ export default function Register() {
                     icon: "success",
                 })
             }
-        }).catch(() => {
-            swal({
-                title: "Error!",
-                text: "Registration Error, please try again",
-                icon: "error",
-                dangerMode: true,
-            })
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+
             }
         )
 

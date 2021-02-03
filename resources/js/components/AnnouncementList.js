@@ -10,8 +10,9 @@ import dateFormat from 'dateformat';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import swal from "sweetalert";
 
-function deleteAnnouncement(props) {
+function DeleteAnnouncement(props) {
     const handleDelete = (announcementId) => {
         const data = {
             'announcement_id': announcementId
@@ -24,17 +25,31 @@ function deleteAnnouncement(props) {
                 'Authorization': `Bearer ${getAccessToken}`
             },
         }).then(response => {
-            console.log(response);
-        }).catch(() => {
-            console.log('failed delete');
-        });
+            if (response.status === 200) {
+                swal({
+                    title: "Done!",
+                    text: "Delete Announcement Successfully",
+                    icon: "success",
+                })
+
+            }
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+
+            }
+        )
     }
     return (
-        <IconButton style={{color: 'red'}} id={props.id} onclick={() => {
+        <DeleteIcon fontSize="medium" onClick={() => {
             handleDelete(props.id);
-        }}>
-            <DeleteIcon fontSize="large"/>
-        </IconButton>
+        }}/>
     )
 }
 
@@ -79,12 +94,15 @@ class AnnouncementList extends Component {
                                     id="panel1a-header"
                                     style={{backgroundColor: '#C9CDE8'}}
                                 >
-                                    <deleteAnnouncement key={item.id} id={item.id} announcement={announcementList}/>
                                     <Typography variant="h5" style={{textTransform: 'Capitalize'}}
                                                 gutterBottom>{item.title}</Typography>
                                     <Typography style={{marginLeft: '15px', marginTop: '5px', fontSize: '12px'}}
                                                 gutterBottom>( {dateFormat(item.created_at, "dddd, mmmm dS, yyyy, hh::mm:ss")} )</Typography>
-
+                                    <IconButton
+                                        style={{color: 'red', position: 'absolute', right: '5%', bottom: '15%'}}>
+                                        <DeleteAnnouncement key={item.id} id={item.id} announcement={announcementList}>
+                                        </DeleteAnnouncement>
+                                    </IconButton>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Card style={{width: '100%'}}>
