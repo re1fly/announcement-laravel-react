@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'auth'], function () {
+
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/signup', [AuthController::class, 'signup']);
 
@@ -30,6 +31,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('/user', [AuthController::class, 'user']);
         Route::get('/user-all', [AuthController::class, 'getAllUser']);
     });
+
 });
 
 Route::group(["prefix" => "display"], function () {
@@ -41,12 +43,20 @@ Route::group(["prefix" => "display"], function () {
 });
 
 Route::group(["prefix" => "announcement"], function () {
+
     Route::get('/', [AnnouncementController::class, 'index']);
     Route::post('/create', [AnnouncementController::class,'store']);
-    Route::post('/edit/{id}', [AnnouncementController::class,'getAnnouncement']);
-    Route::post('/{id}', [AnnouncementController::class,'getAnnouncement']);
-    Route::put('/{id}', [AnnouncementController::class,'update']);
+    Route::get('/{id}', [AnnouncementController::class,'getAnnouncement']);
+    Route::post('edit/{id}', [AnnouncementController::class,'update']);
     Route::delete('/delete/{id}', [AnnouncementController::class,'delete']);
     Route::get('/get-by-user/{id}', [AnnouncementController::class,'getAnnouncementByUserId']);
 
+//    Route::get('/', [AnnouncementController::class, 'index']);
+//    Route::post('/', [AnnouncementController::class,'store']);
+//    Route::get('/{id}', [AnnouncementController::class,'getAnnouncement']);
+//    Route::post('/{id}/edit', [AnnouncementController::class,'update']);
+//    Route::post('{id}/delete', [AnnouncementController::class,'delete']);
+
 });
+
+//Route::get('announcementByUsers/{userId}',[AnnouncementController::class,'getAnnouncementByUserId']);

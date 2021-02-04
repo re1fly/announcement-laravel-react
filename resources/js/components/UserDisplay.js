@@ -3,7 +3,8 @@ import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
 import {Container} from "@material-ui/core";
 import {getUserId} from "../utils/UserId";
-import {getAccessToken} from "../utils/Token";
+import {authOptions} from "../utils/Api";
+import {GET_ANNOUNCEMENT_BY_USER} from "../utils/ApiUrl";
 
 export default class UserDisplay extends Component {
     constructor() {
@@ -14,17 +15,8 @@ export default class UserDisplay extends Component {
     }
 
     componentDidMount() {
-        {
-            getUserId
-        }
-        {
-            getAccessToken
-        }
-        axios.get(`http://localhost:8000/api/announcement/get-by-user/${getUserId}`, {
-            headers: {
-                'Authorization': `Bearer ${getAccessToken}`
-            }
-        }).then(response => {
+
+        axios.get(GET_ANNOUNCEMENT_BY_USER(getUserId), authOptions).then(response => {
             this.setState({
                 message: {announcement: {content: response.data.data.content}}
             })

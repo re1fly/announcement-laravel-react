@@ -14,6 +14,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
 import swal from 'sweetalert';
+import {REGISTER} from "../utils/ApiUrl";
 
 function Copyright() {
     return (
@@ -66,7 +67,7 @@ export default function Register() {
             'password_confirmation': passwordConfirmation,
             'is_admin': isAdmin
         };
-        axios.post('http://localhost:8000/api/auth/signup', data).then((response) => {
+        axios.post(REGISTER, data).then((response) => {
             console.log(response);
             if (response.status === 201) {
                 swal({

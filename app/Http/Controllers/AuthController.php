@@ -25,6 +25,7 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed',
 
         ]);
+
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
@@ -32,6 +33,7 @@ class AuthController extends Controller
             'is_admin' => $request->is_admin
         ]);
         $user->save();
+
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);

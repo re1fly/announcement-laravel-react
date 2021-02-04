@@ -5,9 +5,10 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import DashboardTemplate from "../containers/templates/Dashboard";
-import {getAllAnnouncement, getAllUser} from "../utils/Api";
+import {authOptions, getAllAnnouncement, getAllUser} from "../utils/Api";
 import {getAccessToken} from "../utils/Token";
 import swal from "sweetalert";
+import {UPDATE_DISPLAY} from "../utils/ApiUrl";
 
 function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,15 +26,7 @@ function DisplayItems(props) {
         const data = {
             'announcement_id': announcementId,
         };
-        {
-            getAccessToken
-        }
-        axios.post(`http://localhost:8000/api/display/edit/${props.id}`, data, {
-            headers: {
-                'Authorization': `Bearer ${getAccessToken}`
-            },
-
-        }).then(response => {
+        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
             if (response.status === 200) {
                 swal({
                     title: "Done!",
@@ -92,6 +85,7 @@ function DisplayItems(props) {
 }
 
 class DisplayList extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -101,9 +95,6 @@ class DisplayList extends Component {
     }
 
     componentDidMount() {
-        {
-            getAccessToken
-        }
         getAllUser().then(response => {
             this.setState({
                 display: response.data.data

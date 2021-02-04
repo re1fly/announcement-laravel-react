@@ -14,6 +14,7 @@ import {LoginImg} from "../assets";
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
 import swal from "sweetalert";
+import {LOGIN} from "../utils/ApiUrl";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +44,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="https://www.globalxtreme.net/">
+                GlobalXtreme
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
+
 export default function Login() {
     const classes = useStyles();
     const [email, setEmail] = useState('');
@@ -57,9 +71,7 @@ export default function Login() {
             'password': password,
         };
 
-        axios.post('http://localhost:8000/api/auth/login', data).then((response) => {
-            console.log(response);
-            console.log(response.status);
+        axios.post(LOGIN, data).then((response) => {
             if (response.status === 200) {
                 console.log('login success');
                 localStorage.setItem('access_token', response.data.access_token);
@@ -160,7 +172,11 @@ export default function Login() {
                         </Box>
                     </form>
                 </div>
+                <Box mt={2}>
+                    <Copyright/>
+                </Box>
             </Grid>
         </Grid>
+
     );
 }

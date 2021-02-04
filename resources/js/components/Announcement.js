@@ -10,6 +10,8 @@ import DashboardTemplate from "../containers/templates/Dashboard";
 import Slide from '@material-ui/core/Slide';
 import {getAccessToken} from "../utils/Token";
 import swal from "sweetalert";
+import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
+import {authOptions} from "../utils/Api";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -48,12 +50,7 @@ export default function Announcement() {
         {
             getAccessToken
         }
-        axios.post('http://localhost:8000/api/announcement/create', data, {
-            headers: {
-                'Authorization': `Bearer ${getAccessToken}`
-            },
-
-        }).then(response => {
+        axios.post(CREATE_ANNOUNCEMENT, data, authOptions).then(response => {
             if (response.status === 200) {
                 swal({
                     title: "Done!",
@@ -106,11 +103,19 @@ export default function Announcement() {
                             height: 200,
                             selector: 'textarea#full-featured-non-premium',
                             plugins: [
-                                'print preview paste importcss searchreplace autolink autosave directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking textcolor colorpicker anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap emoticons image code'
+                                'print preview paste importcss searchreplace autolink autosave directionality code ' +
+                                'visualblocks visualchars fullscreen image link media template codesample table charmap ' +
+                                'hr pagebreak nonbreaking textcolor colorpicker anchor toc insertdatetime advlist lists' +
+                                ' wordcount imagetools textpattern noneditable help charmap emoticons image code'
                             ],
                             menubar: 'file edit view insert format tools table tc help',
                             toolbar:
-                                ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table | link image | undo redo | bold italic underline strikethrough | forecolor backcolor | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+                                ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed' +
+                                ' permanentpen table | link image | undo redo | bold italic underline strikethrough | ' +
+                                'forecolor backcolor | fontselect fontsizeselect formatselect | ' +
+                                'alignleft aligncenter alignright alignjustify | outdent indent |' +
+                                '  numlist bullist checklist | ' +
+                                'forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
                             toolbar_mode: 'floating',
                             image_title: true,
                             automatic_uploads: true,
@@ -118,7 +123,10 @@ export default function Announcement() {
                             media_live_embeds: true,
                             paste_data_images: true,
                             audio_template_callback: function (data) {
-                                return '<audio controls>' + '\n<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' + '</audio>';
+                                return '<audio controls>' + '\n<source src="' + data.source1 + '"' +
+                                    (data.source1mime ? ' type="' + data.source1mime + '"' : '') +
+                                    ' />\n' +
+                                    '</audio>';
                             },
                             /* and here's our custom image picker*/
                             file_picker_callback: function (cb, value, meta) {
@@ -155,8 +163,7 @@ export default function Announcement() {
                         onEditorChange={handleEditorChange}
                     />
                     <Box mt={4}/>
-                    <Button type="submit" variant="contained" onClick={handleClick(TransitionUp)}>Save
-                        Announcement</Button>
+                    <Button type="submit" variant="contained" onClick={handleClick(TransitionUp)}>Save Announcement</Button>
                 </div>
             </form>
         </DashboardTemplate>

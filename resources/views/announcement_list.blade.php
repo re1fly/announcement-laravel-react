@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
     <script src="https://unpkg.com/@material-ui/core@latest/umd/material-ui.development.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
     <title>Announcement Dashboard</title>
 </head>
 <body>
