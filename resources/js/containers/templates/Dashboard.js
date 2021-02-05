@@ -26,7 +26,7 @@ import {NavLink} from "react-router-dom";
 import {authOptions, getUserLogin} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
-
+import {InputBase} from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        backgroundColor: 'black',
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -51,23 +52,30 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: 36,
+
     },
     hide: {
         display: 'none',
+
     },
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: 'nowrap',
+        color : 'white'
     },
     drawerOpen: {
         width: drawerWidth,
+        backgroundColor: 'black',
+        color: 'white',
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
     drawerClose: {
+        backgroundColor: 'black',
+        color: 'white',
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -90,6 +98,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
+    listColor: {
+        color: 'white'
+    }
 }));
 
 
@@ -140,6 +151,7 @@ export default function DashboardTemplate(props) {
                     <Typography variant="h6" style={{color: "#F9C900"}} noWrap>
                         <OndemandVideoSharpIcon fontSize="large"/> NoticeBoard
                     </Typography>
+                    <InputBase placeholder="Search" />
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -156,22 +168,22 @@ export default function DashboardTemplate(props) {
                 }}
             >
                 <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={handleDrawerClose} className={classes.listColor}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                     </IconButton>
                 </div>
                 <Divider/>
                 <List>
                     <ListItem button key='displayList' component={NavLink} to="/display-list">
-                        <ListItemIcon> <AirplayIcon/></ListItemIcon>
+                        <ListItemIcon className={classes.listColor}> <AirplayIcon/></ListItemIcon>
                         <ListItemText primary='Display List'/>
                     </ListItem>
                     <ListItem button key='announcement' component={NavLink} to="/create-announcement">
-                        <ListItemIcon> <SpeakerNotesSharpIcon/></ListItemIcon>
+                        <ListItemIcon className={classes.listColor}> <SpeakerNotesSharpIcon/></ListItemIcon>
                         <ListItemText primary='Announcement'/>
                     </ListItem>
                     <ListItem button key='AnnouncementList' component={NavLink} to="/announcement-list">
-                        <ListItemIcon> <LibraryBooksIcon/></ListItemIcon>
+                        <ListItemIcon className={classes.listColor}> <LibraryBooksIcon/></ListItemIcon>
                         <ListItemText primary='Announcement List'/>
                     </ListItem>
                     {/*<ListItem button key='Media'>*/}
@@ -182,11 +194,11 @@ export default function DashboardTemplate(props) {
                 <Divider/>
                 <List>
                     <ListItem button key='Setting'>
-                        <ListItemIcon><SettingsSharpIcon/></ListItemIcon>
+                        <ListItemIcon className={classes.listColor}><SettingsSharpIcon/></ListItemIcon>
                         <ListItemText primary='Setting'/>
                     </ListItem>
                     <ListItem button key='Admin'>
-                        <ListItemIcon><PersonIcon/></ListItemIcon>
+                        <ListItemIcon className={classes.listColor}><PersonIcon/></ListItemIcon>
                         <ListItemText primary={user}/>
                     </ListItem>
                 </List>
