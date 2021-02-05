@@ -23,8 +23,8 @@ export default function Announcement() {
 
     const [title, setTitle] = useState("");
 
-    const [open, setOpen] = React.useState(false);
-    const [transition, setTransition] = React.useState(undefined);
+    const [open, setOpen] = useState(false);
+    const [transition, setTransition] = useState(undefined);
 
     const handleClick = (Transition) => () => {
         setTransition(() => Transition);
@@ -47,9 +47,6 @@ export default function Announcement() {
             'title': title,
             'content': parsed,
         };
-        {
-            getAccessToken
-        }
         axios.post(CREATE_ANNOUNCEMENT, data, authOptions).then(response => {
             if (response.status === 200) {
                 swal({
@@ -57,6 +54,10 @@ export default function Announcement() {
                     text: "Announcement Created Successfully",
                     icon: "success",
                 })
+
+                setTitle("");
+                setParsed("");
+                setWysiwyg("");
 
             }
         }).catch((error) => {
@@ -99,6 +100,7 @@ export default function Announcement() {
                     <Box mb={4}/>
                     <Editor
                         apiKey='ot65hmw48i01kedcx33fd4nmbqssc98qb9tzj7gnmwszjo2a'
+                        initialValue={parsed}
                         init={{
                             height: 200,
                             selector: 'textarea#full-featured-non-premium',
@@ -163,7 +165,8 @@ export default function Announcement() {
                         onEditorChange={handleEditorChange}
                     />
                     <Box mt={4}/>
-                    <Button type="submit" variant="contained" onClick={handleClick(TransitionUp)}>Save Announcement</Button>
+                    <Button type="submit" variant="contained" onClick={handleClick(TransitionUp)}>Save
+                        Announcement</Button>
                 </div>
             </form>
         </DashboardTemplate>

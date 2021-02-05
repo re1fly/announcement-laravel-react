@@ -5,6 +5,7 @@ export const GET_ALL_USER = BASE_URL + "/auth/user-all"
 export const CREATE_ANNOUNCEMENT = BASE_URL + "/announcement/create"
 export const LOGIN = BASE_URL + "/auth/login"
 export const REGISTER = BASE_URL + "/auth/signup"
+export const GET_USER_LOGIN = BASE_URL + "/auth/user"
 
 //get url with id
 export const DELETE_ANNOUNCEMENT = (id) => {
@@ -23,5 +24,8 @@ export const GET_ANNOUNCEMENT_BY_USER = (getUserId) => {
     return BASE_URL + "/announcement/get-by-user/" + getUserId
 }
 
+export const UPDATE_ANNOUNCEMENT = (id) => {
+    return BASE_URL + "/announcement/edit/" + id
+}
 
 

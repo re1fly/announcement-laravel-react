@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,6 +23,9 @@ import PermMediaIcon from '@material-ui/icons/PermMedia';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
 import {NavLink} from "react-router-dom";
+import {authOptions, getUserLogin} from "../../utils/Api";
+import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
+import axios from "axios";
 
 
 const drawerWidth = 240;
@@ -89,10 +92,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 export default function DashboardTemplate(props) {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [user, setUser] = useState('');
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -102,9 +107,18 @@ export default function DashboardTemplate(props) {
         setOpen(false);
     };
 
+
+    useEffect(() => {
+        axios.get(GET_USER_LOGIN, authOptions).then(response => {
+            setUser(response.data.name)
+        })
+
+    }, [])
+
+
     return (
         <div className={classes.root}>
-            <CssBaseline />
+            <CssBaseline/>
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, {
@@ -121,10 +135,10 @@ export default function DashboardTemplate(props) {
                             [classes.hide]: open,
                         })}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" style={{color: "#F9C900"}} noWrap>
-                       <OndemandVideoSharpIcon fontSize="large" /> NoticeBoard
+                        <OndemandVideoSharpIcon fontSize="large"/> NoticeBoard
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -143,42 +157,42 @@ export default function DashboardTemplate(props) {
             >
                 <div className={classes.toolbar}>
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                     </IconButton>
                 </div>
-                <Divider />
+                <Divider/>
                 <List>
-                        <ListItem button key='displayList' component={NavLink} to ="/display-list">
-                            <ListItemIcon> <AirplayIcon /></ListItemIcon>
-                            <ListItemText primary='Display List' />
-                        </ListItem>
-                    <ListItem button key='announcement' component={NavLink} to ="/create-announcement">
-                        <ListItemIcon> <SpeakerNotesSharpIcon /></ListItemIcon>
-                        <ListItemText primary='Announcement' />
+                    <ListItem button key='displayList' component={NavLink} to="/display-list">
+                        <ListItemIcon> <AirplayIcon/></ListItemIcon>
+                        <ListItemText primary='Display List'/>
                     </ListItem>
-                    <ListItem button key='AnnouncementList' component={NavLink} to ="/announcement-list">
-                        <ListItemIcon> <LibraryBooksIcon /></ListItemIcon>
-                        <ListItemText primary='Announcement List' />
+                    <ListItem button key='announcement' component={NavLink} to="/create-announcement">
+                        <ListItemIcon> <SpeakerNotesSharpIcon/></ListItemIcon>
+                        <ListItemText primary='Announcement'/>
+                    </ListItem>
+                    <ListItem button key='AnnouncementList' component={NavLink} to="/announcement-list">
+                        <ListItemIcon> <LibraryBooksIcon/></ListItemIcon>
+                        <ListItemText primary='Announcement List'/>
                     </ListItem>
                     {/*<ListItem button key='Media'>*/}
                     {/*    <ListItemIcon> <PermMediaIcon /></ListItemIcon>*/}
                     {/*    <ListItemText primary='Media' />*/}
                     {/*</ListItem>*/}
                 </List>
-                <Divider />
+                <Divider/>
                 <List>
-                        <ListItem button key='Setting'>
-                            <ListItemIcon><SettingsSharpIcon /></ListItemIcon>
-                            <ListItemText primary='Setting' />
-                        </ListItem>
+                    <ListItem button key='Setting'>
+                        <ListItemIcon><SettingsSharpIcon/></ListItemIcon>
+                        <ListItemText primary='Setting'/>
+                    </ListItem>
                     <ListItem button key='Admin'>
-                        <ListItemIcon><PersonIcon /></ListItemIcon>
-                        <ListItemText primary='Admin' />
+                        <ListItemIcon><PersonIcon/></ListItemIcon>
+                        <ListItemText primary={user}/>
                     </ListItem>
                 </List>
             </Drawer>
             <main className={classes.content}>
-                <div className={classes.toolbar} />
+                <div className={classes.toolbar}/>
                 {props.children}
             </main>
         </div>

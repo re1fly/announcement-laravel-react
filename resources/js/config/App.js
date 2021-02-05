@@ -7,6 +7,7 @@ import Announcement from "../components/Announcement";
 import DisplayList from "../components/DisplayList";
 import AnnouncementList from "../components/AnnouncementList";
 import Register from "../components/Register";
+import EditAnnouncement from "../components/EditAnnouncement";
 
 
 
@@ -19,6 +20,7 @@ class App extends Component {
                     <Route exact path='/login' component={Login} />
                     <Route exact path='/register' component={Register} />
                     <Route path='/create-announcement' component={Announcement} />
+                    <Route path='/edit-announcement/:id' component={EditAnnouncement} />
                     <Route path='/display-list' component={DisplayList} />
                     <Route path='/display-announcement' component={UserDisplay} />
                     <Route path='/announcement-list' component={AnnouncementList} />

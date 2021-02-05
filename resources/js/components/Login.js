@@ -86,12 +86,10 @@ export default function Login() {
                     dangerMode: true,
                 })
             }
-
         }).catch(() => {
                 console.log(error);
             }
         )
-
     }
 
     if (successLogin === true && roleAdmin === 1) {
@@ -99,7 +97,6 @@ export default function Login() {
     } else if (successLogin === true && roleAdmin === 0) {
         return <Redirect to='/display-announcement'/>
     }
-
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -177,6 +174,5 @@ export default function Login() {
                 </Box>
             </Grid>
         </Grid>
-
     );
 }

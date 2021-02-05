@@ -60,7 +60,6 @@ function DisplayItems(props) {
                  style={{color: 'white', backgroundColor: '#22AF20', marginLeft: '80%'}}>
                 Status
             </Box>
-
             <CardActions>
                 <Button size="small" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>Set
                     Display</Button>
@@ -77,7 +76,6 @@ function DisplayItems(props) {
 
                         }}>{item.title}</MenuItem>
                     ))}
-
                 </Menu>
             </CardActions>
         </Card>

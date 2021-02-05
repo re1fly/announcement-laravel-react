@@ -26,6 +26,9 @@ Route::get('/register', function () {
 Route::get('/create-announcement', function () {
     return view('announcement');
 });
+Route::get('/edit-announcement/{id}', function () {
+    return view('edit_announcement');
+});
 Route::get('/display-list', function () {
     return view('display_list');
 });

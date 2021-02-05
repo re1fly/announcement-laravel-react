@@ -2,7 +2,15 @@ import React, {Component, useState} from 'react';
 import DashboardTemplate from "../containers/templates/Dashboard";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import {Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader} from "@material-ui/core";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Card,
+    CardContent,
+    CardHeader,
+    TextField
+} from "@material-ui/core";
 import {authOptions, getAllAnnouncement} from "../utils/Api";
 import {getAccessToken} from "../utils/Token";
 import ReactHtmlParser from "react-html-parser";
@@ -12,8 +20,11 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import swal from "sweetalert";
-import Swal from 'sweetalert2';
 import {DELETE_ANNOUNCEMENT, GET_ID_ANNOUNCEMENT} from "../utils/ApiUrl";
+import Button from "@material-ui/core/Button";
+import {NavLink} from "react-router-dom";
+import ListItem from "@material-ui/core/ListItem";
+
 
 function DeleteAnnouncement(props) {
 
@@ -21,14 +32,7 @@ function DeleteAnnouncement(props) {
         const data = {
             'announcement_id': announcementId
         }
-        {
-            getAccessToken
-        }
-        axios.delete(DELETE_ANNOUNCEMENT(props.id), data, {
-            headers: {
-                'Authorization': `Bearer ${getAccessToken}`
-            },
-        }).then(response => {
+        axios.delete(DELETE_ANNOUNCEMENT(props.id), data, authOptions).then(response => {
             if (response.status === 200) {
                 swal({
                     title: "Done!",
@@ -57,67 +61,25 @@ function DeleteAnnouncement(props) {
     )
 }
 
-function GetAnnouncementById(props) {
-    const handleEdit = (announcementId) => {
-        const data = {
-            'announcement_id': announcementId
-        }
-        axios.get(GET_ID_ANNOUNCEMENT(props.id), data, authOptions).then(response => {
-            console.log(response)
-            if (response.status === 200) {
-                Swal.fire({
-                    title: 'Edit Announcement',
-                    html: `<input type="text" id="title" class="swal2-input" placeholder="Title">
-                            <input type="text" id="content" class="swal2-input" placeholder="Content">`,
-                    confirmButtonText: 'Save',
-                    focusConfirm: false,
-                    preConfirm: () => {
-                        const title = Swal.getPopup().querySelector('#Title').value
-                        const content = Swal.getPopup().querySelector('#content').value
-                        if (!title || !content) {
-                            Swal.showValidationMessage(`Please fill the form`)
-                        }
-                        return {title: title, content: content}
-                    }
-                }).then((result) => {
-                    Swal.fire(`
-                    Title: ${result.value.title}
-                    Content: ${result.value.content}`.trim())
-                })
-            }
-        }).catch((error) => {
-                console.log(error.message);
-
-            }
-        )
-    }
-    return (
-        <EditIcon fontSize="inherit" onClick={() => {
-            handleEdit(props.id);
-        }}/>
-    )
-}
-
 
 class AnnouncementList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            announcementList: []
+            announcementList: [],
+            title: '',
+            content: ''
+
         }
     }
 
     componentDidMount() {
-        {
-            getAccessToken
-        }
         getAllAnnouncement().then(response => {
             console.log(response.data.data);
             this.setState({
                 announcementList: response.data.data
             })
         })
-
     }
 
 
@@ -150,9 +112,9 @@ class AnnouncementList extends Component {
                                         </DeleteAnnouncement>
                                     </IconButton>
                                     <IconButton
+                                        component={NavLink} to={"/edit-announcement/" + item.id}
                                         style={{color: 'blue', position: 'absolute', right: '8%', bottom: '15%'}}>
-                                        <GetAnnouncementById key={item.id} id={item.id} announcement={announcementList}>
-                                        </GetAnnouncementById>
+                                        <EditIcon fontSize="inherit"/>
                                     </IconButton>
                                 </AccordionSummary>
                                 <AccordionDetails>

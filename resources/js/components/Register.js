@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
 export default function Register() {
     const classes = useStyles();
     const [name, setName] = useState('');
@@ -68,7 +67,6 @@ export default function Register() {
             'is_admin': isAdmin
         };
         axios.post(REGISTER, data).then((response) => {
-            console.log(response);
             if (response.status === 201) {
                 swal({
                     title: "Done!",
@@ -90,7 +88,6 @@ export default function Register() {
         )
 
     }
-
 
     return (
         <Container component="main" maxWidth="xs">
@@ -157,22 +154,17 @@ export default function Register() {
                                 value={passwordConfirmation}
                                 onInput={e => setPasswordConfirmation(e.target.value)}
                             />
-                        </Grid><Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            name="isAdmin"
-                            type="password"
-                            id="isAdmin"
-                            value={isAdmin}
-                            type="hidden"
-                        />
-                    </Grid>
-                        {/*<Grid item xs={12}>*/}
-                        {/*    <FormControlLabel*/}
-                        {/*        control={<Checkbox value="allowExtraEmails" color="primary" />}*/}
-                        {/*        label="I want to receive inspiration, marketing promotions and updates via email."*/}
-                        {/*    />*/}
-                        {/*</Grid>*/}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                name="isAdmin"
+                                type="password"
+                                id="isAdmin"
+                                value={isAdmin}
+                                type="hidden"
+                            />
+                        </Grid>
                     </Grid>
                     <Button
                         type="submit"
