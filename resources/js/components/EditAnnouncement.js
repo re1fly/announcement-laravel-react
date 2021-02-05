@@ -8,11 +8,11 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import DashboardTemplate from "../containers/templates/Dashboard";
 import Slide from '@material-ui/core/Slide';
-import {getAccessToken} from "../utils/Token";
 import swal from "sweetalert";
-import {CREATE_ANNOUNCEMENT, GET_ID_ANNOUNCEMENT, UPDATE_ANNOUNCEMENT} from "../utils/ApiUrl";
+import {GET_ID_ANNOUNCEMENT, UPDATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
 import {useParams} from "react-router";
+import Typography from "@material-ui/core/Typography";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -85,7 +85,7 @@ export default function EditAnnouncement() {
     return (
         <DashboardTemplate>
             <form onSubmit={handleSubmit} noValidate>
-                <h3 className="mb-5 mt-4 text-center">EDIT Announcement</h3>
+                <Typography variant="h4" style={{textAlign: 'center'}}> Edit Announcement</Typography>
                 <Card className="mb-4" style={{borderColor: "black", borderWidth: "3px", height: "400px"}}>
                     <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                 </Card>
@@ -109,6 +109,7 @@ export default function EditAnnouncement() {
                     <Editor
                         apiKey='ot65hmw48i01kedcx33fd4nmbqssc98qb9tzj7gnmwszjo2a'
                         initialValue={parsed}
+                        value={parsed}
                         init={{
                             height: 200,
                             selector: 'textarea#full-featured-non-premium',
@@ -125,7 +126,9 @@ export default function EditAnnouncement() {
                                 'forecolor backcolor | fontselect fontsizeselect formatselect | ' +
                                 'alignleft aligncenter alignright alignjustify | outdent indent |' +
                                 '  numlist bullist checklist | ' +
-                                'forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+                                'forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons |' +
+                                ' preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl |' +
+                                ' showcomments addcomment',
                             toolbar_mode: 'floating',
                             image_title: true,
                             automatic_uploads: true,

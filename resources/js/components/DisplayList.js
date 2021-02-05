@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import DashboardTemplate from "../containers/templates/Dashboard";
 import {authOptions, getAllAnnouncement, getAllUser} from "../utils/Api";
-import {getAccessToken} from "../utils/Token";
 import swal from "sweetalert";
 import {UPDATE_DISPLAY} from "../utils/ApiUrl";
 
@@ -50,19 +49,20 @@ function DisplayItems(props) {
 
     return (
         <Card variant="outlined" alignItems="center"
-              style={{width: '80%', marginBottom: '15px', marginLeft: '10%', textTransform: 'Capitalize', backgroundColor: 'black', color: 'white'}}>
+              style={{width: '80%', marginBottom: '15px', marginLeft: '10%', textTransform: 'Capitalize',
+                  backgroundColor: 'black', color: 'white'}}>
             <CardContent>
                 <Typography variant="h5" component="h2">
                     {props.name}
                 </Typography>
             </CardContent>
             <Box component="div" display="inline" p={1} m={2}
-                 style={{color: 'white', backgroundColor: '#279c00', marginLeft: '80%'}}>
+                 style={{color: 'white',backgroundColor: '#279c00', marginLeft: '80%' }}>
                 Status
             </Box>
             <CardActions>
-                <Button size="small" style={{color: '#F9C900'}} aria-controls="simple-menu"  aria-haspopup="true" onClick={handleClick}>Set
-                    Display</Button>
+                <Button size="small" style={{color: '#F9C900'}} aria-controls="simple-menu"  aria-haspopup="true"
+                        onClick={handleClick}>Set Display</Button>
                 <Menu
                     id={props.id}
                     anchorEl={anchorEl}

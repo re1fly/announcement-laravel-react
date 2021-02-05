@@ -1,6 +1,12 @@
 import axios from "axios";
 import {getAccessToken} from "./Token";
-import {GET_ALL_ANNOUNCEMENT, GET_ALL_USER, GET_ANNOUNCEMENT_BY_USER, GET_USER_LOGIN, UPDATE_DISPLAY} from "./ApiUrl";
+import {
+    GET_ALL_ANNOUNCEMENT,
+    GET_ALL_USER,
+    GET_ANNOUNCEMENT_BY_USER,
+    GET_USER_LOGIN,
+    UPDATE_DISPLAY
+} from "./ApiUrl";
 
 export const authOptions = {
     headers: {
@@ -15,6 +21,7 @@ export function getAllAnnouncement () {
 export function getAllUser(){
     return axios.get(GET_ALL_USER, authOptions)
 }
+
 
 
 
