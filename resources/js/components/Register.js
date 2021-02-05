@@ -35,10 +35,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: 'black',
+        color: '#F9C900'
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -46,7 +48,13 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        backgroundColor: 'black',
+        color: '#F9C900'
     },
+    colorTheme: {
+        backgroundColor: 'black',
+        color: '#F9C900'
+    }
 }));
 
 export default function Register() {
@@ -97,7 +105,7 @@ export default function Register() {
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Register Board
+                    Register Notice Board
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit} noValidate>
                     <Grid container spacing={2}>

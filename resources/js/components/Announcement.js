@@ -77,7 +77,7 @@ export default function Announcement() {
     return (
         <DashboardTemplate>
             <form onSubmit={handleSubmit} noValidate>
-                <h3 className="mb-5 mt-4 text-center">Preview Announcement</h3>
+                <h3 className="mb-5 mt-4 text-center">Create Announcement</h3>
                 <Card className="mb-4" style={{borderColor: "black", borderWidth: "3px", height: "400px"}}>
                     <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                 </Card>
@@ -150,7 +150,6 @@ export default function Announcement() {
                                         var base64 = reader.result.split(',')[1];
                                         var blobInfo = blobCache.create(id, file, base64);
                                         blobCache.add(blobInfo);
-
                                         /* call the callback and populate the Title field with the file name */
                                         cb(blobInfo.blobUri(), {title: file.name});
                                     };

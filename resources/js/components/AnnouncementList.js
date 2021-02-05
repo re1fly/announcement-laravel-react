@@ -97,23 +97,22 @@ class AnnouncementList extends Component {
                         >
                             <Accordion>
                                 <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon/>}
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
-                                    style={{backgroundColor: '#C9CDE8'}}
+                                    style={{backgroundColor: 'black', color : 'white'}}
                                 >
                                     <Typography variant="h5" style={{textTransform: 'Capitalize'}}
                                                 gutterBottom>{item.title}</Typography>
                                     <Typography style={{marginLeft: '15px', marginTop: '5px', fontSize: '12px'}}
                                                 gutterBottom>( {dateFormat(item.created_at, "dddd, mmmm dS, yyyy, hh::mm:ss")} )</Typography>
                                     <IconButton
-                                        style={{color: 'red', position: 'absolute', right: '5%', bottom: '15%'}}>
+                                        style={{color: 'red', position: 'absolute', right: '2%', bottom: '15%'}}>
                                         <DeleteAnnouncement key={item.id} id={item.id} announcement={announcementList}>
                                         </DeleteAnnouncement>
                                     </IconButton>
                                     <IconButton
                                         component={NavLink} to={"/edit-announcement/" + item.id}
-                                        style={{color: 'blue', position: 'absolute', right: '8%', bottom: '15%'}}>
+                                        style={{color: '#F9C900', position: 'absolute', right: '5%', bottom: '15%'}}>
                                         <EditIcon fontSize="inherit"/>
                                     </IconButton>
                                 </AccordionSummary>

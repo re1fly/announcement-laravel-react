@@ -50,18 +50,18 @@ function DisplayItems(props) {
 
     return (
         <Card variant="outlined" alignItems="center"
-              style={{width: '80%', marginBottom: '15px', marginLeft: '10%', textTransform: 'Capitalize'}}>
+              style={{width: '80%', marginBottom: '15px', marginLeft: '10%', textTransform: 'Capitalize', backgroundColor: 'black', color: 'white'}}>
             <CardContent>
                 <Typography variant="h5" component="h2">
                     {props.name}
                 </Typography>
             </CardContent>
             <Box component="div" display="inline" p={1} m={2}
-                 style={{color: 'white', backgroundColor: '#22AF20', marginLeft: '80%'}}>
+                 style={{color: 'white', backgroundColor: '#279c00', marginLeft: '80%'}}>
                 Status
             </Box>
             <CardActions>
-                <Button size="small" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>Set
+                <Button size="small" style={{color: '#F9C900'}} aria-controls="simple-menu"  aria-haspopup="true" onClick={handleClick}>Set
                     Display</Button>
                 <Menu
                     id={props.id}
