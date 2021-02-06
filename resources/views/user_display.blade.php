@@ -6,6 +6,7 @@
     <title>Display Announcement</title>
     <link rel="stylesheet" href="https://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('css/screen.css')}}"  >
 </head>
 <body>
 <div id ="app"></div>

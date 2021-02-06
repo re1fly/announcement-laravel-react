@@ -6,6 +6,7 @@ export const CREATE_ANNOUNCEMENT = BASE_URL + "/announcement/create"
 export const LOGIN = BASE_URL + "/auth/login"
 export const REGISTER = BASE_URL + "/auth/signup"
 export const GET_USER_LOGIN = BASE_URL + "/auth/user"
+export const LOGOUT = BASE_URL + "/auth/logout"
 
 //get url with id
 export const DELETE_ANNOUNCEMENT = (id) => {

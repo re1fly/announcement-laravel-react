@@ -12,6 +12,7 @@ import swal from "sweetalert";
 import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
 import Typography from "@material-ui/core/Typography";
+import MediaQuery from "react-responsive/src";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -78,7 +79,7 @@ export default function Announcement() {
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Create Announcement</Typography>
                 <Box mb={5}/>
-                <Card className="mb-4" style={{borderColor: "black", borderWidth: "3px", height: "400px"}}>
+                <Card className="mb-4" style={{borderColor: "black", borderWidth: "2px", height: "400px"}}>
                     <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                 </Card>
                 <div className="text-center" style={{

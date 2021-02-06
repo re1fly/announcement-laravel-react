@@ -84,7 +84,7 @@ export default function Register() {
                 if (error.response) {
                     swal({
                         title: "Error!",
-                        text: (error.message),
+                        text: "Please check your form !",
                         icon: "error",
                         dangerMode: true,
                     })

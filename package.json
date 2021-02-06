@@ -38,6 +38,7 @@
         "react-metismenu": "^1.4.0",
         "react-minimal-side-navigation": "^1.5.1",
         "react-redux": "^7.2.2",
+        "react-responsive": "^8.2.0",
         "react-router-dom": "^5.2.0",
         "redux": "^4.0.5",
         "rsuite": "^4.8.8",

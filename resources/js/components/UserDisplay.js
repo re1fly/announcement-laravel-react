@@ -6,6 +6,7 @@ import {getUserId} from "../utils/UserId";
 import {authOptions} from "../utils/Api";
 import {GET_ANNOUNCEMENT_BY_USER} from "../utils/ApiUrl";
 
+
 export default class UserDisplay extends Component {
     constructor() {
         super();
@@ -40,11 +41,11 @@ export default class UserDisplay extends Component {
     render() {
         const {message} = this.state
         return (
-            <Container fixed>
+            <div>
                 {
                     message && <div>{ReactHtmlParser(message.announcement.content)}</div>
                 }
-            </Container>
+            </div>
         );
     }
 }

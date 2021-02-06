@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -22,11 +22,11 @@ import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
-import {NavLink} from "react-router-dom";
-import {authOptions, getUserLogin} from "../../utils/Api";
+import {NavLink, Redirect} from "react-router-dom";
+import {authOptions, getUserLogin, logout} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
-import {InputBase} from "@material-ui/core";
+import {ClickAwayListener, Grow, InputBase, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -100,7 +100,13 @@ const useStyles = makeStyles((theme) => ({
     },
     listColor: {
         color: 'white'
-    }
+    },
+    textCapitalize: {
+        textTransform: 'capitalize'
+    },
+    paper: {
+        marginRight: theme.spacing(2),
+    },
 }));
 
 
@@ -109,6 +115,9 @@ export default function DashboardTemplate(props) {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState('');
+    const [openLogout, setOpenLogout] = useState(false);
+    const anchorRef = useRef(null);
+    // const [successLogout, setSuccessLogout] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -118,6 +127,44 @@ export default function DashboardTemplate(props) {
         setOpen(false);
     };
 
+    const handleToggle = () => {
+        setOpenLogout((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+
+        setOpenLogout(false);
+        // event.preventDefault();
+        // logout().then(response => {
+        //     console.log(response);
+        //     if (response.status === 200){
+        //         setSuccessLogout(true)
+        //     }
+        // })
+    }
+
+    // if(successLogout === true){
+    //     return <Redirect to='/login' />
+    // }
+
+    function handleListKeyDown(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            setOpenLogout(false);
+        }
+    }
+
+    const prevOpen = React.useRef(open);
+    useEffect(() => {
+        if (prevOpen.current === true && openLogout === false) {
+            anchorRef.current.focus();
+        }
+
+        prevOpen.current = openLogout;
+    }, [openLogout]);
 
     useEffect(() => {
         axios.get(GET_USER_LOGIN, authOptions).then(response => {
@@ -197,10 +244,30 @@ export default function DashboardTemplate(props) {
                         <ListItemIcon className={classes.listColor}><SettingsSharpIcon/></ListItemIcon>
                         <ListItemText primary='Setting'/>
                     </ListItem>
-                    <ListItem button key='Admin'>
+                    <ListItem button key='Admin'
+                              ref={anchorRef}
+                              aria-controls={open ? 'menu-list-grow' : undefined}
+                              aria-haspopup="true"
+                              onClick={handleToggle}>
                         <ListItemIcon className={classes.listColor}><PersonIcon/></ListItemIcon>
-                        <ListItemText primary={user}/>
+                        <ListItemText className={classes.textCapitalize} primary={user}/>
                     </ListItem>
+                    <Popper open={openLogout} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                            >
+                                <Paper>
+                                    <ClickAwayListener onClickAway={handleClose}>
+                                        <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                                            <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                        )}
+                    </Popper>
                 </List>
             </Drawer>
             <main className={classes.content}>

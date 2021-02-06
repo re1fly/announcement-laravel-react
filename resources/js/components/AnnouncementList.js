@@ -17,38 +17,54 @@ import EditIcon from '@material-ui/icons/Edit';
 import swal from "sweetalert";
 import {DELETE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {NavLink} from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 function DeleteAnnouncement(props) {
 
     const handleDelete = () => {
         const {announcement} = props
-        if (confirm("Are you sure to delete " + announcement.title + "?")) {
-            axios.delete(DELETE_ANNOUNCEMENT(announcement.id), authOptions)
-                .then(response => {
-                    if (response.status === 200) {
-                        swal({
-                            title: "Done!",
-                            text: "Delete Announcement Successfully",
-                            icon: "success",
-                        })
 
-                        props.deleteAnnouncement()
+        Swal.fire({
+            title: 'Do you want to delete the announcement ?',
+            icon: 'warning',
+            showDenyButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonColor: '#d33',
+            denyButtonText: `Cancel`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axios.delete(DELETE_ANNOUNCEMENT(announcement.id), authOptions)
+                    .then(response => {
+                        if (response.status === 200) {
+                            swal({
+                                title: "Done!",
+                                text: "Delete Announcement Successfully",
+                                icon: "success",
+                            })
+
+                            props.deleteAnnouncement()
+
+                        }
+                    }).catch((error) => {
+                        if (error.response) {
+                            swal({
+                                title: "Error!",
+                                text: (error.message),
+                                icon: "error",
+                                dangerMode: true,
+                            })
+                        }
 
                     }
-                }).catch((error) => {
-                    if (error.response) {
-                        swal({
-                            title: "Error!",
-                            text: (error.message),
-                            icon: "error",
-                            dangerMode: true,
-                        })
-                    }
+                )
+            } else if (result.isDenied) {
+                Swal.fire('Cancelled', 'Delete announcement was cancelled', 'info')
+            }
+        })
 
-                }
-            )
-        }
+
     }
     return (
         <DeleteIcon fontSize="inherit" onClick={() => {
@@ -59,7 +75,6 @@ function DeleteAnnouncement(props) {
 
 
 class AnnouncementList extends Component {
-
     _handleDeleteAnnouncementList = (key) => {
         this.setState((prevState,props)=>{
             let newAnnouncementList = prevState.announcementList

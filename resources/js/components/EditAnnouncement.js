@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Editor} from '@tinymce/tinymce-react';
-import {Card} from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
 import {TextField} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
@@ -13,6 +12,7 @@ import {GET_ID_ANNOUNCEMENT, UPDATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
 import {useParams} from "react-router";
 import Typography from "@material-ui/core/Typography";
+import Card from '@material-ui/core/Card';
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -54,6 +54,7 @@ export default function EditAnnouncement() {
 
     };
 
+
     function handleSubmit(event) {
         event.preventDefault();
         const data = {
@@ -86,9 +87,11 @@ export default function EditAnnouncement() {
         <DashboardTemplate>
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Edit Announcement</Typography>
-                <Card className="mb-4" style={{borderColor: "black", borderWidth: "3px", height: "400px"}}>
-                    <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
+                <Box mb={5}/>
+                <Card style={{borderColor: "black", boxShadow: 'none', borderStyle: 'solid', borderWidth: "2px", minHeight: '400px'}}>
+                    <div>{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                 </Card>
+                <Box mb={5}/>
                 <div className="text-center" style={{
                     marginBottom: "10%",
                     width: "80%",
