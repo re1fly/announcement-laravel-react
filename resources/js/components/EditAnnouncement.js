@@ -88,7 +88,7 @@ export default function EditAnnouncement() {
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Edit Announcement</Typography>
                 <Box mb={5}/>
-                <Card style={{borderColor: "black", boxShadow: 'none', borderStyle: 'solid', borderWidth: "2px", minHeight: '400px'}}>
+                <Card style={{borderColor: "black", boxShadow: 'none', borderStyle: 'solid', borderWidth: "2px", height: '400px', overflow: 'auto'}}>
                     <div>{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                 </Card>
                 <Box mb={5}/>

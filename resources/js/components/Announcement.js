@@ -79,7 +79,7 @@ export default function Announcement() {
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Create Announcement</Typography>
                 <Box mb={5}/>
-                <Card className="mb-4" style={{borderColor: "black", borderWidth: "2px", height: "400px"}}>
+                <Card className="mb-4" style={{borderColor: "black", borderWidth: "2px", height: '400px', overflow: 'auto'}}>
                     <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
                 </Card>
                 <div className="text-center" style={{

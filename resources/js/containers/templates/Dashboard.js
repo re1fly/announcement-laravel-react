@@ -22,7 +22,7 @@ import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
-import {NavLink, Redirect} from "react-router-dom";
+import {Link, NavLink, Redirect} from "react-router-dom";
 import {authOptions, getUserLogin, logout} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
@@ -117,7 +117,6 @@ export default function DashboardTemplate(props) {
     const [user, setUser] = useState('');
     const [openLogout, setOpenLogout] = useState(false);
     const anchorRef = useRef(null);
-    // const [successLogout, setSuccessLogout] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -137,18 +136,17 @@ export default function DashboardTemplate(props) {
         }
 
         setOpenLogout(false);
-        // event.preventDefault();
-        // logout().then(response => {
-        //     console.log(response);
-        //     if (response.status === 200){
-        //         setSuccessLogout(true)
-        //     }
-        // })
+
+    }
+    const handleLogout = (event) => {
+        event.preventDefault();
+        logout().then(response => {
+            console.log(response);
+                return <Link to='/login' />
+
+        })
     }
 
-    // if(successLogout === true){
-    //     return <Redirect to='/login' />
-    // }
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -261,7 +259,7 @@ export default function DashboardTemplate(props) {
                                 <Paper>
                                     <ClickAwayListener onClickAway={handleClose}>
                                         <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                            <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                            <MenuItem onClose={handleClose} onClick={handleLogout}>Logout</MenuItem>
                                         </MenuList>
                                     </ClickAwayListener>
                                 </Paper>
