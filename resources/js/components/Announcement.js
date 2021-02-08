@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Editor} from '@tinymce/tinymce-react';
-import {Card} from "react-bootstrap";
+import Card from '@material-ui/core/Card';
 import ReactHtmlParser from "react-html-parser";
 import {TextField} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
@@ -13,6 +13,8 @@ import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
 import Typography from "@material-ui/core/Typography";
 import MediaQuery from "react-responsive/src";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -79,9 +81,28 @@ export default function Announcement() {
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Create Announcement</Typography>
                 <Box mb={5}/>
-                <Card className="mb-4" style={{borderColor: "black", borderWidth: "2px", height: '400px', overflow: 'auto'}}>
-                    <div className="wysiwyg">{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
-                </Card>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                >
+                    <Card style={{
+                        borderColor: "black",
+                        boxShadow: 'none',
+                        borderStyle: 'solid',
+                        borderWidth: "2px",
+                        height: '420px',
+                        width: '1000px',
+                        overflow: 'scroll'
+                    }}>
+                        <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>
+                            {wysiwyg && ReactHtmlParser(wysiwyg)}
+                        </div>
+                    </Card>
+                </Grid>
+                <Box mb={5}/>
                 <div className="text-center" style={{
                     marginBottom: "10%",
                     width: "80%",
@@ -104,7 +125,11 @@ export default function Announcement() {
                         initialValue={parsed}
                         value={parsed}
                         init={{
-                            height: 200,
+                            height: 400,
+                            max_width: 1920,
+                            max_height: 1080,
+                            autoresize_max_width: 1920,
+                            autoresize_max_height: 1080,
                             selector: 'textarea#full-featured-non-premium',
                             plugins: [
                                 'print preview paste importcss searchreplace autolink autosave directionality code ' +

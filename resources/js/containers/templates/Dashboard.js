@@ -27,6 +27,7 @@ import {authOptions, getUserLogin, logout} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
 import {ClickAwayListener, Grow, InputBase, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
 
 const drawerWidth = 240;
 
@@ -106,6 +107,35 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         marginRight: theme.spacing(2),
+    },
+    search: {
+        position: 'absolute',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: '#898990',
+        marginLeft: '65%',
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '30%',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
     },
 }));
 
@@ -193,10 +223,22 @@ export default function DashboardTemplate(props) {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" style={{color: "#F9C900"}} noWrap>
+                    <Typography variant="h6" style={{color: "#F9C900"}} noWrap >
                         <OndemandVideoSharpIcon fontSize="large"/> NoticeBoard
                     </Typography>
-                    <InputBase placeholder="Search" />
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            placeholder="Search…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer

@@ -13,6 +13,7 @@ import {authOptions} from "../utils/Api";
 import {useParams} from "react-router";
 import Typography from "@material-ui/core/Typography";
 import Card from '@material-ui/core/Card';
+import Grid from "@material-ui/core/Grid";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -88,9 +89,27 @@ export default function EditAnnouncement() {
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Edit Announcement</Typography>
                 <Box mb={5}/>
-                <Card style={{borderColor: "black", boxShadow: 'none', borderStyle: 'solid', borderWidth: "2px", height: '400px', overflow: 'auto'}}>
-                    <div>{wysiwyg && ReactHtmlParser(wysiwyg)}</div>
-                </Card>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                >
+                    <Card style={{
+                        borderColor: "black",
+                        boxShadow: 'none',
+                        borderStyle: 'solid',
+                        borderWidth: "2px",
+                        height: '420px',
+                        width: '1000px',
+                        overflow: 'scroll'
+                    }}>
+                        <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>
+                            {wysiwyg && ReactHtmlParser(wysiwyg)}
+                        </div>
+                    </Card>
+                </Grid>
                 <Box mb={5}/>
                 <div className="text-center" style={{
                     marginBottom: "10%",
@@ -114,7 +133,11 @@ export default function EditAnnouncement() {
                         initialValue={parsed}
                         value={parsed}
                         init={{
-                            height: 200,
+                            height: 400,
+                            max_width: 1920,
+                            max_height: 1080,
+                            autoresize_max_width: 1920,
+                            autoresize_max_height: 1080,
                             selector: 'textarea#full-featured-non-premium',
                             plugins: [
                                 'print preview paste importcss searchreplace autolink autosave directionality code ' +

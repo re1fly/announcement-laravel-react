@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
-import {Container} from "@material-ui/core";
+import {Card, Container} from "@material-ui/core";
 import {getUserId} from "../utils/UserId";
 import {authOptions} from "../utils/Api";
 import {GET_ANNOUNCEMENT_BY_USER} from "../utils/ApiUrl";
@@ -41,11 +41,11 @@ export default class UserDisplay extends Component {
     render() {
         const {message} = this.state
         return (
-            <div>
+            <Card style={{border : 'none',  boxShadow: 'none', width: '1920px', height: '1080px'}}>
                 {
                     message && <div>{ReactHtmlParser(message.announcement.content)}</div>
                 }
-            </div>
+            </Card>
         );
     }
 }
