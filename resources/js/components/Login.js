@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
-import {LoginImg} from "../assets";
+import {LoginImg, LogoImg} from "../assets";
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
 import swal from "sweetalert";
@@ -44,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'black',
         color: '#F9C900'
     },
+    logo: {
+        height: '70ox',
+        width: '200px',
+        marginTop: '1%',
+        paddingLeft: '2%',
+    }
 }));
 
 function Copyright() {
@@ -103,7 +109,9 @@ export default function Login() {
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
-            <Grid item xs={false} sm={4} md={7} className={classes.image}/>
+            <Grid item xs={false} sm={4} md={7} className={classes.image}>
+                <img className={classes.logo} src={LogoImg} alt="logo_gx"/>
+            </Grid>
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <Typography component="h2" variant="h3">

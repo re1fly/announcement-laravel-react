@@ -136,8 +136,6 @@ export default function EditAnnouncement() {
                             height: 400,
                             max_width: 1920,
                             max_height: 1080,
-                            autoresize_max_width: 1920,
-                            autoresize_max_height: 1080,
                             selector: 'textarea#full-featured-non-premium',
                             plugins: [
                                 'print preview paste importcss searchreplace autolink autosave directionality code ' +

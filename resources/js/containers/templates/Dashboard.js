@@ -137,6 +137,9 @@ const useStyles = makeStyles((theme) => ({
         transition: theme.transitions.create('width'),
         width: '100%',
     },
+    divider: {
+        backgroundColor: '#F9C900'
+    }
 }));
 
 
@@ -278,12 +281,8 @@ export default function DashboardTemplate(props) {
                     {/*    <ListItemText primary='Media' />*/}
                     {/*</ListItem>*/}
                 </List>
-                <Divider/>
+                <Divider className={classes.divider} />
                 <List>
-                    <ListItem button key='Setting'>
-                        <ListItemIcon className={classes.listColor}><SettingsSharpIcon/></ListItemIcon>
-                        <ListItemText primary='Setting'/>
-                    </ListItem>
                     <ListItem button key='Admin'
                               ref={anchorRef}
                               aria-controls={open ? 'menu-list-grow' : undefined}
@@ -301,7 +300,8 @@ export default function DashboardTemplate(props) {
                                 <Paper>
                                     <ClickAwayListener onClickAway={handleClose}>
                                         <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                            <MenuItem onClose={handleClose} onClick={handleLogout}>Logout</MenuItem>
+                                            <MenuItem style={{width: '120px', height: '25px'}}>Setting</MenuItem>
+                                            <MenuItem onClose={handleClose} onClick={handleLogout} style={{width: '120px', height: '25px'}}>Logout</MenuItem>
                                         </MenuList>
                                     </ClickAwayListener>
                                 </Paper>

@@ -103,7 +103,7 @@ export default function Register() {
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Register Notice Board
+                    Register
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit} noValidate>
                     <Grid container spacing={2}>
@@ -183,7 +183,7 @@ export default function Register() {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="/login" variant="body2">
+                            <Link href="/" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>

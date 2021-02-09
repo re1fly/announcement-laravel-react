@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
-});
+});*/
 
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('login');
 });
 Route::get('/register', function () {
@@ -36,12 +36,12 @@ Route::get('/announcement-list', function () {
     return view('announcement_list');
 });
 
-Route::get('message', function () {
+/*Route::get('message', function () {
     $message['user'] = "ADMIN";
     $message['message'] =  "test announcement ";
     $success = event(new App\Events\NewAnnouncement($message));
     return $success;
-});
+});*/
 
 //user display react
 Route::get('display-announcement', function(){
