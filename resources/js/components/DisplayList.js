@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import DashboardTemplate from "../containers/templates/Dashboard";
 import {authOptions, getAllAnnouncement, getAllUser} from "../utils/Api";
 import swal from "sweetalert";
-import {UPDATE_DISPLAY} from "../utils/ApiUrl";
+import {UPDATE_DISPLAY, UPDATE_IS_ACTIVE} from "../utils/ApiUrl";
 import Grid from "@material-ui/core/Grid";
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -48,7 +48,6 @@ function DisplayItems(props) {
                         dangerMode: true,
                     })
                 }
-
             }
         )
     }
@@ -81,6 +80,34 @@ function DisplayItems(props) {
 
     const styles = useStyles();
 
+
+    const [play, setPlay] = useState(false)
+    const handlePlay = () => {
+        const data = {
+            'is_active': 1,
+        };
+
+        axios.post(UPDATE_IS_ACTIVE(props.id), data, authOptions).then(response => {
+            console.log(response)
+            if (response.status === 200) {
+                setPlay(true)
+            }
+        })
+    }
+
+    const handlePause = () => {
+        const data = {
+            'is_active': 0,
+        };
+
+        axios.post(UPDATE_IS_ACTIVE(props.id), data, authOptions).then(response => {
+            console.log(response)
+            if (response.status === 200) {
+                setPlay(false)
+            }
+        })
+    }
+
     return (
         <Card className={styles.card} variant="outlined" alignitems="center">
             {/*<Input style={{backgroundColor:'gray', color:'black'}} label="search display" onChange={this.onChange} />*/}
@@ -94,12 +121,11 @@ function DisplayItems(props) {
                         </CardContent>
                     </Grid>
                     <Grid item xs={12}>
-                        <IconButton>
+                        { (play === false) ? <IconButton onClick={handlePlay}>
                             <PlayArrowIcon className={styles.icon} fontSize="large"/>
-                        </IconButton>
-                        <IconButton>
+                            </IconButton> : <IconButton onClick={handlePause}>
                             <PauseIcon className={styles.icon} fontSize="large"/>
-                        </IconButton>
+                        </IconButton>  }
                     </Grid>
                     <Grid item xs={12} className={styles.itemSpacing}>
                         <CardActions>
@@ -133,7 +159,7 @@ function DisplayItems(props) {
     );
 }
 
-function Search() {
+/*/!*function Search() {
 
     const [displays, setDisplays] = useState([]);
     const [inputDisplays, setInputDisplays] = useState([]);
@@ -159,7 +185,7 @@ function Search() {
                 displays.filter((item) => item.name.toLowerCase().startsWith(inputValue.toLowerCase()))
             )
         }
-    })
+    })*!/
 
     return (
         <div>
@@ -182,7 +208,7 @@ function Search() {
             </div>
         </div>
     )
-}
+}*/
 
 class DisplayList extends Component {
 
@@ -218,7 +244,7 @@ class DisplayList extends Component {
                 <div>
                     <Typography variant="h4" style={{textAlign: 'center'}}> Display List</Typography>
                     <Box mb={5}/>
-                    <Search />
+                    {/*<Search />*/}
                     {display.map(item => (
                         <DisplayItems key={item.id} name={item.name} id={item.id}
                                       announcement={announcement}/>

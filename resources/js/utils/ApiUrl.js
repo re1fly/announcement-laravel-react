@@ -28,5 +28,8 @@ export const GET_ANNOUNCEMENT_BY_USER = (getUserId) => {
 export const UPDATE_ANNOUNCEMENT = (id) => {
     return BASE_URL + "/announcement/edit/" + id
 }
+export const UPDATE_IS_ACTIVE = (id) => {
+    return BASE_URL + "/update-user/" + id
+}
 
 

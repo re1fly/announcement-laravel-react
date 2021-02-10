@@ -97,7 +97,6 @@ class AnnouncementList extends Component {
 
     componentDidMount() {
         getAllAnnouncement().then(response => {
-            console.log(response.data.data);
             this.setState({
                 announcementList: response.data.data
             })

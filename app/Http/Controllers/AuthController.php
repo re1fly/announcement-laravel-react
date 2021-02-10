@@ -118,4 +118,22 @@ class AuthController extends Controller
             'data' => $user
         ]);
     }
+
+    public function updateIsActive(Request $request,$id){
+        $validatedData = $request->validate([
+            'is_active' => 'required',
+        ]);
+
+        $user = User::find($id);
+        $user->is_active = $validatedData['is_active'];
+        $user->save();
+
+        $message = [
+            'success' => true,
+            'message' => 'Update User Success',
+            'data' => $user
+        ];
+
+        return response()->json($message);
+    }
 }

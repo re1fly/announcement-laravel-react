@@ -59,4 +59,6 @@ Route::group(["prefix" => "announcement"], function () {
 
 });
 
+Route::post('/update-user/{id}', [AuthController::class, 'updateIsActive']);
+
 //Route::get('announcementByUsers/{userId}',[AnnouncementController::class,'getAnnouncementByUserId']);

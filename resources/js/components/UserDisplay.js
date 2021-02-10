@@ -18,6 +18,7 @@ export default class UserDisplay extends Component {
     componentDidMount() {
 
         axios.get(GET_ANNOUNCEMENT_BY_USER(getUserId), authOptions).then(response => {
+            console.log(response)
             this.setState({
                 message: {announcement: {content: response.data.data.content}}
             })

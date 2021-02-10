@@ -79,6 +79,10 @@ export default function Register() {
                     text: "Success registered",
                     icon: "success",
                 })
+                setName('');
+                setEmail('');
+                setPassword('');
+                setPasswordConfirmation('');
             }
         }).catch((error) => {
                 if (error.response) {
