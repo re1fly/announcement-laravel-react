@@ -13,9 +13,11 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
-import {useCombobox} from "downshift";
+import UserDisplay from "./UserDisplay";
 
-function DisplayItems(props) {
+// import {useCombobox} from "downshift";
+
+export function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -31,11 +33,12 @@ function DisplayItems(props) {
         const data = {
             'announcement_id': announcementId,
         };
+
         axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
             if (response.status === 200) {
                 swal({
                     title: "Done!",
-                    text: "Announcement was Displayed Successfully",
+                    text: " Select Announcement Success",
                     icon: "success",
                 })
             }
@@ -80,8 +83,8 @@ function DisplayItems(props) {
 
     const styles = useStyles();
 
+    const [play, setPlay] = useState(props.is_active === 1);
 
-    const [play, setPlay] = useState(false)
     const handlePlay = () => {
         const data = {
             'is_active': 1,
@@ -121,17 +124,19 @@ function DisplayItems(props) {
                         </CardContent>
                     </Grid>
                     <Grid item xs={12}>
-                        { (play === false) ? <IconButton onClick={handlePlay}>
+                        {(play === false) ? <IconButton onClick={handlePlay}>
                             <PlayArrowIcon className={styles.icon} fontSize="large"/>
-                            </IconButton> : <IconButton onClick={handlePause}>
+                        </IconButton> : <IconButton onClick={handlePause}>
                             <PauseIcon className={styles.icon} fontSize="large"/>
-                        </IconButton>  }
+                        </IconButton>}
                     </Grid>
                     <Grid item xs={12} className={styles.itemSpacing}>
+                        { (play === true) ?
                         <CardActions>
                             <Button className={styles.buttonSetDisplay} size="small" aria-controls="simple-menu"
                                     aria-haspopup="true"
-                                    onClick={handleClick}>Select Announcement</Button>
+                                    onClick={handleClick}>Select Announcement
+                            </Button>
                             <Menu
                                 id={props.id}
                                 anchorEl={anchorEl}
@@ -146,7 +151,8 @@ function DisplayItems(props) {
                                     }}>{item.title}</MenuItem>
                                 ))}
                             </Menu>
-                        </CardActions>
+                        </CardActions> : <div> </div>
+                        }
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -247,7 +253,7 @@ class DisplayList extends Component {
                     {/*<Search />*/}
                     {display.map(item => (
                         <DisplayItems key={item.id} name={item.name} id={item.id}
-                                      announcement={announcement}/>
+                                      announcement={announcement} is_active={item.is_active}/>
                     ))}
                 </div>
             </DashboardTemplate>

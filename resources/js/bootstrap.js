@@ -1,4 +1,7 @@
+import Echo from "laravel-echo";
+
 window._ = require('lodash');
+window.Pusher = require('pusher-js');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -22,6 +25,14 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '6d997cb2a1d07ded5b9d',
+    cluster: 'ap1',
+    forceTLS: true,
+    encrypted: true
+});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

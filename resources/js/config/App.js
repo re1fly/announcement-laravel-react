@@ -13,6 +13,7 @@ import EditAnnouncement from "../components/EditAnnouncement";
 
 
 class App extends Component {
+
     render() {
         return (
             <BrowserRouter>

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Events\NewAnnouncement;
 
 class AuthController extends Controller
 {
@@ -128,10 +129,15 @@ class AuthController extends Controller
         $user->is_active = $validatedData['is_active'];
         $user->save();
 
+
+        $message['user'] = $id;
+        $message['is_active'] = $user->is_active;
+        $success = event(new NewAnnouncement($message));
+
         $message = [
             'success' => true,
             'message' => 'Update User Success',
-            'data' => $user
+            'data' => $success
         ];
 
         return response()->json($message);

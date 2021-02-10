@@ -33,7 +33,7 @@ class AnnouncementController extends Controller
 //            ->where('displays.user_id', '=',$userId)
 //            ->first();
 
-        $announcement = Display::where('user_id', $userId)->first()->announcement;
+        $announcement = Display::where('user_id', $userId)->with('announcement', 'user')->first();
 
         return response()->json([
             'success' => true,
