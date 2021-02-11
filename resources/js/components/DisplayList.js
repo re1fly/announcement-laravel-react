@@ -239,6 +239,16 @@ class DisplayList extends Component {
             })
         })
 
+        Echo.join('channel-display')
+            .listen('UserOnline', (e) => {
+                this.friend = e.user;
+            });
+
+        Echo.join('channel-display')
+            .listen('UserOffline', (e) => {
+                this.friend = e.user;
+            });
+
     }
 
 

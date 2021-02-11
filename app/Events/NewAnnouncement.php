@@ -13,7 +13,6 @@ use Illuminate\Queue\SerializesModels;
 class NewAnnouncement implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
     /**
      * Create a new event instance.
      *
@@ -38,6 +37,7 @@ class NewAnnouncement implements ShouldBroadcast
     public function broadcastOn()
     {
         return ['channel-announcement'];
+
     }
 
     public function broadcastAs()

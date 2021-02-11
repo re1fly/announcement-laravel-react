@@ -22,12 +22,13 @@ import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
-import {Link, NavLink, Redirect} from "react-router-dom";
+import {NavLink, Link} from "react-router-dom";
 import {authOptions, getUserLogin, logout} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
 import {ClickAwayListener, Grow, InputBase, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
+import Login from "../../components/Login";
 
 const drawerWidth = 240;
 
@@ -150,6 +151,7 @@ export default function DashboardTemplate(props) {
     const [user, setUser] = useState('');
     const [openLogout, setOpenLogout] = useState(false);
     const anchorRef = useRef(null);
+    const [successLogout, setSuccessLogout]= useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -171,13 +173,20 @@ export default function DashboardTemplate(props) {
         setOpenLogout(false);
 
     }
+
+
     const handleLogout = (event) => {
         event.preventDefault();
         logout().then(response => {
-            console.log(response);
-                return <Link to='/login' />
-
+            console.log(response)
+            if(response.status === 200){
+                setSuccessLogout(true)
+            }
         })
+    }
+
+    if(successLogout === true){
+        return <Link to="/"/>
     }
 
 
@@ -229,19 +238,19 @@ export default function DashboardTemplate(props) {
                     <Typography variant="h6" style={{color: "#F9C900"}} noWrap >
                         <OndemandVideoSharpIcon fontSize="large"/> NoticeBoard
                     </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
+                    {/*<div className={classes.search}>*/}
+                    {/*    <div className={classes.searchIcon}>*/}
+                    {/*        <SearchIcon />*/}
+                    {/*    </div>*/}
+                    {/*    <InputBase*/}
+                    {/*        placeholder="Search…"*/}
+                    {/*        classes={{*/}
+                    {/*            root: classes.inputRoot,*/}
+                    {/*            input: classes.inputInput,*/}
+                    {/*        }}*/}
+                    {/*        inputProps={{ 'aria-label': 'search' }}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -301,7 +310,13 @@ export default function DashboardTemplate(props) {
                                     <ClickAwayListener onClickAway={handleClose}>
                                         <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                                             <MenuItem style={{width: '120px', height: '25px'}}>Setting</MenuItem>
-                                            <MenuItem onClose={handleClose} onClick={handleLogout} style={{width: '120px', height: '25px'}}>Logout</MenuItem>
+                                            <MenuItem
+                                                href="/"
+                                                onClose={handleClose}
+                                                onClick={handleLogout}
+                                                style={{width: '120px', height: '25px'}}>
+                                                Logout
+                                            </MenuItem>
                                         </MenuList>
                                     </ClickAwayListener>
                                 </Paper>

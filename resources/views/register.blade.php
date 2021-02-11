@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <script src="https://unpkg.com/@material-ui/core@latest/umd/material-ui.development.js"></script>
-    <title>Register</title>
+    <title>NoticeBoard</title>
 </head>
 <body>
 <div id ="app"></div>
