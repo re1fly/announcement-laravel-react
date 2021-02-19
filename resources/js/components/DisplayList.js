@@ -59,16 +59,16 @@ export function DisplayItems(props) {
             color: 'white',
             backgroundColor: '#279c00',
             float: 'right',
-            width: '18%',
+            width: '80px',
             textAlign: 'center'
         },
         icon: {
             color: '#F9C900',
         },
         card: {
-            width: '80%',
+            width: '50%',
             marginBottom: '20px',
-            marginLeft: '10%',
+            marginLeft: '25%',
             textTransform: 'Capitalize',
             backgroundColor: 'black',
             color: 'white',
@@ -94,8 +94,23 @@ export function DisplayItems(props) {
             console.log(response)
             if (response.status === 200) {
                 setPlay(true)
+                swal({
+                    title: "Displayed!",
+                    text: "Announcement Successfully Displayed",
+                    icon: "success",
+                })
             }
-        })
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        )
     }
 
     const handlePause = () => {
@@ -107,12 +122,27 @@ export function DisplayItems(props) {
             console.log(response)
             if (response.status === 200) {
                 setPlay(false)
+                swal({
+                    title: "Paused!",
+                    text: "Announcement Successfully Paused",
+                    icon: "success",
+                })
             }
-        })
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        )
     }
 
     return (
-        <Card className={styles.card} variant="outlined" alignitems="center">
+        <Card className={styles.card} variant="outlined">
             {/*<Input style={{backgroundColor:'gray', color:'black'}} label="search display" onChange={this.onChange} />*/}
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
@@ -131,27 +161,27 @@ export function DisplayItems(props) {
                         </IconButton>}
                     </Grid>
                     <Grid item xs={12} className={styles.itemSpacing}>
-                        { (play === true) ?
-                        <CardActions>
-                            <Button className={styles.buttonSetDisplay} size="small" aria-controls="simple-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleClick}>Select Announcement
-                            </Button>
-                            <Menu
-                                id={props.id}
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                {props.announcement.map(item => (
-                                    <MenuItem key={item.id + props.id} onClick={() => {
-                                        handleSelectAnnouncement(item.id);
+                        {(play === true) ?
+                            <CardActions>
+                                <Button className={styles.buttonSetDisplay} size="small" aria-controls="simple-menu"
+                                        aria-haspopup="true"
+                                        onClick={handleClick}>Select Announcement
+                                </Button>
+                                <Menu
+                                    id={props.id}
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    {props.announcement.map(item => (
+                                        <MenuItem key={item.id + props.id} onClick={() => {
+                                            handleSelectAnnouncement(item.id);
 
-                                    }}>{item.title}</MenuItem>
-                                ))}
-                            </Menu>
-                        </CardActions> : <div> </div>
+                                        }}>{item.title}</MenuItem>
+                                    ))}
+                                </Menu>
+                            </CardActions> : <div></div>
                         }
                     </Grid>
                 </Grid>
@@ -222,7 +252,7 @@ class DisplayList extends Component {
         super(props)
         this.state = {
             display: [],
-            announcement: []
+            announcement: [],
         }
     }
 
@@ -239,14 +269,19 @@ class DisplayList extends Component {
             })
         })
 
-        Echo.join('channel-display')
+        Echo.join(`channel-announcement.${localStorage.getItem('user_id')}`)
+            // .here(function(DisplayItems){
+            //     update_member_count(DisplayItems.count);
+            //     console.log('laravelecho');
+            //     console.log(update_member_count);
+            // })
             .listen('UserOnline', (e) => {
-                this.friend = e.user;
-            });
-
-        Echo.join('channel-display')
+                this.user = e.user
+                console.log(this.user)
+            })
             .listen('UserOffline', (e) => {
-                this.friend = e.user;
+                this.user = e.user
+                console.log(this.user)
             });
 
     }

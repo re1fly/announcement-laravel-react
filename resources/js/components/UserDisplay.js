@@ -13,7 +13,7 @@ export default class UserDisplay extends Component {
         super();
         this.state = {
             announcement: null,
-            is_active: null
+            is_active: null,
         };
     }
 
@@ -37,7 +37,9 @@ export default class UserDisplay extends Component {
 
         let pusher = new Pusher('6d997cb2a1d07ded5b9d', {
             cluster: 'ap1',
-            // forceTLS: true
+            forceTLS: true,
+            auth: authOptions,
+            authEndpoint: 'broadcasting/auth',
         });
         const this2 = this
         let channel = pusher.subscribe('channel-announcement');
@@ -51,26 +53,25 @@ export default class UserDisplay extends Component {
 
                 }
             }
-        });
+        })
 
-        Echo.join('channel-display')
+
+        Echo.join(`channel-announcement.${localStorage.getItem('user_id')}`)
+            // .here((user) => {
+            //     this.state.announcement = user
+            // })
             .joining((user) => {
-                axios.put('/api/user/' + user.id + '/online?api_token=' + user.api_token, {}).then(response => {
-
-                });
-            });
-
-
-
-    }
-
-    componentWillUnmount() {
-        Echo.join('channel-announcement')
+                axios.put('/api/user/' + user.getUserId + '/online?api_token=' + user.authOptions, {}).then(response => {
+                    console.log(response)
+                })
+            })
             .leaving((user) => {
                 axios.put('/api/user/' + user.id + '/offline?api_token=' + user.api_token, {}).then(response => {
-
-                });
+                    console.log(response)
+                })
             })
+
+
     }
 
 
@@ -81,7 +82,8 @@ export default class UserDisplay extends Component {
 
                 {is_active === null ?
                     <div></div> : is_active === 1 ? announcement && <div>{ReactHtmlParser(announcement.content)}</div>
-                        : <PausePresentationIcon alignItem="center" style={{marginTop: '25%',marginLeft: '47.5%', fontSize:'90px'}} />
+                        : <PausePresentationIcon
+                            style={{textAlign: 'center', marginTop: '25%', marginLeft: '47.5%', fontSize: '90px'}}/>
                 }
 
             </Card>

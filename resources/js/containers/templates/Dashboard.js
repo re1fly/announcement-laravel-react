@@ -22,7 +22,7 @@ import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
-import {NavLink, Link} from "react-router-dom";
+import {NavLink, Link, useHistory} from "react-router-dom";
 import {authOptions, getUserLogin, logout} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
@@ -174,20 +174,18 @@ export default function DashboardTemplate(props) {
 
     }
 
+    const history = useHistory();
 
     const handleLogout = (event) => {
         event.preventDefault();
         logout().then(response => {
             console.log(response)
             if(response.status === 200){
-                setSuccessLogout(true)
+                history.push("/");
             }
         })
     }
 
-    if(successLogout === true){
-        return <Link to="/"/>
-    }
 
 
     function handleListKeyDown(event) {

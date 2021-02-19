@@ -19,6 +19,7 @@ class NewAnnouncement implements ShouldBroadcast
      * @return void
      */
     public $data;
+
     public function __construct($data)
     {
         $this->data = $data;

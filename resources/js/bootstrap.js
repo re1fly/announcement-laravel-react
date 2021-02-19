@@ -1,4 +1,5 @@
 import Echo from "laravel-echo";
+import {authOptions} from "./utils/Api";
 
 window._ = require('lodash');
 window.Pusher = require('pusher-js');
@@ -26,12 +27,15 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '6d997cb2a1d07ded5b9d',
     cluster: 'ap1',
+    auth: authOptions,
     forceTLS: true,
-    encrypted: true
+    encrypted: true,
+    authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth'
 });
 
 /**

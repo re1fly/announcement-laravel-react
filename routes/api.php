@@ -61,7 +61,7 @@ Route::group(["prefix" => "announcement"], function () {
 
 Route::post('/update-user/{id}', [AuthController::class, 'updateIsActive']);
 
-Route::middleware('auth:api')->put('user/{user}/online', 'UserOnlineController');
-Route::middleware('auth:api')->put('user/{user}/offline', 'UserOfflineController');
+//Route::middleware('auth:api')->put('user/{user}/online', 'UserOnlineController');
+//Route::middleware('auth:api')->put('user/{user}/offline', 'UserOfflineController');
 
 //Route::get('announcementByUsers/{userId}',[AnnouncementController::class,'getAnnouncementByUserId']);
