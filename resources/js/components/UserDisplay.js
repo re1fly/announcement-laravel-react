@@ -55,8 +55,7 @@ export default class UserDisplay extends Component {
             }
         })
 
-
-        Echo.join(`channel-announcement.${localStorage.getItem('user_id')}`)
+        Echo.join(`channel-display.${localStorage.getItem('user_id')}`)
             // .here((user) => {
             //     this.state.announcement = user
             // })
@@ -66,7 +65,7 @@ export default class UserDisplay extends Component {
                 })
             })
             .leaving((user) => {
-                axios.put('/api/user/' + user.id + '/offline?api_token=' + user.api_token, {}).then(response => {
+                axios.put('/api/user/' + user.getUserId + '/offline?api_token=' + user.authOptions, {}).then(response => {
                     console.log(response)
                 })
             })

@@ -34,8 +34,8 @@ window.Echo = new Echo({
     cluster: 'ap1',
     auth: authOptions,
     forceTLS: true,
-    encrypted: true,
-    authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth'
+    // encrypted: true,
+    authEndpoint: '/broadcasting/auth'
 });
 
 /**

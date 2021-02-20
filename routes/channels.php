@@ -15,11 +15,13 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('channel-announcement.{userId}', function ($user, $userId) {
-    Auth::check();
-    if ($user->id === $userId) {
-        return array('name' => $user->name);
-    }
-
+Broadcast::channel('channel-display.{userId}', function ($user, $userId) {
+//    if ($user->id === $userId) {
+//        return array('name' => $user->name);
+//    }
+return true;
+//        if ($user->canJoinRoom($userId)) {
+//        return ['id' => $user->id, 'name' => $user->name];
+//    }
 
 });

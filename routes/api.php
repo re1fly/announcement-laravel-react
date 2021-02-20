@@ -3,6 +3,8 @@
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\UserOfflineController;
+use App\Http\Controllers\UserOnlineController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/user', [AuthController::class, 'user']);
         Route::get('/user-all', [AuthController::class, 'getAllUser']);
+
+        //presence_channel
+        Route::put('/user/{user}/online', UserOnlineController::class );
+        Route::put('/user/{user}/offline',UserOfflineController::class );
     });
 
 });
@@ -61,7 +67,6 @@ Route::group(["prefix" => "announcement"], function () {
 
 Route::post('/update-user/{id}', [AuthController::class, 'updateIsActive']);
 
-//Route::middleware('auth:api')->put('user/{user}/online', 'UserOnlineController');
-//Route::middleware('auth:api')->put('user/{user}/offline', 'UserOfflineController');
+
 
 //Route::get('announcementByUsers/{userId}',[AnnouncementController::class,'getAnnouncementByUserId']);

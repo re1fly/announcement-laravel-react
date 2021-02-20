@@ -269,19 +269,19 @@ class DisplayList extends Component {
             })
         })
 
-        Echo.join(`channel-announcement.${localStorage.getItem('user_id')}`)
+        Echo.join(`channel-display.${localStorage.getItem('user_id')}`)
             // .here(function(DisplayItems){
             //     update_member_count(DisplayItems.count);
             //     console.log('laravelecho');
             //     console.log(update_member_count);
             // })
             .listen('UserOnline', (e) => {
-                this.user = e.user
-                console.log(this.user)
+                this.display = e.user
+                console.log(this.display)
             })
             .listen('UserOffline', (e) => {
-                this.user = e.user
-                console.log(this.user)
+                this.display = e.user
+                console.log(this.display)
             });
 
     }
