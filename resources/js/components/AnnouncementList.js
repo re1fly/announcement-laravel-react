@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import DashboardTemplate from "../containers/templates/Dashboard";
+import Layout from "../containers/templates/Layout";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {
@@ -107,7 +107,7 @@ class AnnouncementList extends Component {
     render() {
         const {announcementList} = this.state
         return (
-            <DashboardTemplate>
+            <Layout>
                 <div>
                     <Typography variant="h4" style={{textAlign: 'center'}}> Announcement List</Typography>
                     <Box mb={5}/>
@@ -153,7 +153,7 @@ class AnnouncementList extends Component {
                         </Card>
                     ))}
                 </div>
-            </DashboardTemplate>
+            </Layout>
         );
     }
 }

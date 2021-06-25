@@ -81,11 +81,13 @@ export default function Login() {
 
         axios.post(LOGIN, data).then((response) => {
             if (response.status === 200) {
-                console.log('login success');
+                console.log('res',response);
+                localStorage.setItem('user_name', response.data.name);
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('user_id', response.data.user_id)
                 setSuccessLogin(true);
                 setRoleAdmin(response.data.is_admin);
+                window.location.reload();
             } else {
                 swal({
                     title: "Failed!",
@@ -105,6 +107,15 @@ export default function Login() {
     } else if (successLogin === true && roleAdmin === 0) {
         return <Redirect to='/display-announcement'/>
     }
+
+    // useEffect(() => {
+    //   this.props.history.push({
+    //       pathfile: '/create-announcement',
+    //       state: {
+    //           user:
+    //       }
+    //   })
+    // }, [])
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -158,7 +169,7 @@ export default function Login() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            color="Primary"
+                            color="primary"
                             className={classes.submit}
                         >
                             Login

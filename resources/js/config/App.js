@@ -23,7 +23,6 @@ class App extends Component {
                     <Route path='/display-list' component={DisplayList} />
                     <Route path='/display-announcement' component={UserDisplay} />
                     <Route path='/announcement-list' component={AnnouncementList} />
-
                 </Switch>
             </BrowserRouter>
         )

@@ -6,7 +6,7 @@ import {TextField} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-import DashboardTemplate from "../containers/templates/Dashboard";
+import Layout from "../containers/templates/Layout";
 import Slide from '@material-ui/core/Slide';
 import swal from "sweetalert";
 import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
@@ -22,7 +22,7 @@ function TransitionUp(props) {
 
 export default function Announcement() {
     const [wysiwyg, setWysiwyg] = useState("");
-    const [parsed, setParsed] = useState("");
+    const [parsed, setParsed] = useState(parsed);
     const [title, setTitle] = useState("");
 
 
@@ -77,7 +77,7 @@ export default function Announcement() {
     }
 
     return (
-        <DashboardTemplate>
+        <Layout>
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Create Announcement</Typography>
                 <Box mb={5}/>
@@ -187,7 +187,7 @@ export default function Announcement() {
 
                                 input.click();
                             },
-                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }'
 
                         }}
                         onEditorChange={handleEditorChange}
@@ -197,6 +197,6 @@ export default function Announcement() {
                         Announcement</Button>
                 </div>
             </form>
-        </DashboardTemplate>
+        </Layout>
     );
 }

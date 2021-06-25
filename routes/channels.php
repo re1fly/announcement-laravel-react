@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,12 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('channel-display.{userId}', function ($user, $userId) {
-//    if ($user->id === $userId) {
-//        return array('name' => $user->name);
-//    }
-return true;
-//        if ($user->canJoinRoom($userId)) {
-//        return ['id' => $user->id, 'name' => $user->name];
-//    }
 
+Broadcast::channel('channel-announcement', function ($user, $userId) {
+    if ($user->id === $userId) {
+        return array('name' => $user->name);
+    }
 });
+//Broadcast::channel('channel-announcement', function ($user) {
+//    return $user;
+//});

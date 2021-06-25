@@ -5,7 +5,7 @@ import {TextField} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-import DashboardTemplate from "../containers/templates/Dashboard";
+import Layout from "../containers/templates/Layout";
 import Slide from '@material-ui/core/Slide';
 import swal from "sweetalert";
 import {GET_ID_ANNOUNCEMENT, UPDATE_ANNOUNCEMENT} from "../utils/ApiUrl";
@@ -85,7 +85,7 @@ export default function EditAnnouncement() {
     }
 
     return (
-        <DashboardTemplate>
+        <Layout>
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Edit Announcement</Typography>
                 <Box mb={5}/>
@@ -204,6 +204,6 @@ export default function EditAnnouncement() {
                         Announcement</Button>
                 </div>
             </form>
-        </DashboardTemplate>
+        </Layout>
     );
 }

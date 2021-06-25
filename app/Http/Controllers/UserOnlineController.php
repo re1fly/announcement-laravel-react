@@ -15,9 +15,9 @@ class UserOnlineController extends Controller
 
         broadcast(new UserOnline($user));
 
-//        return response()->json([
-//            'success' => true,
-//            'data' => $user
-//        ], 201);
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
 }

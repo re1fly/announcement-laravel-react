@@ -17,7 +17,6 @@ export default class UserDisplay extends Component {
         };
     }
 
-
     componentDidMount() {
         axios.get(GET_ANNOUNCEMENT_BY_USER(getUserId), authOptions).then(response => {
             if (response.data.data.user.is_active === 1) {
@@ -55,29 +54,37 @@ export default class UserDisplay extends Component {
             }
         })
 
-        Echo.join(`channel-display.${localStorage.getItem('user_id')}`)
+        console.log('display')
+        console.log(Echo)
+
+        setTimeout(function () { //Start the timer
+            this.setState({render: true}) //After 1 second, set render to true
+        }.bind(this), 1000)
+
+        Echo.join('channel-announcement')
             // .here((user) => {
             //     this.state.announcement = user
             // })
             .joining((user) => {
-                axios.put('/api/user/' + user.getUserId + '/online?api_token=' + user.authOptions, {}).then(response => {
+                axios.put('/api/user/' + user.id + '/online', authOptions, {}).then(response => {
                     console.log(response)
                 })
             })
             .leaving((user) => {
-                axios.put('/api/user/' + user.getUserId + '/offline?api_token=' + user.authOptions, {}).then(response => {
+                axios.put('/api/user/' + user.id + '/offline', authOptions, {}).then(response => {
                     console.log(response)
                 })
             })
-
-
+            .listen('UserOnline', (user) => {
+                console.log('this display already listened')
+            })
     }
 
 
     render() {
         const {announcement, is_active} = this.state;
         return (
-            <Card style={{border: 'none', boxShadow: 'none', width: '1920px', height: '1080px'}}>
+            <Card style={{border: 'none', boxShadow: 'none', width: '100%', height: '100vh'}}>
 
                 {is_active === null ?
                     <div></div> : is_active === 1 ? announcement && <div>{ReactHtmlParser(announcement.content)}</div>
@@ -86,6 +93,7 @@ export default class UserDisplay extends Component {
                 }
 
             </Card>
+
         );
     }
 }
