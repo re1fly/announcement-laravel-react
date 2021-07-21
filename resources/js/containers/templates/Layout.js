@@ -204,17 +204,13 @@ export default function Layout(props) {
         prevOpen.current = openLogout;
     }, [openLogout]);
 
-    // useEffect(() => {
-    //     axios.get(GET_USER_LOGIN, authOptions).then(response => {
-    //         setUser(response.data.name)
-    //         console.log(response.data.name)
-    //     })
-    //
-    // }, [])
-    axios.get(GET_USER_LOGIN, authOptions).then(response => {
-        setUser(response.data.name)
-        console.log(response.data.name)
-    })
+    useEffect(() => {
+        axios.get(GET_USER_LOGIN, authOptions).then(response => {
+            setUser(response.data.name)
+            console.log(response.data.name)
+        })
+
+    }, [])
 
 
     return (

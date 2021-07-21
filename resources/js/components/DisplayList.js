@@ -1,6 +1,16 @@
 import axios from 'axios';
 import React, {Component, useEffect, useState} from 'react';
-import {Card, CardActions, CardContent, Input, Menu, MenuItem} from "@material-ui/core";
+import {
+    Card,
+    CardActions,
+    CardContent,
+    FormControl,
+    Input,
+    InputLabel,
+    Menu,
+    MenuItem,
+    Select
+} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
@@ -13,7 +23,6 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
-import simpleModal from './ModalListAnnouncement'
 import UserDisplay from "./UserDisplay";
 import Modal from "@material-ui/core/Modal";
 
@@ -101,12 +110,19 @@ export function DisplayItems(props) {
             top: '50%',
             transform: 'translate(-50%, -50%)'
         },
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120,
+        },
     }))
 
     const styles = useStyles();
 
     const [play, setPlay] = useState(props.is_active === 1);
     const [open, setOpen] = React.useState(false);
+
+    const [displayDelay, setDisplayDelay] = React.useState('');
+    const [openDelay, setOpenDelay] = React.useState(false);
 
     const handleOpenModal = () => {
         setOpen(true);
@@ -170,12 +186,24 @@ export function DisplayItems(props) {
         )
     }
 
+    const handleChangeDelay = (event) => {
+        setDisplayDelay(event.target.value);
+    };
+
+    const handleCloseDelay = () => {
+        setOpenDelay(false);
+    };
+
+    const handleOpenDelay = () => {
+        setOpenDelay(true);
+    };
+
 
     return (
         <Card className={styles.card} variant="outlined">
             {/*<Input style={{backgroundColor:'gray', color:'black'}} label="search display" onChange={this.onChange} />*/}
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={9}>
                     <Grid item xs={12}>
                         <CardContent>
                             <Typography variant="h5" component="h2">
@@ -201,6 +229,29 @@ export function DisplayItems(props) {
                                 <Button className={styles.buttonSetDisplay} onClick={handleOpenModal}>
                                     Media Announcement
                                 </Button>
+                                <Button id="button-delay" className={styles.buttonSetDisplay} onClick={handleOpenDelay}>
+                                    Delay Announcement
+                                </Button>
+                                {/*<FormControl className={styles.formControl}>*/}
+                                {/*    <InputLabel id="demo-controlled-open-select-label" className={styles.buttonSetDisplay}>Delay Announcement</InputLabel>*/}
+                                {/*    <Select*/}
+                                {/*        labelId="demo-controlled-open-select-label"*/}
+                                {/*        id="demo-controlled-open-select"*/}
+                                {/*        open={openDelay}*/}
+                                {/*        onClose={handleCloseDelay}*/}
+                                {/*        onOpen={handleOpenDelay}*/}
+                                {/*        value={displayDelay}*/}
+                                {/*        onChange={handleChangeDelay}*/}
+                                {/*        className={styles.buttonSetDisplay}*/}
+                                {/*    >*/}
+                                {/*        <MenuItem value="">*/}
+                                {/*            <em>None</em>*/}
+                                {/*        </MenuItem>*/}
+                                {/*        <MenuItem value={10}>Ten</MenuItem>*/}
+                                {/*        <MenuItem value={20}>Twenty</MenuItem>*/}
+                                {/*        <MenuItem value={30}>Thirty</MenuItem>*/}
+                                {/*    </Select>*/}
+                                {/*</FormControl>*/}
                                 <Modal
                                     open={open}
                                     onClose={handleCloseModal}
@@ -224,16 +275,27 @@ export function DisplayItems(props) {
                                     {props.announcement.map(item => (
                                         <MenuItem key={item.id + props.id} onClick={() => {
                                             handleSelectAnnouncement(item.id);
-
                                         }}>{item.title}</MenuItem>
 
                                     ))}
                                 </Menu>
-                            </CardActions> : <div></div>
+                                <Menu
+                                    buttonId="button-delay"
+                                    open={openDelay}
+                                    onClose={handleCloseDelay}
+                                    onOpen={handleOpenDelay}
+                                    keepMounted>
+                                    <MenuItem value={30000}>30 sec</MenuItem>
+                                    <MenuItem value={60000}>1 min</MenuItem>
+                                    <MenuItem value={180000}>3 min</MenuItem>
+                                </Menu>
+                            </CardActions> :
+                            <div></div>
                         }
+
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={3}>
 
                     {(play === true) ?
                         <Box className={styles.statusOnline} pt={1} pb={1} m={5} borderRadius="borderRadius">
@@ -244,7 +306,8 @@ export function DisplayItems(props) {
                 </Grid>
             </Grid>
         </Card>
-    );
+    )
+        ;
 }
 
 /*/!*function Search() {

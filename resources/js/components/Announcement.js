@@ -12,9 +12,11 @@ import swal from "sweetalert";
 import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
 import Typography from "@material-ui/core/Typography";
-import MediaQuery from "react-responsive/src";
 import Grid from "@material-ui/core/Grid";
+import {useMediaQuery} from 'react-responsive'
+
 import Divider from "@material-ui/core/Divider";
+import Container from "@material-ui/core/Container";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
@@ -24,6 +26,10 @@ export default function Announcement() {
     const [wysiwyg, setWysiwyg] = useState("");
     const [parsed, setParsed] = useState(parsed);
     const [title, setTitle] = useState("");
+    const RenderAnnouncement = useMediaQuery(
+        {minDeviceWidth: 800},
+        {deviceWidth: 1000}
+    )
 
 
     const [open, setOpen] = useState(false);
@@ -88,6 +94,19 @@ export default function Announcement() {
                     alignItems="center"
                     justify="center"
                 >
+                    {/*<Card style={{*/}
+                    {/*    borderColor: "black",*/}
+                    {/*    boxShadow: 'none',*/}
+                    {/*    borderStyle: 'solid',*/}
+                    {/*    borderWidth: "2px",*/}
+                    {/*    height: '420px',*/}
+                    {/*    width: '1000px',*/}
+                    {/*    overflow: 'scroll'*/}
+                    {/*}}>*/}
+                    {/*    <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>*/}
+                    {/*        {wysiwyg && ReactHtmlParser(wysiwyg)}*/}
+                    {/*    </div>*/}
+                    {/*</Card>*/}
                     <Card style={{
                         borderColor: "black",
                         boxShadow: 'none',
@@ -95,11 +114,11 @@ export default function Announcement() {
                         borderWidth: "2px",
                         height: '420px',
                         width: '1000px',
-                        overflow: 'scroll'
                     }}>
-                        <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>
+                        <Container fixed>
                             {wysiwyg && ReactHtmlParser(wysiwyg)}
-                        </div>
+                        </Container>
+
                     </Card>
                 </Grid>
                 <Box mb={5}/>
@@ -152,6 +171,7 @@ export default function Announcement() {
                             automatic_uploads: true,
                             file_picker_types: 'image',
                             media_live_embeds: true,
+                            media_poster: true,
                             paste_data_images: true,
                             audio_template_callback: function (data) {
                                 return '<audio controls>' + '\n<source src="' + data.source1 + '"' +

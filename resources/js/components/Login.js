@@ -81,7 +81,6 @@ export default function Login() {
 
         axios.post(LOGIN, data).then((response) => {
             if (response.status === 200) {
-                console.log('res',response);
                 localStorage.setItem('user_name', response.data.name);
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('user_id', response.data.user_id)
