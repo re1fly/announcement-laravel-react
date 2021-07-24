@@ -17,6 +17,7 @@ class CreateDisplaysTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('announcement_id');
+            $table->integer('delay_time')->default(0);
             $table->timestamps();
         });
     }

@@ -30,6 +30,8 @@ import Modal from "@material-ui/core/Modal";
 
 export function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [delayButton, setDelayButton] = useState(false);
+    const [announcementSaved, setAnnouncementSaved] = useState(announcementSaved);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -37,6 +39,14 @@ export function DisplayItems(props) {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleCloseDelay = () => {
+        setDelayButton(null);
+    };
+
+    const handleOpenDelay = (event) => {
+        setDelayButton(event.currentTarget);
     };
 
     const handleSelectAnnouncement = (announcementId) => {
@@ -49,9 +59,43 @@ export function DisplayItems(props) {
             if (response.status === 200) {
                 swal({
                     title: "Done!",
-                    text: " Select Announcement Success",
+                    text: "Select Announcement Success",
                     icon: "success",
                 })
+                setAnnouncementSaved(announcementId);
+            }
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        )
+    }
+
+    const handleSelectDelay = (e, announcementSaved) => {
+        setDelayButton(null);
+        const delayVal = e.target.value;
+
+        const data = {
+            'announcement_id': announcementSaved,
+            'delay_time': delayVal
+        };
+
+        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
+            if (response.status === 200) {
+                swal({
+                    title: "Done!",
+                    text: "Set Delay Time Success",
+                    icon: "success"
+                })
+                let delayTime = response.data.delay_time;
+                console.log(delayTime);
+
             }
         }).catch((error) => {
                 if (error.response) {
@@ -119,10 +163,7 @@ export function DisplayItems(props) {
     const styles = useStyles();
 
     const [play, setPlay] = useState(props.is_active === 1);
-    const [open, setOpen] = React.useState(false);
-
-    const [displayDelay, setDisplayDelay] = React.useState('');
-    const [openDelay, setOpenDelay] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleOpenModal = () => {
         setOpen(true);
@@ -185,18 +226,6 @@ export function DisplayItems(props) {
             }
         )
     }
-
-    const handleChangeDelay = (event) => {
-        setDisplayDelay(event.target.value);
-    };
-
-    const handleCloseDelay = () => {
-        setOpenDelay(false);
-    };
-
-    const handleOpenDelay = () => {
-        setOpenDelay(true);
-    };
 
 
     return (
@@ -280,14 +309,18 @@ export function DisplayItems(props) {
                                     ))}
                                 </Menu>
                                 <Menu
+                                    id={props.id}
                                     buttonId="button-delay"
-                                    open={openDelay}
+                                    anchorEl={delayButton}
+                                    open={Boolean(delayButton)}
                                     onClose={handleCloseDelay}
-                                    onOpen={handleOpenDelay}
                                     keepMounted>
-                                    <MenuItem value={30000}>30 sec</MenuItem>
-                                    <MenuItem value={60000}>1 min</MenuItem>
-                                    <MenuItem value={180000}>3 min</MenuItem>
+                                    {/*<MenuItem key='0' value={0} onClick={handleSelectDelay}>No Delay</MenuItem>*/}
+                                    <MenuItem key='30s' value={30000} onClick={handleSelectDelay}>30 sec</MenuItem>
+                                    <MenuItem key='1s' value={1000} onClick={handleSelectDelay}>1 sec</MenuItem>
+                                    <MenuItem key='1min' value={60000} onClick={handleSelectDelay}>1 min</MenuItem>
+                                    <MenuItem key='3min' value={180000} onClick={handleSelectDelay}>3 min</MenuItem>
+
                                 </Menu>
                             </CardActions> :
                             <div></div>
@@ -306,9 +339,9 @@ export function DisplayItems(props) {
                 </Grid>
             </Grid>
         </Card>
-    )
-        ;
+    );
 }
+
 
 /*/!*function Search() {
 

@@ -10,28 +10,31 @@ import $ from 'jquery';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import handleSelectDelay from './DisplayList';
 
 
 export default class UserDisplay extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             announcement: null,
             is_active: null,
+            delay: 0,
         };
     }
 
     componentDidMount() {
         axios.get(GET_ANNOUNCEMENT_BY_USER(getUserId), authOptions).then(response => {
-            console.log(response.data)
             if (response.data.data.user.is_active === 1) {
                 this.setState({
                     announcement: {content: response.data.data.announcement.content},
+                    delay: response.data.data.delay_time,
                     is_active: 1
                 })
             } else if (response.data.data.user.is_active === 0) {
                 this.setState({
                     announcement: '',
+                    delay: 0,
                     is_active: 0
                 })
             }
@@ -51,13 +54,17 @@ export default class UserDisplay extends Component {
             if (localStorage.getItem('user_id') === data.data.user) {
                 if (data.data.is_active != null) {
                     this2.setState({is_active: data.data.is_active})
-                } else if (data.data.announcement != null) {
+                }else if (data.data.announcement != null) {
                     this2.setState({announcement: data.data.announcement})
                 }
+                console.log('DATAAAA', data)
+                // else if(data.data.delay_time != null){
+                //     this2.setState({delay_time: delay})
+                // }
+
             }
         })
 
-        console.log('display')
         console.log(Echo)
 
         setTimeout(function () { //Start the timer
@@ -85,8 +92,9 @@ export default class UserDisplay extends Component {
     }
 
 
+
     render() {
-        const {announcement, is_active} = this.state;
+        const {announcement, delay, is_active} = this.state;
         return (
 
             <Card style={{
@@ -121,8 +129,7 @@ export default class UserDisplay extends Component {
                 {/*    </Select>*/}
                 {/*</FormControl>*/}
 
-
-                <OwlCarousel items={1} loop={true} autoplay={true} autoplayTimeout={1000}>
+                <OwlCarousel items={1} loop={true} autoplay={true} autoplayTimeout={delay}>
                     <div className='item'>
                         <img
                             src='https://images.unsplash.com/photo-1621570359341-f54c96d78aa0?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=676&q=80'
@@ -146,22 +153,7 @@ export default class UserDisplay extends Component {
                                     }}/>
                         }
                     </div>
-                    <div className='item'>
-                        {is_active === null ?
-                            <div></div> : is_active === 1 ? announcement &&
-                                <div>{ReactHtmlParser(announcement.content)}</div>
-                                : <PausePresentationIcon
-                                    style={{
-                                        textAlign: 'center',
-                                        marginTop: '25%',
-                                        marginLeft: '47.5%',
-                                        fontSize: '90px'
-                                    }}/>
-                        }
-                    </div>
                 </OwlCarousel>
-
-
             </Card>
 
         );

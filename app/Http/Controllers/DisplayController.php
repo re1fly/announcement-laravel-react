@@ -91,29 +91,29 @@ class DisplayController extends Controller
      */
     public function updateDisplay(Request $request, $userId)
     {
-        $validatedData = $request->validate([
-            'announcement_id' => 'required',
-        ]);
-
         $display = Display::where('user_id', $userId)->first();
         if ($display != null) {
-            $display->announcement_id = $validatedData['announcement_id'];
+            $display->announcement_id = empty($request->announcement_id) ? $display->announcement_id : $request->announcement_id;
+            $display->delay_time = empty($request->delay_time) ? $display->delay_time : $request->delay_time;
             $display->save();
+
         } else {
             $display = Display::create([
                 'user_id' => $userId,
-                'announcement_id' => $validatedData['announcement_id']
+                'announcement_id' => $request->announcement_id,
+                'delay_time' => $request->delay_time ?? '0'
             ]);
         }
-        $announcement = Announcement::find($validatedData['announcement_id']);
+        $announcement = Announcement::find($request->announcement_id);
         $message['user'] = $userId;
         $message['announcement'] = $announcement;
+        $message['delay_time'] = $request->delay_time;
         $success = event(new NewAnnouncement($message));
 
         $message = [
             'success' => true,
             'message' => 'Update Announcement Success',
-            'data' => $success
+            'delay_time' => $message['delay_time']
         ];
 
         return response()->json($message);
