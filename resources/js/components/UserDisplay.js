@@ -54,13 +54,14 @@ export default class UserDisplay extends Component {
             if (localStorage.getItem('user_id') === data.data.user) {
                 if (data.data.is_active != null) {
                     this2.setState({is_active: data.data.is_active})
-                }else if (data.data.announcement != null) {
+                } else if (data.data.announcement != null) {
                     this2.setState({announcement: data.data.announcement})
                 }
                 console.log('DATAAAA', data)
                 // else if(data.data.delay_time != null){
                 //     this2.setState({delay_time: delay})
                 // }
+                location.reload();
 
             }
         })
@@ -90,7 +91,6 @@ export default class UserDisplay extends Component {
             })
 
     }
-
 
 
     render() {
@@ -128,32 +128,31 @@ export default class UserDisplay extends Component {
                 {/*        <MenuItem value={180000}>3 min</MenuItem>*/}
                 {/*    </Select>*/}
                 {/*</FormControl>*/}
-
-                <OwlCarousel items={1} loop={true} autoplay={true} autoplayTimeout={delay}>
-                    <div className='item'>
-                        <img
-                            src='https://images.unsplash.com/photo-1621570359341-f54c96d78aa0?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=676&q=80'
-                            style={{width: '50%'}} alt="img1"/>
-                    </div>
-                    <div className='item'>
-                        <img
-                            src='https://images.unsplash.com/photo-1593642702909-dec73df255d7?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
-                            style={{width: '50%'}} alt="img1"/>
-                    </div>
-                    <div className='item'>
-                        {is_active === null ?
-                            <div></div> : is_active === 1 ? announcement &&
-                                <div>{ReactHtmlParser(announcement.content)}</div>
-                                : <PausePresentationIcon
-                                    style={{
-                                        textAlign: 'center',
-                                        marginTop: '25%',
-                                        marginLeft: '47.5%',
-                                        fontSize: '90px'
-                                    }}/>
-                        }
-                    </div>
-                </OwlCarousel>
+                    <OwlCarousel items={1} loop={true} autoplay={true} autoplayTimeout={delay}>
+                        <div className='item'>
+                            <img
+                                src='https://images.unsplash.com/photo-1552872673-9b7b99711ebb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80'
+                                style={{width: '100%', height: '100vh'}} alt="img1"/>
+                        </div>
+                        <div className='item'>
+                            <img
+                                src='https://images.unsplash.com/photo-1553367989-1f8a5d29ee08?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80'
+                                style={{width: '100%',height: '100vh'}} alt="img1"/>
+                        </div>
+                        <div className='item'>
+                            {is_active === null ?
+                                <div></div> : is_active === 1 ? announcement &&
+                                    <div>{ReactHtmlParser(announcement.content)}</div>
+                                    : <PausePresentationIcon
+                                        style={{
+                                            textAlign: 'center',
+                                            marginTop: '25%',
+                                            marginLeft: '47.5%',
+                                            fontSize: '90px'
+                                        }}/>
+                            }
+                        </div>
+                    </OwlCarousel>
             </Card>
 
         );
