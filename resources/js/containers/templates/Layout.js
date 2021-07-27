@@ -27,6 +27,7 @@ import {authOptions, getUserLogin, logout} from "../../utils/Api";
 import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
 import axios from "axios";
 import {ClickAwayListener, Grow, InputBase, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
 import Login from "../../components/Login";
 
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: 'nowrap',
-        color : 'white'
+        color: 'white'
     },
     drawerOpen: {
         width: drawerWidth,
@@ -101,10 +102,11 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     listColor: {
-        color: 'white'
+        color: 'white',
     },
     textCapitalize: {
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        marginBottom: '0'
     },
     paper: {
         marginRight: theme.spacing(2),
@@ -151,7 +153,7 @@ export default function Layout(props) {
     const [user, setUser] = useState(user);
     const [openLogout, setOpenLogout] = useState(false);
     const anchorRef = useRef(null);
-    const [successLogout, setSuccessLogout]= useState(false);
+    const [successLogout, setSuccessLogout] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -180,12 +182,11 @@ export default function Layout(props) {
         event.preventDefault();
         logout().then(response => {
             console.log(response)
-            if(response.status === 200){
+            if (response.status === 200) {
                 history.push("/");
             }
         })
     }
-
 
 
     function handleListKeyDown(event) {
@@ -234,7 +235,7 @@ export default function Layout(props) {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" style={{color: "#F9C900"}} noWrap >
+                    <Typography variant="h6" style={{color: "#F9C900"}} noWrap>
                         <OndemandVideoSharpIcon fontSize="large"/> NoticeBoard
                     </Typography>
                     {/*<div className={classes.search}>*/}
@@ -250,6 +251,42 @@ export default function Layout(props) {
                     {/*        inputProps={{ 'aria-label': 'search' }}*/}
                     {/*    />*/}
                     {/*</div>*/}
+                    <List style={{marginLeft: 'auto'}}>
+                        <ListItem button key='Admin'
+                                  ref={anchorRef}
+                                  aria-controls={open ? 'menu-list-grow' : undefined}
+                                  aria-haspopup="true"
+                                  onClick={handleToggle}>
+                            <ListItemIcon className={classes.listColor}
+                                          style={{minWidth: '40px'}}><PersonIcon/></ListItemIcon>
+                            <ListItemText className={classes.textCapitalize} primary={user}/>
+                        </ListItem>
+                        <Popper open={openLogout} anchorEl={anchorRef.current} role={undefined} transition
+                                disablePortal>
+                            {({TransitionProps, placement}) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                                >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={handleClose}>
+                                            <MenuList autoFocusItem={openLogout} id="menu-list-grow"
+                                                      onKeyDown={handleListKeyDown}>
+                                                <MenuItem
+                                                    href="/"
+                                                    onClose={handleClose}
+                                                    onClick={handleLogout}
+                                                    style={{width: '120px', height: '25px'}}>
+                                                    <ExitToAppIcon style={{marginRight: '8px'}}/> Logout
+                                                </MenuItem>
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
+                    </List>
+
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -289,40 +326,42 @@ export default function Layout(props) {
                     {/*    <ListItemText primary='Media' />*/}
                     {/*</ListItem>*/}
                 </List>
-                <Divider className={classes.divider} />
-                <List>
-                    <ListItem button key='Admin'
-                              ref={anchorRef}
-                              aria-controls={open ? 'menu-list-grow' : undefined}
-                              aria-haspopup="true"
-                              onClick={handleToggle}>
-                        <ListItemIcon className={classes.listColor}><PersonIcon/></ListItemIcon>
-                        <ListItemText className={classes.textCapitalize} primary={user}/>
-                    </ListItem>
-                    <Popper open={openLogout} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                            >
-                                <Paper>
-                                    <ClickAwayListener onClickAway={handleClose}>
-                                        <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                            <MenuItem style={{width: '120px', height: '25px'}}>Setting</MenuItem>
-                                            <MenuItem
-                                                href="/"
-                                                onClose={handleClose}
-                                                onClick={handleLogout}
-                                                style={{width: '120px', height: '25px'}}>
-                                                Logout
-                                            </MenuItem>
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                        )}
-                    </Popper>
-                </List>
+                <Divider className={classes.divider}/>
+
+                {/*<List>*/}
+                {/*    <ListItem button key='Admin'*/}
+                {/*              ref={anchorRef}*/}
+                {/*              aria-controls={open ? 'menu-list-grow' : undefined}*/}
+                {/*              aria-haspopup="true"*/}
+                {/*              onClick={handleToggle}>*/}
+                {/*        <ListItemIcon className={classes.listColor} style={{minWidth: '40px'}}><PersonIcon/></ListItemIcon>*/}
+                {/*        <ListItemText className={classes.textCapitalize} primary={user}/>*/}
+                {/*    </ListItem>*/}
+                {/*    <Popper open={openLogout} anchorEl={anchorRef.current} role={undefined} transition disablePortal>*/}
+                {/*        {({ TransitionProps, placement }) => (*/}
+                {/*            <Grow*/}
+                {/*                {...TransitionProps}*/}
+                {/*                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}*/}
+                {/*            >*/}
+                {/*                <Paper>*/}
+                {/*                    <ClickAwayListener onClickAway={handleClose}>*/}
+                {/*                        <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>*/}
+                {/*                            <MenuItem style={{width: '120px', height: '25px'}}>Setting</MenuItem>*/}
+                {/*                            <MenuItem*/}
+                {/*                                href="/"*/}
+                {/*                                onClose={handleClose}*/}
+                {/*                                onClick={handleLogout}*/}
+                {/*                                style={{width: '120px', height: '25px'}}>*/}
+                {/*                                Logout*/}
+                {/*                            </MenuItem>*/}
+                {/*                        </MenuList>*/}
+                {/*                    </ClickAwayListener>*/}
+                {/*                </Paper>*/}
+                {/*            </Grow>*/}
+                {/*        )}*/}
+                {/*    </Popper>*/}
+                {/*</List>*/}
+
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
