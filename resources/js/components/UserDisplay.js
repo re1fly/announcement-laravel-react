@@ -6,7 +6,6 @@ import {getUserId} from "../utils/UserId";
 import {authOptions} from "../utils/Api";
 import {GET_ANNOUNCEMENT_BY_USER} from "../utils/ApiUrl";
 import PausePresentationIcon from '@material-ui/icons/PausePresentation';
-import $ from 'jquery';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -57,11 +56,11 @@ export default class UserDisplay extends Component {
                 } else if (data.data.announcement != null) {
                     this2.setState({announcement: data.data.announcement})
                 }
-                console.log('DATAAAA', data)
+                console.log('DATA USER : ', data)
                 // else if(data.data.delay_time != null){
                 //     this2.setState({delay_time: delay})
                 // }
-                location.reload();
+                // location.reload();
 
             }
         })
@@ -72,7 +71,7 @@ export default class UserDisplay extends Component {
             this.setState({render: true}) //After 1 second, set render to true
         }.bind(this), 1000)
 
-        Echo.join('channel-announcement')
+       /* Echo.join('channel-announcement')
             // .here((user) => {
             //     this.state.announcement = user
             // })
@@ -88,9 +87,11 @@ export default class UserDisplay extends Component {
             })
             .listen('UserOnline', (user) => {
                 console.log('this display already listened')
-            })
+            })*/
+
 
     }
+
 
 
     render() {
@@ -129,6 +130,7 @@ export default class UserDisplay extends Component {
                 {/*    </Select>*/}
                 {/*</FormControl>*/}
                     <OwlCarousel items={1} loop={true} autoplay={true} autoplayTimeout={delay}>
+
                         <div className='item'>
                             <img
                                 src='https://images.unsplash.com/photo-1552872673-9b7b99711ebb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80'

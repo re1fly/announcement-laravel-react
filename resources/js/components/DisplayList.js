@@ -3,13 +3,13 @@ import React, {Component, useEffect, useState} from 'react';
 import {
     Card,
     CardActions,
-    CardContent,
-    FormControl,
+    CardContent, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle,
+    FormControl, FormControlLabel,
     Input,
     InputLabel,
     Menu,
     MenuItem,
-    Select
+    Select, TextField
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -24,91 +24,17 @@ import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
 import UserDisplay from "./UserDisplay";
-import Modal from "@material-ui/core/Modal";
-
-// import {useCombobox} from "downshift";
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 export function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [delayButton, setDelayButton] = useState(false);
     const [announcementSaved, setAnnouncementSaved] = useState(announcementSaved);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleCloseDelay = () => {
-        setDelayButton(null);
-    };
-
-    const handleOpenDelay = (event) => {
-        setDelayButton(event.currentTarget);
-    };
-
-    const handleSelectAnnouncement = (announcementId) => {
-        setAnchorEl(null);
-        const data = {
-            'announcement_id': announcementId,
-        };
-
-        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
-            if (response.status === 200) {
-                swal({
-                    title: "Done!",
-                    text: "Select Announcement Success",
-                    icon: "success",
-                })
-                setAnnouncementSaved(announcementId);
-            }
-        }).catch((error) => {
-                if (error.response) {
-                    swal({
-                        title: "Error!",
-                        text: (error.message),
-                        icon: "error",
-                        dangerMode: true,
-                    })
-                }
-            }
-        )
-    }
-
-    const handleSelectDelay = (e, announcementSaved) => {
-        setDelayButton(null);
-        const delayVal = e.target.value;
-
-        const data = {
-            'announcement_id': announcementSaved,
-            'delay_time': delayVal
-        };
-
-        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
-            if (response.status === 200) {
-                swal({
-                    title: "Done!",
-                    text: "Set Delay Time Success",
-                    icon: "success"
-                })
-                let delayTime = response.data.delay_time;
-                console.log(delayTime);
-
-            }
-        }).catch((error) => {
-                if (error.response) {
-                    swal({
-                        title: "Error!",
-                        text: (error.message),
-                        icon: "error",
-                        dangerMode: true,
-                    })
-                }
-            }
-        )
-    }
+    const [selectAnnounce, setSelectAnnounce] = useState(false);
+    const [checkedAnnouncement, setCheckedAnnouncement] = useState([]);
+    const [play, setPlay] = useState(props.is_active === 1);
+    const [open, setOpen] = useState(false);
     const useStyles = makeStyles((theme) => ({
         statusOnline: {
             color: 'white',
@@ -134,6 +60,7 @@ export function DisplayItems(props) {
             textTransform: 'Capitalize',
             backgroundColor: 'black',
             color: 'white',
+            borderRadius: '18px'
         },
         buttonSetDisplay: {
             color: '#F9C900',
@@ -155,15 +82,58 @@ export function DisplayItems(props) {
             transform: 'translate(-50%, -50%)'
         },
         formControl: {
-            margin: theme.spacing(1),
-            minWidth: 120,
+            display: 'flex',
+            // minWidth: 120,
         },
     }))
-
     const styles = useStyles();
 
-    const [play, setPlay] = useState(props.is_active === 1);
-    const [open, setOpen] = useState(false);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleCloseDelay = () => {
+        setDelayButton(null);
+    };
+
+    const handleOpenDelay = (event) => {
+        setDelayButton(event.currentTarget);
+    };
+
+    const handleSelectDelay = (e, announcementSaved) => {
+        setDelayButton(null);
+        const delayVal = e.target.value;
+
+        const data = {
+            'announcement_id': announcementSaved,
+            'delay_time': delayVal
+        };
+
+        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
+            if (response.status === 200) {
+                swal({
+                    title: "Done!",
+                    text: "Set Delay Time Success",
+                    icon: "success"
+                });
+
+            }
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        )
+    }
 
     const handleOpenModal = () => {
         setOpen(true);
@@ -227,11 +197,80 @@ export function DisplayItems(props) {
         )
     }
 
+    const handleSelectAnnouncement = (announcementId) => {
+        setAnchorEl(null);
+        const data = {
+            'announcement_id': announcementId,
+        };
+
+        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
+            if (response.status === 200) {
+                console.log('ssuccess')
+                swal({
+                    title: "Done!",
+                    text: "Select Announcement Success",
+                    icon: "success",
+                })
+                setAnnouncementSaved(announcementId);
+            }
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        )
+    }
+
+    const handleChangeSelect = (event, isChecked) => {
+        if (!isChecked) {
+            let indexAnnouncement = checkedAnnouncement.findIndex(e => e === event.target.value);
+            if (indexAnnouncement >= -1) {
+                checkedAnnouncement.splice(indexAnnouncement, 1)
+            }
+        } else {
+            let indexAnnouncement = checkedAnnouncement.length;
+            checkedAnnouncement.splice(indexAnnouncement, 0, event.target.value)
+        }
+        setCheckedAnnouncement(checkedAnnouncement);
+
+        let intAnnounce = checkedAnnouncement.map(function (nnn) {
+            return parseInt(nnn, 10)
+        })
+        console.log(intAnnounce)
+
+        let multiAnnouncement = {
+            'announcement_id': intAnnounce
+        };
+
+        axios.post(UPDATE_DISPLAY(props.id), multiAnnouncement, authOptions).then(response => {
+            if (response.status === 200) {
+                console.log('success set announcement')
+                console.log(response)
+            }
+
+        }).catch((err) => {
+            if (err.response) {
+                console.log('set announcement error')
+            }
+        })
+
+    };
+
+    const handleSetAnnouncement = (checkedAnnouncement, multiAnnouncement) => {
+        console.log('clicked')
+        // setOpen(false);
+
+    }
 
     return (
         <Card className={styles.card} variant="outlined">
             {/*<Input style={{backgroundColor:'gray', color:'black'}} label="search display" onChange={this.onChange} />*/}
-            <Grid container spacing={3}>
+            <Grid container spacing={3} style={{margin: 0}}>
                 <Grid item xs={12} sm={9}>
                     <Grid item xs={12}>
                         <CardContent>
@@ -261,39 +300,38 @@ export function DisplayItems(props) {
                                 <Button id="button-delay" className={styles.buttonSetDisplay} onClick={handleOpenDelay}>
                                     Delay Announcement
                                 </Button>
-                                {/*<FormControl className={styles.formControl}>*/}
-                                {/*    <InputLabel id="demo-controlled-open-select-label" className={styles.buttonSetDisplay}>Delay Announcement</InputLabel>*/}
-                                {/*    <Select*/}
-                                {/*        labelId="demo-controlled-open-select-label"*/}
-                                {/*        id="demo-controlled-open-select"*/}
-                                {/*        open={openDelay}*/}
-                                {/*        onClose={handleCloseDelay}*/}
-                                {/*        onOpen={handleOpenDelay}*/}
-                                {/*        value={displayDelay}*/}
-                                {/*        onChange={handleChangeDelay}*/}
-                                {/*        className={styles.buttonSetDisplay}*/}
-                                {/*    >*/}
-                                {/*        <MenuItem value="">*/}
-                                {/*            <em>None</em>*/}
-                                {/*        </MenuItem>*/}
-                                {/*        <MenuItem value={10}>Ten</MenuItem>*/}
-                                {/*        <MenuItem value={20}>Twenty</MenuItem>*/}
-                                {/*        <MenuItem value={30}>Thirty</MenuItem>*/}
-                                {/*    </Select>*/}
-                                {/*</FormControl>*/}
-                                <Modal
+                                <Dialog
                                     open={open}
                                     onClose={handleCloseModal}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
-                                    <div className={styles.paper}>
-                                        <h2 id="simple-modal-title">Text in a modal</h2>
-                                        <p id="simple-modal-description">
-                                            Test Modal
-                                        </p>
-                                    </div>
-                                </Modal>
+                                    <DialogTitle>Choose Announcement</DialogTitle>
+                                    <DialogContent>
+                                        <FormControl className={styles.formControl}>
+                                            {props.announcement.map((item, n) => (
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            // checked={selectAnnounce}
+                                                            key={item.id}
+                                                            onChange={handleChangeSelect}
+                                                            name={`announcement[${item.id}]`}
+                                                            color="primary"
+                                                            value={item.id}
+                                                        />
+                                                    }
+                                                    label={item.title}
+                                                />
+                                            ))}
+                                        </FormControl>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={() => handleSetAnnouncement()} color="primary">
+                                            Set Announcement
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                                 <Menu
                                     id={props.id}
                                     anchorEl={anchorEl}
@@ -305,22 +343,18 @@ export function DisplayItems(props) {
                                         <MenuItem key={item.id + props.id} onClick={() => {
                                             handleSelectAnnouncement(item.id);
                                         }}>{item.title}</MenuItem>
-
                                     ))}
                                 </Menu>
                                 <Menu
                                     id={props.id}
-                                    buttonId="button-delay"
                                     anchorEl={delayButton}
                                     open={Boolean(delayButton)}
                                     onClose={handleCloseDelay}
                                     keepMounted>
-                                    {/*<MenuItem key='0' value={0} onClick={handleSelectDelay}>No Delay</MenuItem>*/}
-                                    <MenuItem key='30s' value={30000} onClick={handleSelectDelay}>30 sec</MenuItem>
                                     <MenuItem key='1s' value={1000} onClick={handleSelectDelay}>1 sec</MenuItem>
+                                    <MenuItem key='30s' value={30000} onClick={handleSelectDelay}>30 sec</MenuItem>
                                     <MenuItem key='1min' value={60000} onClick={handleSelectDelay}>1 min</MenuItem>
                                     <MenuItem key='3min' value={180000} onClick={handleSelectDelay}>3 min</MenuItem>
-
                                 </Menu>
                             </CardActions> :
                             <div></div>
@@ -394,7 +428,7 @@ export function DisplayItems(props) {
     )
 }*/
 
-class DisplayList extends Component {
+export default class DisplayList extends Component {
 
     constructor(props) {
         super(props)
@@ -439,18 +473,14 @@ class DisplayList extends Component {
         const {announcement} = this.state
         return (
             <Layout>
-                <div>
-                    <Typography variant="h4" style={{textAlign: 'center'}}> Display List</Typography>
-                    <Box mb={5}/>
-                    {/*<Search />*/}
-                    {display.map(item => (
-                        <DisplayItems key={item.id} name={item.name} id={item.id}
-                                      announcement={announcement} is_active={item.is_active}/>
-                    ))}
-                </div>
+                <Typography variant="h4" style={{textAlign: 'center'}}> Display List</Typography>
+                <Box mb={5}/>
+                {/*<Search />*/}
+                {display.map(item => (
+                    <DisplayItems key={item.id} name={item.name} id={item.id}
+                                  announcement={announcement} is_active={item.is_active}/>
+                ))}
             </Layout>
         )
     }
 }
-
-export default DisplayList;

@@ -95,8 +95,13 @@ export default function Login() {
                     dangerMode: true,
                 })
             }
-        }).catch(() => {
-                console.log(error);
+        }).catch((error) => {
+            swal({
+                title: "Failed!",
+                text: "Unauthorized. Please check your Email and Password.",
+                icon: "error",
+                dangerMode: true,
+            })
             }
         )
     }
@@ -106,15 +111,6 @@ export default function Login() {
     } else if (successLogin === true && roleAdmin === 0) {
         return <Redirect to='/display-announcement'/>
     }
-
-    // useEffect(() => {
-    //   this.props.history.push({
-    //       pathfile: '/create-announcement',
-    //       state: {
-    //           user:
-    //       }
-    //   })
-    // }, [])
 
     return (
         <Grid container component="main" className={classes.root}>

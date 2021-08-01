@@ -109,7 +109,7 @@ class AnnouncementController extends Controller
 
         $message = [
             'success' => true,
-            'message' => 'Update Announcement Success'
+            'message' => 'Update Announcement Success',
         ];
 
         return response()->json($message);
@@ -138,13 +138,12 @@ class AnnouncementController extends Controller
                 'success' => true,
                 'message' => 'Delete Announcement Success'
             ];
-            return response()->json($message);
         } else {
             $message = [
                 'success' => false,
                 'message' => 'Delete Announcement Failed'
             ];
-            return response()->json($message);
         }
+        return response()->json($message);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UserOfflineController;
 use App\Http\Controllers\UserOnlineController;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ Route::group(["prefix" => "announcement"], function () {
     Route::post('edit/{id}', [AnnouncementController::class, 'update']);
     Route::delete('/delete/{id}', [AnnouncementController::class, 'delete']);
     Route::get('/get-by-user/{id}', [AnnouncementController::class, 'getAnnouncementByUserId']);
+    Route::post('/image-announcement/', [ImageController::class, 'ImageAcceptor']);
 
 //    Route::get('/', [AnnouncementController::class, 'index']);
 //    Route::post('/', [AnnouncementController::class,'store']);

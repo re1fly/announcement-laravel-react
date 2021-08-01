@@ -108,7 +108,6 @@ class AnnouncementList extends Component {
         const {announcementList} = this.state
         return (
             <Layout>
-                <div>
                     <Typography variant="h4" style={{textAlign: 'center'}}> Announcement List</Typography>
                     <Box mb={5}/>
                     {announcementList.map((announcement,key) => (
@@ -152,7 +151,6 @@ class AnnouncementList extends Component {
                             </Accordion>
                         </Card>
                     ))}
-                </div>
             </Layout>
         );
     }

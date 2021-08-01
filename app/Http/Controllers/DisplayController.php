@@ -113,7 +113,7 @@ class DisplayController extends Controller
         $message = [
             'success' => true,
             'message' => 'Update Announcement Success',
-            'delay_time' => $message['delay_time']
+            'delay_time' => $message['delay_time'],
         ];
 
         return response()->json($message);

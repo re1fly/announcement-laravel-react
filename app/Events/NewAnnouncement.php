@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 class NewAnnouncement implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     /**
      * Create a new event instance.
      *
@@ -45,4 +46,15 @@ class NewAnnouncement implements ShouldBroadcast
     {
         return 'event-pusher';
     }
+
+ /*   public function broadcastWith()
+    {
+        return [
+            'user' => $this->data['user'],
+//            'is_active' => $this->data['is_active'],
+//            'announcement' => $this->data['announcement']
+//            'data' => $this->data
+        ];
+    }*/
+
 }

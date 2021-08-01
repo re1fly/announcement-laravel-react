@@ -13,25 +13,61 @@ import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {useMediaQuery} from 'react-responsive'
-
-import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
 
 function TransitionUp(props) {
     return <Slide {...props} direction="up"/>;
 }
 
+function imageHandler (blobInfo, success, failure, progress) {
+    let xhr, formData;
+
+    xhr = new XMLHttpRequest();
+    xhr.withCredentials = false;
+    xhr.open('POST', 'http://localhost:8000/api/announcement/image-announcement/');
+
+    xhr.upload.onprogress = function (e) {
+        progress(e.loaded / e.total * 100);
+    };
+
+    xhr.onload = function() {
+        let json;
+        console.log(xhr.responseText);
+
+        if (xhr.status === 403) {
+            failure('HTTP Error: ' + xhr.status, { remove: true });
+            return;
+        }
+
+        if (xhr.status < 200 || xhr.status >= 300) {
+            failure('HTTP Error: ' + xhr.status);
+            return;
+        }
+
+        json = JSON.parse(xhr.responseText);
+
+        if (!json || typeof json.location != 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
+            return;
+        }
+
+        success(json.location);
+    };
+
+    xhr.onerror = function () {
+        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+    };
+
+    formData = new FormData();
+    formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+    xhr.send(formData);
+};
+
 export default function Announcement() {
     const [wysiwyg, setWysiwyg] = useState("");
     const [parsed, setParsed] = useState(parsed);
     const [title, setTitle] = useState("");
-    const RenderAnnouncement = useMediaQuery(
-        {minDeviceWidth: 800},
-        {deviceWidth: 1000}
-    )
-
-
     const [open, setOpen] = useState(false);
     const [transition, setTransition] = useState(undefined);
 
@@ -48,7 +84,6 @@ export default function Announcement() {
         setWysiwyg(content);
         setParsed(content);
     };
-
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -107,6 +142,7 @@ export default function Announcement() {
                     {/*        {wysiwyg && ReactHtmlParser(wysiwyg)}*/}
                     {/*    </div>*/}
                     {/*</Card>*/}
+
                     <Card style={{
                         borderColor: "black",
                         boxShadow: 'none',
@@ -173,12 +209,25 @@ export default function Announcement() {
                             media_live_embeds: true,
                             media_poster: true,
                             paste_data_images: true,
+                            convert_urls: false,
+                            relative_urls: false,
+                            remove_script_host: false,
                             audio_template_callback: function (data) {
                                 return '<audio controls>' + '\n<source src="' + data.source1 + '"' +
                                     (data.source1mime ? ' type="' + data.source1mime + '"' : '') +
                                     ' />\n' +
                                     '</audio>';
                             },
+                            images_upload_handler: imageHandler,
+                            // images_upload_url: 'postAcceptor.php',
+
+                            /* we override default upload handler to simulate successful upload*/
+                            /*images_upload_handler: function (blobInfo, success, failure) {
+                                setTimeout(function () {
+                                    /!* no matter what you upload, we will turn it into TinyMCE logo :)*!/
+                                    success();
+                                }, 2000);
+                            },*/
                             /* and here's our custom image picker*/
                             file_picker_callback: function (cb, value, meta) {
                                 var input = document.createElement('input');
@@ -189,25 +238,24 @@ export default function Announcement() {
 
                                     var reader = new FileReader();
                                     reader.onload = function () {
-                                        /*
-                                          Note: Now we need to register the blob in TinyMCEs image blob
-                                          registry. In the next release this part hopefully won't be
-                                          necessary, as we are looking to handle it internally.
-                                        */
+
+                                        /* Note: Now we need  to register the blob in TinyMCEs image blob
+                                         registry. In the next release this part hopefully won't be
+                                         necessary, as we are looking to handle it internally.*/
                                         var id = 'blobid' + (new Date()).getTime();
                                         var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                                         var base64 = reader.result.split(',')[1];
                                         var blobInfo = blobCache.create(id, file, base64);
                                         blobCache.add(blobInfo);
-                                        /* call the callback and populate the Title field with the file name */
-                                        cb(blobInfo.blobUri(), {title: file.name});
+                                        /*/!* call the callback and populate the Title field with the file name *!/*/
+                                        cb(blobInfo.blobUri(), {alt: file.name});
                                     };
                                     reader.readAsDataURL(file);
                                 };
-
                                 input.click();
                             },
-                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }'
+                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }',
+
 
                         }}
                         onEditorChange={handleEditorChange}
