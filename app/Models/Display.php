@@ -22,9 +22,5 @@ class Display extends Model
         return $this->belongsTo(Announcement::class, 'announcement_id');
     }
 
-    public function announcementsDisplay()
-    {
-        return $this->hasMany(AnnouncementsDisplay::class, 'display_id');
-    }
 
 }

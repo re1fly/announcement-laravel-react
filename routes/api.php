@@ -44,8 +44,10 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(["prefix" => "display"], function () {
 //            Route::post('/create', [DisplayController::class,'store']);
 //    Route::get('/{id}', [DisplayController::class, 'getDisplay']);
-    Route::post('/edit/{id}', [DisplayController::class, 'updateDisplay']);
+    Route::post('/delay/{id}', [DisplayController::class, 'updateDisplay']);
     Route::delete('/delete/{id}', [DisplayController::class, 'destroy']);
+    Route::post('/add-display-announcement/{id}', [DisplayController::class, 'multipleAnnouncement']);
+    Route::post('/multiple-delete/{id}', [DisplayController::class, 'removeAnnouncement']);
 
 });
 
@@ -68,6 +70,7 @@ Route::group(["prefix" => "announcement"], function () {
 });
 
 Route::post('/update-user/{id}', [AuthController::class, 'updateIsActive']);
+Route::post('/update-delay/{id}', [AuthController::class, 'updateDelay']);
 
 
 

@@ -11,11 +11,11 @@ class AnnouncementsDisplay extends Model
     use HasFactory, softDeletes;
 
     protected $table = "announcements_display";
-    protected $fillable = ['display_id', 'announcement_id'];
+    protected $fillable = ['user_id', 'announcement_id'];
 
-    public function display()
+    public function user()
     {
-        return $this->belongsTo(Display::class, 'display_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function announcement()

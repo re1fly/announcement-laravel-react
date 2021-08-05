@@ -3,13 +3,16 @@ import React, {Component, useEffect, useState} from 'react';
 import {
     Card,
     CardActions,
-    CardContent, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle,
-    FormControl, FormControlLabel,
-    Input,
-    InputLabel,
+    CardContent,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
     Menu,
-    MenuItem,
-    Select, TextField
+    MenuItem
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -17,24 +20,36 @@ import Box from "@material-ui/core/Box";
 import Layout from "../containers/templates/Layout";
 import {authOptions, getAllAnnouncement, getAllUser} from "../utils/Api";
 import swal from "sweetalert";
-import {UPDATE_DISPLAY, UPDATE_IS_ACTIVE} from "../utils/ApiUrl";
+import {
+    ADD_DISPLAY_ANNOUNCEMENT,
+    GET_ANNOUNCEMENT_BY_USER,
+    UPDATE_DELAY,
+    UPDATE_DISPLAY,
+    UPDATE_IS_ACTIVE
+} from "../utils/ApiUrl";
 import Grid from "@material-ui/core/Grid";
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
-import UserDisplay from "./UserDisplay";
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 export function DisplayItems(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [delayButton, setDelayButton] = useState(false);
     const [announcementSaved, setAnnouncementSaved] = useState(announcementSaved);
-    const [selectAnnounce, setSelectAnnounce] = useState(false);
-    const [checkedAnnouncement, setCheckedAnnouncement] = useState([]);
+    const [checkedAnnouncement, setCheckedAnnouncement] = useState(false);
+    const [Announce, setAnnounce] = useState([]);
     const [play, setPlay] = useState(props.is_active === 1);
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
+    const [announcementUser, setAnnouncementUser] = useState([]);
+
+
+    useEffect(() => {
+        axios.get(GET_ANNOUNCEMENT_BY_USER(props.id), authOptions).then(response => {
+            setAnnouncementUser(response.data.data)
+        })
+    }, [])
+
     const useStyles = makeStyles((theme) => ({
         statusOnline: {
             color: 'white',
@@ -104,16 +119,15 @@ export function DisplayItems(props) {
         setDelayButton(event.currentTarget);
     };
 
-    const handleSelectDelay = (e, announcementSaved) => {
+    const handleSelectDelay = (e) => {
         setDelayButton(null);
-        const delayVal = e.target.value;
+        const delayValue = e.target.value;
 
         const data = {
-            'announcement_id': announcementSaved,
-            'delay_time': delayVal
+            'delay_time': delayValue
         };
 
-        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
+        axios.post(UPDATE_DELAY(props.id), data, authOptions).then(response => {
             if (response.status === 200) {
                 swal({
                     title: "Done!",
@@ -205,13 +219,12 @@ export function DisplayItems(props) {
 
         axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
             if (response.status === 200) {
-                console.log('ssuccess')
                 swal({
                     title: "Done!",
                     text: "Select Announcement Success",
                     icon: "success",
                 })
-                setAnnouncementSaved(announcementId);
+                // setAnnouncementSaved(announcementId);
             }
         }).catch((error) => {
                 if (error.response) {
@@ -227,43 +240,51 @@ export function DisplayItems(props) {
     }
 
     const handleChangeSelect = (event, isChecked) => {
+        const announceId = parseInt(event.target.value);
         if (!isChecked) {
-            let indexAnnouncement = checkedAnnouncement.findIndex(e => e === event.target.value);
-            if (indexAnnouncement >= -1) {
-                checkedAnnouncement.splice(indexAnnouncement, 1)
-            }
+            setAnnouncementUser(announcementUser.filter(item => item.announcement_id !== announceId))
         } else {
-            let indexAnnouncement = checkedAnnouncement.length;
-            checkedAnnouncement.splice(indexAnnouncement, 0, event.target.value)
+            const data = {
+                user_id: props.id,
+                announcement_id: announceId,
+            };
+            setAnnouncementUser([...announcementUser, data]);
         }
-        setCheckedAnnouncement(checkedAnnouncement);
+    }
 
-        let intAnnounce = checkedAnnouncement.map(function (nnn) {
-            return parseInt(nnn, 10)
-        })
-        console.log(intAnnounce)
 
-        let multiAnnouncement = {
-            'announcement_id': intAnnounce
-        };
+    const handleSetAnnouncement = () => {
+        //add display
+        const announcementIds = announcementUser.map((item) => {
+            return item.announcement_id
+        });
 
-        axios.post(UPDATE_DISPLAY(props.id), multiAnnouncement, authOptions).then(response => {
+
+        const announcementId = {announcement_ids: announcementIds}
+
+
+        axios.post(ADD_DISPLAY_ANNOUNCEMENT(props.id), announcementId, authOptions).then(response => {
+            console.log('response: ', response)
             if (response.status === 200) {
-                console.log('success set announcement')
-                console.log(response)
+                console.log('success add announcement in display')
+                swal({
+                    title: "Done!",
+                    text: "Select Announcement Success",
+                    icon: "success",
+                })
             }
-
-        }).catch((err) => {
-            if (err.response) {
-                console.log('set announcement error')
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
             }
-        })
+        );
 
-    };
-
-    const handleSetAnnouncement = (checkedAnnouncement, multiAnnouncement) => {
-        console.log('clicked')
-        // setOpen(false);
 
     }
 
@@ -313,7 +334,8 @@ export function DisplayItems(props) {
                                                 <FormControlLabel
                                                     control={
                                                         <Checkbox
-                                                            // checked={selectAnnounce}
+                                                            checked={announcementUser.some(
+                                                                itemUser => itemUser.announcement_id === item.id)}
                                                             key={item.id}
                                                             onChange={handleChangeSelect}
                                                             name={`announcement[${item.id}]`}
@@ -327,7 +349,7 @@ export function DisplayItems(props) {
                                         </FormControl>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={() => handleSetAnnouncement()} color="primary">
+                                        <Button key={props.id} onClick={() => handleSetAnnouncement()} color="primary">
                                             Set Announcement
                                         </Button>
                                     </DialogActions>
@@ -459,11 +481,11 @@ export default class DisplayList extends Component {
             // })
             .listen('UserOnline', (e) => {
                 this.display = e.user
-                console.log(this.display)
+                console.log('userEcho',this.display)
             })
             .listen('UserOffline', (e) => {
                 this.display = e.user
-                console.log(this.display)
+                console.log('userEcho',this.display)
             });
 
     }

@@ -209,7 +209,6 @@ export default function Layout(props) {
     useEffect(() => {
         axios.get(GET_USER_LOGIN, authOptions).then(response => {
             setUser(response.data.name)
-            console.log(response.data.name)
         })
 
     }, [])

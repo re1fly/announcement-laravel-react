@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewAnnouncement;
 use App\Models\Announcement;
+use App\Models\AnnouncementsDisplay;
 use App\Models\Display;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -119,6 +120,52 @@ class DisplayController extends Controller
         return response()->json($message);
     }
 
+    public function multipleAnnouncement(Request $request, $userId)
+    {
+//        $display = AnnouncementsDisplay::where('user_id', $userId)->first();
+
+
+        $user = User::find($userId);
+
+        $announcements = Announcement::whereIn('id', $request->announcement_ids)->get();
+        foreach ($announcements as $announcement) {
+            $user->announcementDisplays()->updateOrCreate([
+                'announcement_id' => $announcement->id
+            ]);
+        }
+        foreach($user->announcementDisplays as $display){
+            if (!in_array($display->announcement_id, $request->announcement_ids)){
+                $display->delete();
+            }
+        }
+
+        $message['user'] = $userId;
+        $message['announcements'] = $announcements;
+        event(new NewAnnouncement($message));
+        return response()->json($message);
+
+
+          /*$multiAnnouncement = AnnouncementsDisplay::create([
+              'user_id' => $userId,
+              'announcement_id' => $request->announcement_id,
+          ]);
+          $announcement = Announcement::find($request->announcement_id);
+          $message['user'] = $userId;
+          $message['announcement'] = $announcement;
+          $pushAnnouncement = event(new NewAnnouncement($message));
+
+          $message = [
+              'success' => true,
+              'message' => 'Add announcement to display SUCCESS',
+              'user_display' => $userId,
+              'announcement_detail' => $announcement
+          ];
+
+          return response()->json($message);*/
+
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -142,5 +189,11 @@ class DisplayController extends Controller
             ];
             return response()->json($message);
         }
+    }
+
+    public function removeAnnouncement(Request $request, $id)
+    {
+        $findUser = AnnouncementsDisplay::where('user_id', $id)->where('announcement_id', $request->announcement_id)->first();
+        $findUser->delete();
     }
 }

@@ -15,9 +15,10 @@ class CreateAnnouncementsDisplayTable extends Migration
     {
         Schema::create('announcements_display', function (Blueprint $table) {
             $table->id();
-            $table->integer('display_id');
+            $table->integer('user_id');
             $table->integer('announcement_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
