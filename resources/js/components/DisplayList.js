@@ -24,7 +24,6 @@ import {
     ADD_DISPLAY_ANNOUNCEMENT,
     GET_ANNOUNCEMENT_BY_USER,
     UPDATE_DELAY,
-    UPDATE_DISPLAY,
     UPDATE_IS_ACTIVE
 } from "../utils/ApiUrl";
 import Grid from "@material-ui/core/Grid";
@@ -34,15 +33,11 @@ import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
 
 export function DisplayItems(props) {
-    const [anchorEl, setAnchorEl] = useState(null);
     const [delayButton, setDelayButton] = useState(false);
     const [announcementSaved, setAnnouncementSaved] = useState(announcementSaved);
-    const [checkedAnnouncement, setCheckedAnnouncement] = useState(false);
-    const [Announce, setAnnounce] = useState([]);
     const [play, setPlay] = useState(props.is_active === 1);
     const [open, setOpen] = useState(false)
     const [announcementUser, setAnnouncementUser] = useState([]);
-
 
     useEffect(() => {
         axios.get(GET_ANNOUNCEMENT_BY_USER(props.id), authOptions).then(response => {
@@ -102,14 +97,6 @@ export function DisplayItems(props) {
         },
     }))
     const styles = useStyles();
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
     const handleCloseDelay = () => {
         setDelayButton(null);
@@ -211,34 +198,6 @@ export function DisplayItems(props) {
         )
     }
 
-    const handleSelectAnnouncement = (announcementId) => {
-        setAnchorEl(null);
-        const data = {
-            'announcement_id': announcementId,
-        };
-
-        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
-            if (response.status === 200) {
-                swal({
-                    title: "Done!",
-                    text: "Select Announcement Success",
-                    icon: "success",
-                })
-                // setAnnouncementSaved(announcementId);
-            }
-        }).catch((error) => {
-                if (error.response) {
-                    swal({
-                        title: "Error!",
-                        text: (error.message),
-                        icon: "error",
-                        dangerMode: true,
-                    })
-                }
-            }
-        )
-    }
-
     const handleChangeSelect = (event, isChecked) => {
         const announceId = parseInt(event.target.value);
         if (!isChecked) {
@@ -258,7 +217,6 @@ export function DisplayItems(props) {
         const announcementIds = announcementUser.map((item) => {
             return item.announcement_id
         });
-
 
         const announcementId = {announcement_ids: announcementIds}
 
@@ -285,12 +243,10 @@ export function DisplayItems(props) {
             }
         );
 
-
     }
 
     return (
         <Card className={styles.card} variant="outlined">
-            {/*<Input style={{backgroundColor:'gray', color:'black'}} label="search display" onChange={this.onChange} />*/}
             <Grid container spacing={3} style={{margin: 0}}>
                 <Grid item xs={12} sm={9}>
                     <Grid item xs={12}>
@@ -311,12 +267,8 @@ export function DisplayItems(props) {
                     <Grid item xs={12} className={styles.itemSpacing}>
                         {(play === true) ?
                             <CardActions>
-                                <Button className={styles.buttonSetDisplay} size="small" aria-controls="simple-menu"
-                                        aria-haspopup="true"
-                                        onClick={handleClick}>Manual Announcement
-                                </Button>
                                 <Button className={styles.buttonSetDisplay} onClick={handleOpenModal}>
-                                    Media Announcement
+                                    Select Announcement
                                 </Button>
                                 <Button id="button-delay" className={styles.buttonSetDisplay} onClick={handleOpenDelay}>
                                     Delay Announcement
@@ -356,19 +308,6 @@ export function DisplayItems(props) {
                                 </Dialog>
                                 <Menu
                                     id={props.id}
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                >
-                                    {props.announcement.map(item => (
-                                        <MenuItem key={item.id + props.id} onClick={() => {
-                                            handleSelectAnnouncement(item.id);
-                                        }}>{item.title}</MenuItem>
-                                    ))}
-                                </Menu>
-                                <Menu
-                                    id={props.id}
                                     anchorEl={delayButton}
                                     open={Boolean(delayButton)}
                                     onClose={handleCloseDelay}
@@ -399,57 +338,6 @@ export function DisplayItems(props) {
 }
 
 
-/*/!*function Search() {
-
-    const [displays, setDisplays] = useState([]);
-    const [inputDisplays, setInputDisplays] = useState([]);
-    const [singleDisplay, setSingleDisplay] = useState([]);
-
-    useEffect(() => {
-        getAllUser().then(response => {
-            setDisplays(response.data.data)
-        })
-    }, [])
-
-    const {
-        isOpen,
-        getMenuProps,
-        getInputProps,
-        getComboboxProps,
-        highlightedIndex,
-        getItemProps,
-    } = useCombobox({
-        items: inputDisplays,
-        onInputValueChange: ({inputValue}) => {
-            setInputDisplays(
-                displays.filter((item) => item.name.toLowerCase().startsWith(inputValue.toLowerCase()))
-            )
-        }
-    })*!/
-
-    return (
-        <div>
-            <h3>Current Display: {singleDisplay}</h3>
-            <div {...getComboboxProps()}>
-                <Input {...getInputProps()}
-                       placeholder="Search"
-                       size="large"
-                />
-                <ul {...getMenuProps()}>
-                    {isOpen && inputDisplays.map((item, index) => (
-                        <span key={item.id} {...getItemProps({item, index})} onClick={() => setSingleDisplay(item.name)}>
-                            <li style={highlightedIndex === index ? {background: 'grey'} : {}}>
-                                <h4>{item.name}</h4>
-                            </li>
-                        </span>
-                    ))
-                    }
-                </ul>
-            </div>
-        </div>
-    )
-}*/
-
 export default class DisplayList extends Component {
 
     constructor(props) {
@@ -472,21 +360,6 @@ export default class DisplayList extends Component {
                 announcement: response.data.data
             })
         })
-        console.log(Echo)
-        Echo.join('channel-announcement')
-            // .here(function(DisplayItems){
-            //     update_member_count(DisplayItems.count);
-            //     console.log('laravelecho');
-            //     console.log(update_member_count);
-            // })
-            .listen('UserOnline', (e) => {
-                this.display = e.user
-                console.log('userEcho',this.display)
-            })
-            .listen('UserOffline', (e) => {
-                this.display = e.user
-                console.log('userEcho',this.display)
-            });
 
     }
 
