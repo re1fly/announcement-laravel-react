@@ -74,6 +74,7 @@ export default class UserDisplay extends Component {
                 position: 'fixed',
                 top: 0,
                 left: 0,
+                backgroundColor: is_active === 0 ? '#F9C900' : ''
             }}>
                 <OwlCarousel items={1}
                              loop={true}
