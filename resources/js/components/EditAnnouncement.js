@@ -142,8 +142,7 @@ export default function EditAnnouncement() {
                             style={{textAlign: 'center'}}>
                     Edit Announcement
                 </Typography>
-
-                <Box mb={5}/>
+                <Box mb={3}/>
                 <Grid
                     container
                     spacing={0}
@@ -151,19 +150,6 @@ export default function EditAnnouncement() {
                     alignItems="center"
                     justify="center"
                 >
-                    <Card style={{
-                        borderColor: "black",
-                        boxShadow: 'none',
-                        borderStyle: 'solid',
-                        borderWidth: "2px",
-                        height: '420px',
-                        width: '1000px',
-                        overflow: 'scroll'
-                    }}>
-                        <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>
-                            {wysiwyg && ReactHtmlParser(wysiwyg)}
-                        </div>
-                    </Card>
                 </Grid>
                 <Box mb={5}/>
 

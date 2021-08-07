@@ -124,7 +124,7 @@ export default function Announcement() {
         <Layout>
             <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h4" style={{textAlign: 'center'}}> Create Announcement</Typography>
-                <Box mb={5}/>
+                <Box mb={3}/>
                 <Grid
                     container
                     spacing={0}
@@ -132,33 +132,6 @@ export default function Announcement() {
                     alignItems="center"
                     justify="center"
                 >
-                    <Card style={{
-                        borderColor: "black",
-                        boxShadow: 'none',
-                        borderStyle: 'solid',
-                        borderWidth: "2px",
-                        height: '420px',
-                        width: '1000px',
-                        overflow: 'scroll'
-                    }}>
-                        <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>
-                            {wysiwyg && ReactHtmlParser(wysiwyg)}
-                        </div>
-                    </Card>
-
-                    {/*<Card style={{
-                        borderColor: "black",
-                        boxShadow: 'none',
-                        borderStyle: 'solid',
-                        borderWidth: "2px",
-                        height: '420px',
-                        width: '1000px',
-                    }}>
-                        <Container fixed>
-                            {wysiwyg && ReactHtmlParser(wysiwyg)}
-                        </Container>
-
-                    </Card>*/}
                 </Grid>
                 <Box mb={5}/>
                 <div className="text-center" style={{

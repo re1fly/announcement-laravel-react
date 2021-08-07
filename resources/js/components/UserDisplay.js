@@ -80,8 +80,6 @@ export default class UserDisplay extends Component {
                              loop={true}
                              autoplay={true}
                              autoplayTimeout={delay}>
-
-
                     {is_active === null ? null : is_active === 1 ? announcement &&
                         announcement.map(item => (
                             <div className='item' key={item.announcement_id}>

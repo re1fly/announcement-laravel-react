@@ -321,8 +321,12 @@ export function DisplayItems(props) {
                                     open={Boolean(delayButton)}
                                     onClose={handleCloseDelay}
                                     keepMounted>
-                                    <MenuItem key='1s'
-                                              value={1000}
+                                    <MenuItem key='5s'
+                                              value={5000}
+                                              onClick={handleSelectDelay}>
+                                        1 sec
+                                    </MenuItem> <MenuItem key='15s'
+                                              value={15000}
                                               onClick={handleSelectDelay}>
                                         1 sec
                                     </MenuItem>
