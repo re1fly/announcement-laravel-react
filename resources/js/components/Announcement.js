@@ -1,25 +1,24 @@
 import React, {useState} from 'react';
-import {Editor} from '@tinymce/tinymce-react';
-import Card from '@material-ui/core/Card';
-import ReactHtmlParser from "react-html-parser";
-import {TextField} from "@material-ui/core";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
 import axios from "axios";
+import {Editor} from '@tinymce/tinymce-react';
+import ReactHtmlParser from "react-html-parser";
+
 import Layout from "../containers/templates/Layout";
-import Slide from '@material-ui/core/Slide';
-import swal from "sweetalert";
 import {CREATE_ANNOUNCEMENT} from "../utils/ApiUrl";
 import {authOptions} from "../utils/Api";
+
+import swal from "sweetalert";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import Card from '@material-ui/core/Card';
+import Slide from '@material-ui/core/Slide';
+import {TextField} from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 
-function TransitionUp(props) {
-    return <Slide {...props} direction="up"/>;
-}
 
-function imageHandler (blobInfo, success, failure, progress) {
+function imageHandler(blobInfo, success, failure, progress) {
     let xhr, formData;
 
     xhr = new XMLHttpRequest();
@@ -30,12 +29,11 @@ function imageHandler (blobInfo, success, failure, progress) {
         progress(e.loaded / e.total * 100);
     };
 
-    xhr.onload = function() {
+    xhr.onload = function () {
         let json;
-        console.log(xhr.responseText);
 
         if (xhr.status === 403) {
-            failure('HTTP Error: ' + xhr.status, { remove: true });
+            failure('HTTP Error: ' + xhr.status, {remove: true});
             return;
         }
 
@@ -62,7 +60,12 @@ function imageHandler (blobInfo, success, failure, progress) {
     formData.append('file', blobInfo.blob(), blobInfo.filename());
 
     xhr.send(formData);
-};
+}
+
+function TransitionUp(props) {
+    return <Slide {...props} direction="up"/>;
+}
+
 
 export default function Announcement() {
     const [wysiwyg, setWysiwyg] = useState("");
@@ -218,6 +221,7 @@ export default function Announcement() {
                                     ' />\n' +
                                     '</audio>';
                             },
+                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }',
                             images_upload_handler: imageHandler,
                             // images_upload_url: 'postAcceptor.php',
 
@@ -239,25 +243,23 @@ export default function Announcement() {
                             //         var reader = new FileReader();
                             //         reader.onload = function () {
                             //
-                            //             /* Note: Now we need  to register the blob in TinyMCEs image blob
+                            //             /!* Note: Now we need  to register the blob in TinyMCEs image blob
                             //              registry. In the next release this part hopefully won't be
-                            //              necessary, as we are looking to handle it internally.*/
+                            //              necessary, as we are looking to handle it internally.*!/
                             //             var id = 'blobid' + (new Date()).getTime();
                             //             var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                             //             var base64 = reader.result.split(',')[1];
                             //             var blobInfo = blobCache.create(id, file, base64);
                             //             blobCache.add(blobInfo);
-                            //             /*/!* call the callback and populate the Title field with the file name *!/*/
+                            //             /!*!/!* call the callback and populate the Title field with the file name *!/!*/
                             //             cb(blobInfo.blobUri(), {alt: file.name});
                             //         };
                             //         reader.readAsDataURL(file);
                             //     };
                             //     input.click();
                             // },
-                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }',
-
-
                         }}
+
                         onEditorChange={handleEditorChange}
                     />
                     <Box mt={4}/>

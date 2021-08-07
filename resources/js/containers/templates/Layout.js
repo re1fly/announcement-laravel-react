@@ -1,5 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {NavLink, useHistory} from "react-router-dom";
+import axios from "axios";
 import clsx from 'clsx';
+
+import {authOptions, logout} from "../../utils/Api";
+import {GET_USER_LOGIN} from "../../utils/ApiUrl";
+
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -19,20 +25,12 @@ import PersonIcon from '@material-ui/icons/Person';
 import AirplayIcon from '@material-ui/icons/Airplay';
 import SpeakerNotesSharpIcon from '@material-ui/icons/SpeakerNotesSharp';
 import OndemandVideoSharpIcon from '@material-ui/icons/OndemandVideoSharp';
-import PermMediaIcon from '@material-ui/icons/PermMedia';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import SettingsSharpIcon from '@material-ui/icons/SettingsSharp';
-import {NavLink, Link, useHistory} from "react-router-dom";
-import {authOptions, getUserLogin, logout} from "../../utils/Api";
-import {GET_ID_ANNOUNCEMENT, GET_USER_LOGIN} from "../../utils/ApiUrl";
-import axios from "axios";
-import {ClickAwayListener, Grow, InputBase, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
+import {ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SearchIcon from '@material-ui/icons/Search';
-import Login from "../../components/Login";
+
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -55,11 +53,9 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: 36,
-
     },
     hide: {
         display: 'none',
-
     },
     drawer: {
         width: drawerWidth,
@@ -94,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'flex-end',
         padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
         ...theme.mixins.toolbar,
     },
     content: {
@@ -136,7 +131,6 @@ const useStyles = makeStyles((theme) => ({
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
@@ -146,7 +140,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 export default function Layout(props) {
     const classes = useStyles();
     const theme = useTheme();
@@ -155,40 +148,32 @@ export default function Layout(props) {
     const [openLogout, setOpenLogout] = useState(false);
     const anchorRef = useRef(null);
     const [successLogout, setSuccessLogout] = useState(false);
+    const history = useHistory();
+    const prevOpen = React.useRef(open);
 
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
     const handleToggle = () => {
         setOpenLogout((prevOpen) => !prevOpen);
     };
-
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-
         setOpenLogout(false);
-
     }
-
-    const history = useHistory();
-
     const handleLogout = (event) => {
         event.preventDefault();
         logout().then(response => {
-            console.log(response)
             if (response.status === 200) {
                 history.push("/");
             }
         })
     }
-
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -197,12 +182,10 @@ export default function Layout(props) {
         }
     }
 
-    const prevOpen = React.useRef(open);
     useEffect(() => {
         if (prevOpen.current === true && openLogout === false) {
             anchorRef.current.focus();
         }
-
         prevOpen.current = openLogout;
     }, [openLogout]);
 
@@ -212,7 +195,6 @@ export default function Layout(props) {
         })
 
     }, [])
-
 
     return (
         <div className={classes.root}>
@@ -231,26 +213,17 @@ export default function Layout(props) {
                         edge="start"
                         className={clsx(classes.menuButton, {
                             [classes.hide]: open,
-                        })}
-                    >
+                        })}>
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" style={{color: "#F9C900"}} noWrap>
-                        <OndemandVideoSharpIcon fontSize="large"/> NoticeBoard
+
+                    <Typography variant="h6"
+                                style={{color: "#F9C900"}}
+                                noWrap>
+                        <OndemandVideoSharpIcon fontSize="large"/>
+                        NoticeBoard
                     </Typography>
-                    {/*<div className={classes.search}>*/}
-                    {/*    <div className={classes.searchIcon}>*/}
-                    {/*        <SearchIcon />*/}
-                    {/*    </div>*/}
-                    {/*    <InputBase*/}
-                    {/*        placeholder="Search…"*/}
-                    {/*        classes={{*/}
-                    {/*            root: classes.inputRoot,*/}
-                    {/*            input: classes.inputInput,*/}
-                    {/*        }}*/}
-                    {/*        inputProps={{ 'aria-label': 'search' }}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+
                     <List style={{marginLeft: 'auto'}}>
                         <ListItem button key='Admin'
                                   ref={anchorRef}
@@ -258,10 +231,16 @@ export default function Layout(props) {
                                   aria-haspopup="true"
                                   onClick={handleToggle}>
                             <ListItemIcon className={classes.listColor}
-                                          style={{minWidth: '40px'}}><PersonIcon/></ListItemIcon>
+                                          style={{minWidth: '40px'}}>
+                                <PersonIcon/>
+                            </ListItemIcon>
                             <ListItemText className={classes.textCapitalize} primary={user}/>
                         </ListItem>
-                        <Popper open={openLogout} anchorEl={anchorRef.current} role={undefined} transition
+
+                        <Popper open={openLogout}
+                                anchorEl={anchorRef.current}
+                                role={undefined}
+                                transition
                                 disablePortal>
                             {({TransitionProps, placement}) => (
                                 <Grow
@@ -270,14 +249,16 @@ export default function Layout(props) {
                                 >
                                     <Paper>
                                         <ClickAwayListener onClickAway={handleClose}>
-                                            <MenuList autoFocusItem={openLogout} id="menu-list-grow"
+                                            <MenuList autoFocusItem={openLogout}
+                                                      id="menu-list-grow"
                                                       onKeyDown={handleListKeyDown}>
                                                 <MenuItem
                                                     href="/"
                                                     onClose={handleClose}
                                                     onClick={handleLogout}
                                                     style={{width: '120px', height: '25px'}}>
-                                                    <ExitToAppIcon style={{marginRight: '8px'}}/> Logout
+                                                    <ExitToAppIcon style={{marginRight: '8px'}}/>
+                                                    Logout
                                                 </MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>
@@ -286,9 +267,9 @@ export default function Layout(props) {
                             )}
                         </Popper>
                     </List>
-
                 </Toolbar>
             </AppBar>
+
             <Drawer
                 variant="permanent"
                 className={clsx(classes.drawer, {
@@ -321,47 +302,8 @@ export default function Layout(props) {
                         <ListItemIcon className={classes.listColor}> <LibraryBooksIcon/></ListItemIcon>
                         <ListItemText primary='Announcement List'/>
                     </ListItem>
-                    {/*<ListItem button key='Media'>*/}
-                    {/*    <ListItemIcon> <PermMediaIcon /></ListItemIcon>*/}
-                    {/*    <ListItemText primary='Media' />*/}
-                    {/*</ListItem>*/}
                 </List>
                 <Divider className={classes.divider}/>
-
-                {/*<List>*/}
-                {/*    <ListItem button key='Admin'*/}
-                {/*              ref={anchorRef}*/}
-                {/*              aria-controls={open ? 'menu-list-grow' : undefined}*/}
-                {/*              aria-haspopup="true"*/}
-                {/*              onClick={handleToggle}>*/}
-                {/*        <ListItemIcon className={classes.listColor} style={{minWidth: '40px'}}><PersonIcon/></ListItemIcon>*/}
-                {/*        <ListItemText className={classes.textCapitalize} primary={user}/>*/}
-                {/*    </ListItem>*/}
-                {/*    <Popper open={openLogout} anchorEl={anchorRef.current} role={undefined} transition disablePortal>*/}
-                {/*        {({ TransitionProps, placement }) => (*/}
-                {/*            <Grow*/}
-                {/*                {...TransitionProps}*/}
-                {/*                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}*/}
-                {/*            >*/}
-                {/*                <Paper>*/}
-                {/*                    <ClickAwayListener onClickAway={handleClose}>*/}
-                {/*                        <MenuList autoFocusItem={openLogout} id="menu-list-grow" onKeyDown={handleListKeyDown}>*/}
-                {/*                            <MenuItem style={{width: '120px', height: '25px'}}>Setting</MenuItem>*/}
-                {/*                            <MenuItem*/}
-                {/*                                href="/"*/}
-                {/*                                onClose={handleClose}*/}
-                {/*                                onClick={handleLogout}*/}
-                {/*                                style={{width: '120px', height: '25px'}}>*/}
-                {/*                                Logout*/}
-                {/*                            </MenuItem>*/}
-                {/*                        </MenuList>*/}
-                {/*                    </ClickAwayListener>*/}
-                {/*                </Paper>*/}
-                {/*            </Grow>*/}
-                {/*        )}*/}
-                {/*    </Popper>*/}
-                {/*</List>*/}
-
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>

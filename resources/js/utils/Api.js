@@ -11,15 +11,12 @@ export const authOptions = {
         'Authorization': `Bearer ${getAccessToken}`
     }
 }
-
 export function getAllAnnouncement () {
     return axios.get(GET_ALL_ANNOUNCEMENT, authOptions)
 }
-
 export function getAllUser(){
     return axios.get(GET_ALL_USER, authOptions)
 }
-
 export function logout(){
     return axios.get(LOGOUT, authOptions)
 }

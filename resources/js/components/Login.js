@@ -1,4 +1,11 @@
 import React, {useState} from 'react';
+import axios from 'axios';
+import {Redirect} from "react-router-dom";
+import swal from "sweetalert";
+
+import {LoginImg, LogoImg} from "../assets";
+import {LOGIN} from "../utils/ApiUrl";
+
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -10,11 +17,6 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
-import {LoginImg, LogoImg} from "../assets";
-import axios from 'axios';
-import {Redirect} from "react-router-dom";
-import swal from "sweetalert";
-import {LOGIN} from "../utils/ApiUrl";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -96,12 +98,12 @@ export default function Login() {
                 })
             }
         }).catch((error) => {
-            swal({
-                title: "Failed!",
-                text: "Unauthorized. Please check your Email and Password.",
-                icon: "error",
-                dangerMode: true,
-            })
+                swal({
+                    title: "Failed!",
+                    text: "Unauthorized. Please check your Email and Password.",
+                    icon: "error",
+                    dangerMode: true,
+                })
             }
         )
     }
@@ -113,21 +115,40 @@ export default function Login() {
     }
 
     return (
-        <Grid container component="main" className={classes.root}>
+        <Grid container
+              component="main"
+              className={classes.root}>
             <CssBaseline/>
-            <Grid item xs={false} sm={4} md={7} className={classes.image}>
+            <Grid item
+                  xs={false}
+                  sm={4}
+                  md={7}
+                  className={classes.image}>
                 <img className={classes.logo} src={LogoImg} alt="logo_gx"/>
             </Grid>
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+
+            <Grid item
+                  xs={12}
+                  sm={8}
+                  md={5}
+                  component={Paper}
+                  elevation={6}
+                  square>
                 <div className={classes.paper}>
                     <Typography component="h2" variant="h3">
                         NOTICEBOARD
                     </Typography>
-                    <form className={classes.form} onSubmit={handleSubmit} noValidate>
-                        <Typography component="h1" variant="h5" style={{marginTop: "90px"}}>
+                    <form className={classes.form}
+                          onSubmit={handleSubmit}
+                          noValidate>
+                        <Typography component="h1"
+                                    variant="h5"
+                                    style={{marginTop: "90px"}}>
                             Welcome Back,
                         </Typography>
-                        <Typography component="h1" style={{marginBottom: "10px"}}>
+                        <Typography
+                            component="h1"
+                            style={{marginBottom: "10px"}}>
                             Please Sign In
                         </Typography>
                         <TextField
@@ -185,6 +206,7 @@ export default function Login() {
                         </Box>
                     </form>
                 </div>
+
                 <Box mt={2}>
                     <Copyright/>
                 </Box>
