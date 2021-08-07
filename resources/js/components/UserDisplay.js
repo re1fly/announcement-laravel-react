@@ -79,23 +79,25 @@ export default class UserDisplay extends Component {
                              loop={true}
                              autoplay={true}
                              autoplayTimeout={delay}>
-                    {announcement.map(item => (
-                        <div className='item' key={item.announcement_id}>
-                            {item.user.is_active === null ? null : is_active === 1 ? announcement &&
+
+
+                    {is_active === null ? null : is_active === 1 ? announcement &&
+                        announcement.map(item => (
+                            <div className='item' key={item.announcement_id}>
                                 <div key={item.announcement_id}>
                                     {ReactHtmlParser(item.announcement.content)}
-                                </div> :
-                                <PausePresentationIcon
-                                    style={{
-                                        textAlign: 'center',
-                                        marginTop: '25%',
-                                        marginLeft: '47.5%',
-                                        fontSize: '90px'
-                                    }}
-                                />
-                            }
-                        </div>
-                    ))}
+                                </div>
+                            </div>
+                        )) :
+                        <PausePresentationIcon
+                            style={{
+                                textAlign: 'center',
+                                marginTop: '25%',
+                                marginLeft: '47.5%',
+                                fontSize: '90px'
+                            }}
+                        />
+                    }
                 </OwlCarousel>
             </Card>
         );

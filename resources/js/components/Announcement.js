@@ -132,21 +132,21 @@ export default function Announcement() {
                     alignItems="center"
                     justify="center"
                 >
-                    {/*<Card style={{*/}
-                    {/*    borderColor: "black",*/}
-                    {/*    boxShadow: 'none',*/}
-                    {/*    borderStyle: 'solid',*/}
-                    {/*    borderWidth: "2px",*/}
-                    {/*    height: '420px',*/}
-                    {/*    width: '1000px',*/}
-                    {/*    overflow: 'scroll'*/}
-                    {/*}}>*/}
-                    {/*    <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>*/}
-                    {/*        {wysiwyg && ReactHtmlParser(wysiwyg)}*/}
-                    {/*    </div>*/}
-                    {/*</Card>*/}
-
                     <Card style={{
+                        borderColor: "black",
+                        boxShadow: 'none',
+                        borderStyle: 'solid',
+                        borderWidth: "2px",
+                        height: '420px',
+                        width: '1000px',
+                        overflow: 'scroll'
+                    }}>
+                        <div style={{width: '1920px', maxWidth: '1920px', height: '1080px', maxHeight: '1080px'}}>
+                            {wysiwyg && ReactHtmlParser(wysiwyg)}
+                        </div>
+                    </Card>
+
+                    {/*<Card style={{
                         borderColor: "black",
                         boxShadow: 'none',
                         borderStyle: 'solid',
@@ -158,7 +158,7 @@ export default function Announcement() {
                             {wysiwyg && ReactHtmlParser(wysiwyg)}
                         </Container>
 
-                    </Card>
+                    </Card>*/}
                 </Grid>
                 <Box mb={5}/>
                 <div className="text-center" style={{
@@ -195,7 +195,7 @@ export default function Announcement() {
                                 'hr pagebreak nonbreaking textcolor colorpicker anchor toc insertdatetime advlist lists' +
                                 ' wordcount imagetools textpattern noneditable help charmap emoticons image code'
                             ],
-                            menubar: 'file edit view insert format tools table tc help',
+                            menubar: 'file edit view insert format table tc help',
                             toolbar:
                                 ' a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed' +
                                 ' permanentpen table | link image | undo redo | bold italic underline strikethrough | ' +
@@ -206,6 +206,8 @@ export default function Announcement() {
                                 ' charmap emoticons | preview save print | insertfile image media pageembed template ' +
                                 'link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
                             toolbar_mode: 'floating',
+                            theme_advanced_buttons3_add : 'fullscreen',
+                            fullscreen_new_window : true,
                             image_title: true,
                             automatic_uploads: true,
                             file_picker_types: 'image',
