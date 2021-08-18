@@ -83,43 +83,6 @@ class DisplayController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateDisplay(Request $request, $userId)
-    {
-        $display = Display::where('user_id', $userId)->first();
-        if ($display != null) {
-            $display->announcement_id = empty($request->announcement_id) ? $display->announcement_id : $request->announcement_id;
-            $display->delay_time = empty($request->delay_time) ? $display->delay_time : $request->delay_time;
-            $display->save();
-
-        } else {
-            $display = Display::create([
-                'user_id' => $userId,
-                'announcement_id' => $request->announcement_id,
-                'delay_time' => $request->delay_time ?? '0'
-            ]);
-        }
-        $announcement = Announcement::find($request->announcement_id);
-        $message['user'] = $userId;
-        $message['announcement'] = $announcement;
-        $message['delay_time'] = $request->delay_time;
-        $success = event(new NewAnnouncement($message));
-
-        $message = [
-            'success' => true,
-            'message' => 'Update Announcement Success',
-            'delay_time' => $message['delay_time'],
-        ];
-
-        return response()->json($message);
-    }
-
     public function multipleAnnouncement(Request $request, $userId)
     {
 //        $display = AnnouncementsDisplay::where('user_id', $userId)->first();
@@ -143,25 +106,6 @@ class DisplayController extends Controller
         $message['announcements'] = $announcements;
         event(new NewAnnouncement($message));
         return response()->json($message);
-
-
-          /*$multiAnnouncement = AnnouncementsDisplay::create([
-              'user_id' => $userId,
-              'announcement_id' => $request->announcement_id,
-          ]);
-          $announcement = Announcement::find($request->announcement_id);
-          $message['user'] = $userId;
-          $message['announcement'] = $announcement;
-          $pushAnnouncement = event(new NewAnnouncement($message));
-
-          $message = [
-              'success' => true,
-              'message' => 'Add announcement to display SUCCESS',
-              'user_display' => $userId,
-              'announcement_detail' => $announcement
-          ];
-
-          return response()->json($message);*/
 
 
     }

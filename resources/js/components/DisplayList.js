@@ -324,11 +324,11 @@ export function DisplayItems(props) {
                                     <MenuItem key='5s'
                                               value={5000}
                                               onClick={handleSelectDelay}>
-                                        1 sec
+                                        5 sec
                                     </MenuItem> <MenuItem key='15s'
                                               value={15000}
                                               onClick={handleSelectDelay}>
-                                        1 sec
+                                        15 sec
                                     </MenuItem>
                                     <MenuItem key='30s'
                                               value={30000}
