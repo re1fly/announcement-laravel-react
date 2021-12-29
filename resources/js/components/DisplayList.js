@@ -242,7 +242,8 @@ export function DisplayItems(props) {
 
     return (
         <Card className={styles.card}
-              variant="outlined">
+              variant="outlined"
+              key={props.key}>
 
             <Grid container spacing={3}
                   style={{margin: 0}}>
