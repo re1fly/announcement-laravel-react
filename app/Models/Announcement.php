@@ -18,4 +18,9 @@ class Announcement extends Model
         return $this->hasMany(Display::class, 'announcement_id');
     }
 
+    public function announcementDisplays()
+    {
+        return $this->hasMany(AnnouncementsDisplay::class, 'announcement_display_id');
+    }
+
 }

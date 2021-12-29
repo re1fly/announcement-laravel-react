@@ -77,6 +77,7 @@ class AuthController extends Controller
 
 
         return response()->json([
+            'name' => $user->name,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
@@ -120,7 +121,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function updateIsActive(Request $request,$id){
+    public function updateIsActive(Request $request,$id)
+    {
         $validatedData = $request->validate([
             'is_active' => 'required',
         ]);
@@ -137,6 +139,30 @@ class AuthController extends Controller
         $message = [
             'success' => true,
             'message' => 'Update User Success',
+            'data' => $success
+        ];
+
+        return response()->json($message);
+    }
+
+    public function updateDelay(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'delay_time' => 'required',
+        ]);
+
+        $user = User::find($id);
+        $user->delay_time = $validatedData['delay_time'];
+        $user->save();
+
+
+        $message['user'] = $id;
+        $message['delay_time'] = $user->delay_time;
+        $success = event(new NewAnnouncement($message));
+
+        $message = [
+            'success' => true,
+            'message' => 'Update Delay Success',
             'data' => $success
         ];
 

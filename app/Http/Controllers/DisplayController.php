@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewAnnouncement;
 use App\Models\Announcement;
+use App\Models\AnnouncementsDisplay;
 use App\Models\Display;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -82,41 +83,31 @@ class DisplayController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateDisplay(Request $request, $userId)
+    public function multipleAnnouncement(Request $request, $userId)
     {
-        $validatedData = $request->validate([
-            'announcement_id' => 'required',
-        ]);
+//        $display = AnnouncementsDisplay::where('user_id', $userId)->first();
 
-        $display = Display::where('user_id', $userId)->first();
-        if ($display != null) {
-            $display->announcement_id = $validatedData['announcement_id'];
-            $display->save();
-        } else {
-            $display = Display::create([
-                'user_id' => $userId,
-                'announcement_id' => $validatedData['announcement_id']
+
+        $user = User::find($userId);
+
+        $announcements = Announcement::whereIn('id', $request->announcement_ids)->get();
+        foreach ($announcements as $announcement) {
+            $user->announcementDisplays()->updateOrCreate([
+                'announcement_id' => $announcement->id
             ]);
         }
-        $announcement = Announcement::find($validatedData['announcement_id']);
+        foreach($user->announcementDisplays as $display){
+            if (!in_array($display->announcement_id, $request->announcement_ids)){
+                $display->delete();
+            }
+        }
+
         $message['user'] = $userId;
-        $message['announcement'] = $announcement;
-        $success = event(new NewAnnouncement($message));
-
-        $message = [
-            'success' => true,
-            'message' => 'Update Announcement Success',
-            'data' => $success
-        ];
-
+        $message['announcements'] = $announcements;
+        event(new NewAnnouncement($message));
         return response()->json($message);
+
+
     }
 
     /**
@@ -142,5 +133,11 @@ class DisplayController extends Controller
             ];
             return response()->json($message);
         }
+    }
+
+    public function removeAnnouncement(Request $request, $id)
+    {
+        $findUser = AnnouncementsDisplay::where('user_id', $id)->where('announcement_id', $request->announcement_id)->first();
+        $findUser->delete();
     }
 }

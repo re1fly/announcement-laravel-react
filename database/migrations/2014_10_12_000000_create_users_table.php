@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('api_token')->nullable();
             $table->boolean('is_admin');
             $table->boolean('is_active')->default(0);
+            $table->integer('delay_time')->default(0);
             $table->string('status')->default('online');
             $table->rememberToken();
             $table->timestamps();

@@ -10,7 +10,7 @@ class Display extends Model
     use HasFactory;
 
     protected $table = "displays";
-    protected $fillable = ['user_id', 'announcement_id'];
+    protected $fillable = ['user_id', 'announcement_id', 'delay_time'];
 
     public function user()
     {
@@ -21,5 +21,6 @@ class Display extends Model
     {
         return $this->belongsTo(Announcement::class, 'announcement_id');
     }
+
 
 }

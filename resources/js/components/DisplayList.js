@@ -1,63 +1,57 @@
 import axios from 'axios';
 import React, {Component, useEffect, useState} from 'react';
-import {Card, CardActions, CardContent, Input, Menu, MenuItem} from "@material-ui/core";
+import swal from "sweetalert";
+
+import Layout from "../containers/templates/Layout";
+import {authOptions, getAllAnnouncement, getAllUser} from "../utils/Api";
+import {
+    ADD_DISPLAY_ANNOUNCEMENT,
+    GET_ANNOUNCEMENT_BY_USER,
+    UPDATE_DELAY,
+    UPDATE_IS_ACTIVE
+} from "../utils/ApiUrl";
+
+import {
+    Card,
+    CardActions,
+    CardContent,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    Menu,
+    MenuItem
+} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import DashboardTemplate from "../containers/templates/Dashboard";
-import {authOptions, getAllAnnouncement, getAllUser} from "../utils/Api";
-import swal from "sweetalert";
-import {UPDATE_DISPLAY, UPDATE_IS_ACTIVE} from "../utils/ApiUrl";
 import Grid from "@material-ui/core/Grid";
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
-import UserDisplay from "./UserDisplay";
 
-// import {useCombobox} from "downshift";
 
 export function DisplayItems(props) {
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleSelectAnnouncement = (announcementId) => {
-        setAnchorEl(null);
-        const data = {
-            'announcement_id': announcementId,
-        };
-
-        axios.post(UPDATE_DISPLAY(props.id), data, authOptions).then(response => {
-            if (response.status === 200) {
-                swal({
-                    title: "Done!",
-                    text: " Select Announcement Success",
-                    icon: "success",
-                })
-            }
-        }).catch((error) => {
-                if (error.response) {
-                    swal({
-                        title: "Error!",
-                        text: (error.message),
-                        icon: "error",
-                        dangerMode: true,
-                    })
-                }
-            }
-        )
-    }
-    const useStyles = makeStyles(() => ({
-        status: {
+    const [delayButton, setDelayButton] = useState(false);
+    const [announcementSaved, setAnnouncementSaved] = useState(announcementSaved);
+    const [play, setPlay] = useState(props.is_active === 1);
+    const [open, setOpen] = useState(false)
+    const [announcementUser, setAnnouncementUser] = useState([]);
+    const useStyles = makeStyles((theme) => ({
+        statusOnline: {
             color: 'white',
             backgroundColor: '#279c00',
+            float: 'right',
+            width: '80px',
+            textAlign: 'center'
+        },
+        statusOffline: {
+            color: 'white',
+            backgroundColor: '#dd0000',
             float: 'right',
             width: '80px',
             textAlign: 'center'
@@ -72,18 +66,85 @@ export function DisplayItems(props) {
             textTransform: 'Capitalize',
             backgroundColor: 'black',
             color: 'white',
+            borderRadius: '18px'
         },
         buttonSetDisplay: {
             color: '#F9C900',
         },
         itemSpacing: {
             marginTop: '4%'
-        }
+        },
+        paper: {
+            position: 'absolute',
+            width: 1000,
+            height: 800,
+            backgroundColor: theme.palette.background.paper,
+            border: '2px solid #000',
+            boxShadow: theme.shadows[5],
+            padding: theme.spacing(2, 4, 3),
+            float: 'left',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)'
+        },
+        formControl: {
+            display: 'flex',
+            // minWidth: 120,
+        },
     }))
-
     const styles = useStyles();
 
-    const [play, setPlay] = useState(props.is_active === 1);
+    useEffect(() => {
+        axios.get(GET_ANNOUNCEMENT_BY_USER(props.id), authOptions).then(response => {
+            setAnnouncementUser(response.data.data)
+        })
+    }, [])
+
+    const handleCloseDelay = () => {
+        setDelayButton(null);
+    };
+
+    const handleOpenDelay = (event) => {
+        setDelayButton(event.currentTarget);
+    };
+
+    const handleSelectDelay = (e) => {
+        setDelayButton(null);
+        const delayValue = e.target.value;
+
+        const data = {
+            'delay_time': delayValue
+        };
+
+        axios.post(UPDATE_DELAY(props.id), data, authOptions).then(response => {
+            if (response.status === 200) {
+                swal({
+                    title: "Done!",
+                    text: "Set Delay Time Success",
+                    icon: "success"
+                });
+
+            }
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        )
+    }
+
+    const handleOpenModal = () => {
+        setOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpen(false);
+    };
 
     const handlePlay = () => {
         const data = {
@@ -91,7 +152,6 @@ export function DisplayItems(props) {
         };
 
         axios.post(UPDATE_IS_ACTIVE(props.id), data, authOptions).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 setPlay(true)
                 swal({
@@ -119,7 +179,6 @@ export function DisplayItems(props) {
         };
 
         axios.post(UPDATE_IS_ACTIVE(props.id), data, authOptions).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 setPlay(false)
                 swal({
@@ -141,11 +200,56 @@ export function DisplayItems(props) {
         )
     }
 
+    const handleChangeSelect = (event, isChecked) => {
+        const announceId = parseInt(event.target.value);
+        if (!isChecked) {
+            setAnnouncementUser(announcementUser.filter(item => item.announcement_id !== announceId))
+        } else {
+            const data = {
+                user_id: props.id,
+                announcement_id: announceId,
+            };
+            setAnnouncementUser([...announcementUser, data]);
+        }
+    }
+
+    const handleSetAnnouncement = () => {
+        const announcementIds = announcementUser.map((item) => {
+            return item.announcement_id
+        });
+        const announcementId = {announcement_ids: announcementIds}
+
+        axios.post(ADD_DISPLAY_ANNOUNCEMENT(props.id), announcementId, authOptions).then(response => {
+            if (response.status === 200) {
+                swal({
+                    title: "Done!",
+                    text: "Select Announcement Success",
+                    icon: "success",
+                })
+            }
+        }).catch((error) => {
+                if (error.response) {
+                    swal({
+                        title: "Error!",
+                        text: (error.message),
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+            }
+        );
+    }
+
     return (
-        <Card className={styles.card} variant="outlined">
-            {/*<Input style={{backgroundColor:'gray', color:'black'}} label="search display" onChange={this.onChange} />*/}
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+        <Card className={styles.card}
+              variant="outlined"
+              key={props.key}>
+
+            <Grid container spacing={3}
+                  style={{margin: 0}}>
+
+                <Grid item xs={12} sm={9}>
+
                     <Grid item xs={12}>
                         <CardContent>
                             <Typography variant="h5" component="h2">
@@ -153,6 +257,7 @@ export function DisplayItems(props) {
                             </Typography>
                         </CardContent>
                     </Grid>
+
                     <Grid item xs={12}>
                         {(play === false) ? <IconButton onClick={handlePlay}>
                             <PlayArrowIcon className={styles.icon} fontSize="large"/>
@@ -160,94 +265,108 @@ export function DisplayItems(props) {
                             <PauseIcon className={styles.icon} fontSize="large"/>
                         </IconButton>}
                     </Grid>
+
                     <Grid item xs={12} className={styles.itemSpacing}>
                         {(play === true) ?
                             <CardActions>
-                                <Button className={styles.buttonSetDisplay} size="small" aria-controls="simple-menu"
-                                        aria-haspopup="true"
-                                        onClick={handleClick}>Select Announcement
+                                <Button className={styles.buttonSetDisplay}
+                                        onClick={handleOpenModal}>
+                                    Select Announcement
                                 </Button>
+                                <Button id="button-delay"
+                                        className={styles.buttonSetDisplay}
+                                        onClick={handleOpenDelay}>
+                                    Delay Announcement
+                                </Button>
+                                <Dialog
+                                    open={open}
+                                    onClose={handleCloseModal}
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                >
+                                    <DialogTitle>Choose Announcement</DialogTitle>
+
+                                    <DialogContent>
+                                        <FormControl className={styles.formControl}>
+                                            {props.announcement.map((item, n) => (
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={announcementUser.some(
+                                                                itemUser => itemUser.announcement_id === item.id)}
+                                                            key={item.id}
+                                                            onChange={handleChangeSelect}
+                                                            name={`announcement[${item.id}]`}
+                                                            color="primary"
+                                                            value={item.id}
+                                                        />
+                                                    }
+                                                    label={item.title}
+                                                />
+                                            ))}
+                                        </FormControl>
+                                    </DialogContent>
+
+                                    <DialogActions>
+                                        <Button key={props.id}
+                                                onClick={() => handleSetAnnouncement()}
+                                                color="primary">
+                                            Set Announcement
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+
                                 <Menu
                                     id={props.id}
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                >
-                                    {props.announcement.map(item => (
-                                        <MenuItem key={item.id + props.id} onClick={() => {
-                                            handleSelectAnnouncement(item.id);
-
-                                        }}>{item.title}</MenuItem>
-                                    ))}
+                                    anchorEl={delayButton}
+                                    open={Boolean(delayButton)}
+                                    onClose={handleCloseDelay}
+                                    keepMounted>
+                                    <MenuItem key='5s'
+                                              value={5000}
+                                              onClick={handleSelectDelay}>
+                                        5 sec
+                                    </MenuItem> <MenuItem key='15s'
+                                              value={15000}
+                                              onClick={handleSelectDelay}>
+                                        15 sec
+                                    </MenuItem>
+                                    <MenuItem key='30s'
+                                              value={30000}
+                                              onClick={handleSelectDelay}>
+                                        30 sec
+                                    </MenuItem>
+                                    <MenuItem key='1min'
+                                              value={60000}
+                                              onClick={handleSelectDelay}>
+                                        1 min<
+                                        /MenuItem>
+                                    <MenuItem key='3min'
+                                              value={180000}
+                                              onClick={handleSelectDelay}>
+                                        3 min
+                                    </MenuItem>
                                 </Menu>
-                            </CardActions> : <div></div>
+                            </CardActions> :
+                            null
                         }
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <Box className={styles.status} pt={1} pb={1} m={5} borderRadius="borderRadius">
-                        Status
-                    </Box>
+
+                <Grid item xs={12} sm={3}>
+                    {(play === true) ?
+                        <Box className={styles.statusOnline} pt={1} pb={1} m={5} borderRadius="borderRadius">
+                            Played
+                        </Box> : <Box className={styles.statusOffline} pt={1} pb={1} m={5} borderRadius="borderRadius">
+                            Stopped
+                        </Box>}
                 </Grid>
             </Grid>
         </Card>
     );
 }
 
-/*/!*function Search() {
-
-    const [displays, setDisplays] = useState([]);
-    const [inputDisplays, setInputDisplays] = useState([]);
-    const [singleDisplay, setSingleDisplay] = useState([]);
-
-    useEffect(() => {
-        getAllUser().then(response => {
-            setDisplays(response.data.data)
-        })
-    }, [])
-
-    const {
-        isOpen,
-        getMenuProps,
-        getInputProps,
-        getComboboxProps,
-        highlightedIndex,
-        getItemProps,
-    } = useCombobox({
-        items: inputDisplays,
-        onInputValueChange: ({inputValue}) => {
-            setInputDisplays(
-                displays.filter((item) => item.name.toLowerCase().startsWith(inputValue.toLowerCase()))
-            )
-        }
-    })*!/
-
-    return (
-        <div>
-            <h3>Current Display: {singleDisplay}</h3>
-            <div {...getComboboxProps()}>
-                <Input {...getInputProps()}
-                       placeholder="Search"
-                       size="large"
-                />
-                <ul {...getMenuProps()}>
-                    {isOpen && inputDisplays.map((item, index) => (
-                        <span key={item.id} {...getItemProps({item, index})} onClick={() => setSingleDisplay(item.name)}>
-                            <li style={highlightedIndex === index ? {background: 'grey'} : {}}>
-                                <h4>{item.name}</h4>
-                            </li>
-                        </span>
-                    ))
-                    }
-                </ul>
-            </div>
-        </div>
-    )
-}*/
-
-class DisplayList extends Component {
-
+export default class DisplayList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -262,48 +381,31 @@ class DisplayList extends Component {
                 display: response.data.data
             })
         })
-
         getAllAnnouncement().then(response => {
             this.setState({
                 announcement: response.data.data
             })
         })
-
-        Echo.join(`channel-display.${localStorage.getItem('user_id')}`)
-            // .here(function(DisplayItems){
-            //     update_member_count(DisplayItems.count);
-            //     console.log('laravelecho');
-            //     console.log(update_member_count);
-            // })
-            .listen('UserOnline', (e) => {
-                this.display = e.user
-                console.log(this.display)
-            })
-            .listen('UserOffline', (e) => {
-                this.display = e.user
-                console.log(this.display)
-            });
-
     }
-
 
     render() {
         const {display} = this.state
         const {announcement} = this.state
         return (
-            <DashboardTemplate>
-                <div>
-                    <Typography variant="h4" style={{textAlign: 'center'}}> Display List</Typography>
-                    <Box mb={5}/>
-                    {/*<Search />*/}
-                    {display.map(item => (
-                        <DisplayItems key={item.id} name={item.name} id={item.id}
-                                      announcement={announcement} is_active={item.is_active}/>
-                    ))}
-                </div>
-            </DashboardTemplate>
+            <Layout>
+                <Typography variant="h4"
+                            style={{textAlign: 'center'}}>
+                    Display List
+                </Typography>
+                <Box mb={5}/>
+                {display.map(item => (
+                    <DisplayItems key={item.id}
+                                  name={item.name}
+                                  id={item.id}
+                                  announcement={announcement}
+                                  is_active={item.is_active}/>
+                ))}
+            </Layout>
         )
     }
 }
-
-export default DisplayList;

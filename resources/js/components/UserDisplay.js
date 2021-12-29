@@ -1,37 +1,40 @@
 import React, {Component} from 'react';
 import axios from "axios";
+import OwlCarousel from 'react-owl-carousel';
 import ReactHtmlParser from "react-html-parser";
-import {Card, Container} from "@material-ui/core";
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+
 import {getUserId} from "../utils/UserId";
 import {authOptions} from "../utils/Api";
 import {GET_ANNOUNCEMENT_BY_USER} from "../utils/ApiUrl";
+
 import PausePresentationIcon from '@material-ui/icons/PausePresentation';
+import {Card} from "@material-ui/core";
 
 
 export default class UserDisplay extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            announcement: null,
-            is_active: null,
+            announcement: [],
+            is_active: [],
+            delay: 0,
         };
     }
 
-
     componentDidMount() {
         axios.get(GET_ANNOUNCEMENT_BY_USER(getUserId), authOptions).then(response => {
-            if (response.data.data.user.is_active === 1) {
-                this.setState({
-                    announcement: {content: response.data.data.announcement.content},
-                    is_active: 1
-                })
-            } else if (response.data.data.user.is_active === 0) {
-                this.setState({
-                    announcement: '',
-                    is_active: 0
-                })
-            }
+            const data = response.data.data || []
+            this.setState((prevState) => {
+                return {
+                    announcement: data,
+                    delay: data.length >= 1 ? data[0].user.delay_time : 0,
+                    is_active: data.length >= 1 ? data[0].user.is_active : 0
+                }
+            })
         });
+
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
@@ -43,48 +46,58 @@ export default class UserDisplay extends Component {
         });
         const this2 = this
         let channel = pusher.subscribe('channel-announcement');
+
         channel.bind('event-pusher', function (data) {
             if (localStorage.getItem('user_id') === data.data.user) {
                 if (data.data.is_active != null) {
                     this2.setState({is_active: data.data.is_active})
                 } else if (data.data.announcement != null) {
-
-                    this2.setState({announcement: data.data.announcement})
-
+                    this2.setState({announcement: data.data.announcements})
                 }
+                location.reload();
             }
         })
 
-        Echo.join(`channel-display.${localStorage.getItem('user_id')}`)
-            // .here((user) => {
-            //     this.state.announcement = user
-            // })
-            .joining((user) => {
-                axios.put('/api/user/' + user.getUserId + '/online?api_token=' + user.authOptions, {}).then(response => {
-                    console.log(response)
-                })
-            })
-            .leaving((user) => {
-                axios.put('/api/user/' + user.getUserId + '/offline?api_token=' + user.authOptions, {}).then(response => {
-                    console.log(response)
-                })
-            })
-
-
+        setTimeout(function () { //Start the timer
+            this.setState({render: true}) //After 1 second, set render to true
+        }.bind(this), 1000)
     }
 
-
     render() {
-        const {announcement, is_active} = this.state;
+        const {announcement, delay, is_active} = this.state;
         return (
-            <Card style={{border: 'none', boxShadow: 'none', width: '1920px', height: '1080px'}}>
-
-                {is_active === null ?
-                    <div></div> : is_active === 1 ? announcement && <div>{ReactHtmlParser(announcement.content)}</div>
-                        : <PausePresentationIcon
-                            style={{textAlign: 'center', marginTop: '25%', marginLeft: '47.5%', fontSize: '90px'}}/>
-                }
-
+            <Card style={{
+                border: 'none',
+                boxShadow: 'none',
+                width: '100%',
+                height: '100vh',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                backgroundColor: is_active === 0 ? '#F9C900' : ''
+            }}>
+                <OwlCarousel items={1}
+                             loop={true}
+                             autoplay={true}
+                             autoplayTimeout={delay}>
+                    {is_active === null ? null : is_active === 1 ? announcement &&
+                        announcement.map(item => (
+                            <div className='item' key={item.announcement_id}>
+                                <div key={item.announcement_id}>
+                                    {ReactHtmlParser(item.announcement.content)}
+                                </div>
+                            </div>
+                        )) :
+                        <PausePresentationIcon
+                            style={{
+                                textAlign: 'center',
+                                marginTop: '25%',
+                                marginLeft: '47.5%',
+                                fontSize: '90px'
+                            }}
+                        />
+                    }
+                </OwlCarousel>
             </Card>
         );
     }

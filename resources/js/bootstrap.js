@@ -32,25 +32,8 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '6d997cb2a1d07ded5b9d',
     cluster: 'ap1',
-    auth: authOptions,
     forceTLS: true,
-    // encrypted: true,
+    encrypted: true,
     authEndpoint: '/broadcasting/auth'
 });
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
-// import Echo from 'laravel-echo';
-
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });

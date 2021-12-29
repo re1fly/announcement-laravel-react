@@ -34,7 +34,7 @@ class UserOffline implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('channel-display'.$this->user->id);
+        return new PresenceChannel('channel-announcement');
     }
 
 

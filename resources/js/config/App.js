@@ -10,8 +10,8 @@ import Register from "../components/Register";
 import EditAnnouncement from "../components/EditAnnouncement";
 
 
-class App extends Component {
 
+class App extends Component {
     render() {
         return (
             <BrowserRouter>
@@ -23,7 +23,6 @@ class App extends Component {
                     <Route path='/display-list' component={DisplayList} />
                     <Route path='/display-announcement' component={UserDisplay} />
                     <Route path='/announcement-list' component={AnnouncementList} />
-
                 </Switch>
             </BrowserRouter>
         )

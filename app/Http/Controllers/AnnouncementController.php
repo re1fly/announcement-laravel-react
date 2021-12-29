@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewAnnouncement;
 use App\Models\Announcement;
+use App\Models\AnnouncementsDisplay;
 use App\Models\Display;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,13 +28,9 @@ class AnnouncementController extends Controller
 
     public function getAnnouncementByUserId($userId)
     {
+//        $announcement = Display::where('user_id', $userId)->with('announcement', 'user')->first();
 
-//        $getUserId = DB::table('announcements')
-//            ->join('displays','announcements.id', '=', 'displays.announcement_id')
-//            ->where('displays.user_id', '=',$userId)
-//            ->first();
-
-        $announcement = Display::where('user_id', $userId)->with('announcement', 'user')->first();
+        $announcement = AnnouncementsDisplay::where('user_id', $userId)->with('announcement', 'user')->get();
 
         return response()->json([
             'success' => true,
@@ -109,7 +106,7 @@ class AnnouncementController extends Controller
 
         $message = [
             'success' => true,
-            'message' => 'Update Announcement Success'
+            'message' => 'Update Announcement Success',
         ];
 
         return response()->json($message);
@@ -138,13 +135,12 @@ class AnnouncementController extends Controller
                 'success' => true,
                 'message' => 'Delete Announcement Success'
             ];
-            return response()->json($message);
         } else {
             $message = [
                 'success' => false,
                 'message' => 'Delete Announcement Failed'
             ];
-            return response()->json($message);
         }
+        return response()->json($message);
     }
 }
