@@ -4,8 +4,8 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Login from "../components/Login";
 import UserDisplay from "../components/UserDisplay";
 import Announcement from "../components/Announcement";
-import DisplayList from "../components/DisplayList";
-import AnnouncementList from "../components/AnnouncementList";
+import DisplayList from "../pages/DisplayList";
+import AnnouncementList from "../pages/AnnouncementList";
 import Register from "../components/Register";
 import EditAnnouncement from "../components/EditAnnouncement";
 
