@@ -3,7 +3,6 @@ import {NavLink} from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
 import dateFormat from 'dateformat';
 import swal from "sweetalert";
-import Swal from "sweetalert2";
 
 import Layout from "../containers/templates/Layout";
 import {authOptions, getAllAnnouncement} from "../utils/Api";

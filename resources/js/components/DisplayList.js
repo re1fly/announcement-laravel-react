@@ -243,7 +243,8 @@ export function DisplayItems(props) {
     return (
         <Card className={styles.card}
               variant="outlined"
-              key={props.key}>
+              key={item.id}
+        >
 
             <Grid container spacing={3}
                   style={{margin: 0}}>
@@ -405,6 +406,7 @@ export default class DisplayList extends Component {
                                   announcement={announcement}
                                   is_active={item.is_active}/>
                 ))}
+
             </Layout>
         )
     }

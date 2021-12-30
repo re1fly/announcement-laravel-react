@@ -1,5 +1,5 @@
-// export const BASE_URL = 'http://localhost:8000/api'
-export const BASE_URL = 'http://172.16.79.155/api'
+export const BASE_URL = 'http://localhost:8000/api'
+// export const BASE_URL = 'http://172.16.79.155/api'
 
 export const GET_ALL_ANNOUNCEMENT = BASE_URL + "/announcement"
 export const GET_ALL_USER = BASE_URL + "/auth/user-all"
